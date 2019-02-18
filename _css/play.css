@@ -1,0 +1,841 @@
+html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+article, aside, figure, footer, header, hgroup, nav, section {
+    display: block;
+}
+img {
+    max-width: 100%;
+}
+html {
+    overflow-y: scroll;
+}
+ul {
+    list-style: none;
+}
+a {
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+input, select {
+	vertical-align: middle;
+}
+
+input[type="radio"] {
+	vertical-align: text-bottom;
+}
+input[type="checkbox"] {
+	vertical-align: bottom;
+*vertical-align: baseline;
+}
+
+select, input, textarea {
+	font: 99% sans-serif;
+}
+
+/* Accessible focus treatment
+	people.opera.com/patrickl/experiments/keyboard/test */
+a:hover, a:active {
+	outline: none;
+}
+
+/* hand cursor on clickable elements */
+.clickable, label, input[type=button], input[type=submit], button {
+	cursor: pointer;
+}
+/* Webkit browsers add a 2px margin outside the chrome of form elements */
+button, input, select, textarea {
+	margin: 0;
+}
+/* make buttons play nice in IE */
+button {
+	width: auto;
+	overflow: visible;
+}
+/* let's clear some floats */
+.clearfix:before, .clearfix:after {
+	content: "\0020";
+	display: block;
+	height: 0;
+	overflow: hidden;
+}
+.clearfix:after {
+	clear: both;
+}
+body {
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+}
+/* we like off-black for text */
+body, select, input, textarea {
+	color: #333;
+}
+a {
+	color: #03f;
+}
+a:hover {
+	color: #69f;
+}
+
+/* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
+::-moz-selection {
+background: #fcd700;
+color: #fff;
+text-shadow: none;
+}
+::selection {
+	background: #fcd700;
+	color: #fff;
+	text-shadow: none;
+}
+/*	j.mp/webkit-tap-highlight-color */
+a:link {
+	-webkit-tap-highlight-color: #fcd700;
+}
+/* MyStuff
+-------------------------------------------------------------------------------*/
+body {
+	background: #495B95 /*url(../../img/mbhs/Photos/Misc/logo.jpg) repeat-x*/;
+}
+header {
+	height: 130px;
+	background: #FFF;
+	color: #1782CF;
+	position: relative;
+}
+.wrapper {
+	width: 1000px;
+	background: #0E4182;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 0;
+}
+header .branding {
+	position: relative;
+	top: 5px;
+	left: 71px;
+	width: 240px;
+}
+header .branding p {
+	font-size: .9em;
+	position: absolute;
+	top: 25%;
+	right: 0;
+}
+header .description {
+	width: 550px;
+	position: absolute;
+	top: 10px;
+	left: 380px;
+	font-size: .8em;
+}
+header .description h1 {
+	font-size: 2em;
+	padding-bottom: 5px;
+}
+.highlight {
+	color: whitesmoke;
+}
+/* Header --------------------- */
+header nav {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	background-image: -moz-linear-gradient(82% 0% -90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: -webkit-gradient(linear, 82% 0%, 82% 100%, color-stop(0, rgb(23,130,207)), color-stop(1, rgb(14,65,130)));
+	background-image: -webkit-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: -o-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: -ms-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+}
+header nav li {
+	list-style: none;
+	display: inline;
+}
+header nav li a {
+	display: block;
+	float: left;
+	text-decoration: none;
+	font-size: 1em;
+	color: #FFF;
+	padding: 10px 30px 10px 30px;
+}
+header nav li.selected a {
+	display: block;
+	float: left;
+	text-decoration: none;
+	font-size: 1em;
+	color: red;
+	padding: 10px 30px 10px 30px;
+}
+header nav li a:hover {
+	background-image: -moz-linear-gradient(82% 0% -90deg, rgb(14,65,130) 0%, rgb(23,130,207) 100%);
+	background-image: -webkit-gradient(linear, 82% 0%, 82% 100%, color-stop(0, rgb(14,65,130)), color-stop(1, rgb(23,130,207)));
+	background-image: -webkit-linear-gradient(-90deg, rgb(14,65,130) 0%, rgb(23,130,207) 100%);
+	background-image: -o-linear-gradient(-90deg, rgb(14,65,130) 0%, rgb(23,130,207) 100%);
+	background-image: -ms-linear-gradient(-90deg, rgb(14,65,130) 0%, rgb(23,130,207) 100%);
+	background-image: linear-gradient(-90deg, rgb(14,65,130) 0%, rgb(23,130,207) 100%);
+	color: #FFF;
+}
+/* Footer --------------------- */
+
+footer {
+	background: #FFF;
+	width: 100%;
+	height: 55px;
+	bottom: 0px;
+	color: #1782CF;
+	position: relative;
+	clear: left;
+}
+footer .branding {
+	position: absolute;
+	left: 40px;
+	top: 5px;
+}
+footer .branding img {
+	width: 45px;
+    height: 45px;
+}
+footer .description {
+	position: absolute;
+	left: 140px;
+	top: 20px;
+	width: 260px;
+	font-size: .8em;
+}
+/* Footer Nav
+-------------------------------------------------------------------------------*/
+footer {
+	color: #1782CF;
+}
+footer nav {
+	position: relative;
+	left: 480px;
+	top: 20px;
+	width: 200px;
+}
+footer nav li {
+	display: block;
+	list-style: none;
+}
+footer nav li a {
+	display: block;
+	float: left;
+	text-decoration: none;
+	font-size: .9em;
+	color: #FFF;
+	padding: 0px 10px;
+	border-right: 1px solid #ddd;
+}
+footer nav li:last-child a {
+	border-right: none;
+}
+/* Content
+-------------------------------------------------------------------------------*/
+
+/* Main
+-------------------------------------------------------------------------------*/
+#main {
+	width: 730px;
+	float: left;
+	display: block;
+	margin: 10px 0;
+}
+#main h1, #main h2, #main h3, #main h4, #main h5, #main h6, #main p {
+	margin: 0 70px;
+}
+#main h2 {
+	font-size:1.5em;
+	margin-bottom: 10px;
+	padding-top: 20px;
+}
+#main h1 {
+    font-size: 2.7em;
+    align-content: center;
+    color: white;
+}
+#main article:nth-of-type(1) h2 {
+	padding-top: 0;
+}
+#main p {
+	font-size:.8em;
+	line-height: 1.4;
+	margin-bottom: 10px;
+}
+#main div.vbpics {
+    width: 100%;
+    height: 210px;
+    padding: 3px 0px;
+    margin: 1px 0px 5px 0px; 
+}
+#main img.sportLeft {
+    width: 200px;
+    height: 200px;
+    float: left;
+    padding: 2px 25px;
+}
+#main img.sportRight {
+    width: 200px;
+    height: 200px;
+    padding: 2px 25px;
+    float: right;
+}
+#formalign {
+    margin-left: 50px;
+}
+#formalign h1 {
+    margin-left: 15px;
+    font-size: 2.7em;
+    align-content: center;
+    color: white;
+}
+#formalign h2 {
+    margin-left: 15px;
+    font-size: 1.7em;
+    align-content: center;
+    color: white;
+}
+#formalign a {
+    color: white;
+}
+#formalign a:link {
+    box-shadow: 0px 1px 0px 0px #fff6af;
+    background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
+    background-color:rgb(23,130,207);
+    border-radius:6px;
+    border:1px solid #ffaa22;
+    color: white;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffee66;
+}
+#formalign a:hover {
+    background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
+    background-color:#ffab23;
+}
+#formalign form {
+    font-size: 1em;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    color: white;
+}
+#formalign label {
+    display: table-cell;
+    width: 175px;
+}
+#formalign input[type=text] {
+    display: table-cell;
+}
+#formalign p {
+    display: table;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    font-size: 1.5em;
+}
+#formalign .dbscore {
+    width: 70px;
+}
+#formalign .dbtext {
+    width: 530px;
+}
+#formalign .dbfile {
+    display: table-cell;
+    width: 375px;
+}
+input[type="file"] {
+    color: white;
+}
+#formalign .dbdate {
+    width: 100px;
+}
+#formalign .dbnum {
+    width: 70px;
+    margin-right: 10px;
+}
+#formalign .fielderror {
+    color: red; 
+}
+#formalign .dbradio {
+    width: 1em;
+    vertical-align: middle;
+}
+/* Sidebar
+-------------------------------------------------------------------------------*/
+#sidebar {
+	width: 270px;
+	float: left;
+	margin: 10px 0;
+}
+#sidebar h1, #sidebar h2, #sidebar h3, #sidebar h4, #sidebar h5, #sidebar p {
+	padding-right: 80px;
+}
+#sidebar h2 {
+	font-size: 1.4em;
+	margin-bottom: 10px;
+	padding-top: 20px;
+}
+#sidebar article:nth-of-type(1) h2 {
+	padding-top: 0;
+	margin-bottom: 0px;
+}
+#sidebar h3 {
+	font-size:1em;
+	margin-bottom: 3px;
+	color: #777;
+}
+#sidebar p {
+	font-size:.8em;
+	line-height: 1.4;
+	margin-bottom: 10px;
+	padding-right: 60px;
+    color: white;
+}
+#sidebar input.selected {
+    color: red;
+}
+#awards h2 {
+    font-size: 1.4em;
+	margin-bottom: 10px;
+	padding-top: 20px;
+    color: white;
+}
+#awards li {
+    color: white;
+}
+#gradyr h2 {
+    text-align: center;
+    font-size: 2.0em;
+	line-height: 1.4;
+	margin-bottom: 10px;
+	padding-right: 60px;
+    color: white;
+}
+#gradyr h1 {
+    text-align: center;
+    font-size: 3.0em;
+	line-height: 1.4;
+	margin-bottom: 10px;
+	padding-right: 60px;
+    color: white;
+}
+/* Mark Stuff
+--------------------------------------------------------------------------*/
+.floatLeft {
+    width: 50%;
+    float: left;
+}
+.floatRight {
+    width: 50%;
+    float: right;
+}
+.theoPic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.vbpics {
+    width: 100%;
+    padding: 3px 0px;
+    margin: 1px 0px 250px 0px;
+}
+.center {
+    text-align: center;
+}
+caption h3 {
+    font-size: 1.2em;
+    color: rgb(255,255,255);
+}
+#page_academics table {
+    border-collapse: collapse;
+    color: white;
+}
+#semestertab pre {
+    color: white;
+}
+#soccertab h4 {
+    color: white;
+    font-style: italic;
+}
+#volleyballtab h4 {
+    color: white;
+    font-style: italic;
+}
+#page_soccer table {
+    color: white;
+    border-collapse: collapse;
+}
+#page_soccer td, th {
+    border: none;
+}
+#soccertab h1 {
+    text-align: center;
+}
+#page_volleyball table {
+    border-collapse: collapse;
+    color: white;
+}
+#page_volleyball td, th {
+    border: none;
+}
+#volleyballtab h1 {
+    text-align: center;
+}
+#stattab thead, tfoot {
+    display: block;
+    width: 97%;
+}
+#stattab tbody.scrollable {
+    display: block;
+    height: 400px;
+    overflow-y: auto;
+    width: 100%;
+}
+#stattab tfoot.scrollable {
+    display: block;
+    height: 90px;
+    overflow-y: auto;
+}
+#page_softball table {
+    border-collapse: collapse;
+    color: white;
+}
+#page_softball td, th {
+    border: none;
+}
+#softballtab h1 {
+    text-align: center;
+}
+#selectsemester a {
+    color: white;
+}
+#selectsemester a:hover {
+    color: gainsboro;
+}
+#selsocseason a {
+    color: white;
+}
+#selsocseason a:hover {
+    color: gainsboro;
+}
+#selvbseason a {
+    color: white;
+}
+#selvbseason a:hover {
+    color: gainsboro;
+}
+.sportLeft {
+    padding: 2px 25px;
+    float: left;
+}
+.sportRight {
+    padding: 2px 25px;
+    float: right;   
+}
+.centered-table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+.semesterTable {
+    margin-left: auto;
+    margin-right: auto;
+}
+.thumbnail {
+    width: 200px;
+    height: 100px;
+    border-color: aqua;
+    border-style: groove;
+    float: left;
+}
+.thumbvideo {
+    width: 200px;
+    height: 100px;
+    border-color: aqua;
+    border-style: groove;
+    float: left;
+}
+.vidcap {
+    color: white;
+}
+.vidcap a {
+    color: white;
+}
+.vidcap a:hover {
+    color: cyan;
+}
+#record td {
+    text-align: right;
+    font-weight: bold;
+}
+.gameDate {
+    width: 65px;
+}
+.location {
+    width: 125px;
+}
+.matchScore {
+    font-weight: bold;
+    width: 150px;
+}
+.soccerMatchScore {
+    font-weight: bold;
+    width: 65px;
+}
+.opponent {
+    font-style: italic;
+    width: 125px;
+}
+.league {
+    width: 2px;
+}
+.result {
+    width: 2px;
+}
+td.period {
+    border: 2px solid white;
+}
+.period {
+    width: 10px;
+    text-align: center;
+}
+td.className {
+    border: 2px solid white;
+}
+.className {
+    width: 200px;
+}
+td.teacher {
+    border: 2px solid white;
+}
+.teacher {
+    width: 150px;
+}
+td.grade {
+    border: 2px solid white;
+}
+.grade {
+    width: 10px;
+    text-align: center;
+}
+.addNewItem {
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 0;
+}
+.delpics {
+    width: 150px;
+    height: 150px;
+}
+.modify {
+    width: 100px;
+}
+.delpics .button-container p {
+    width: 150px;
+}
+.modify .button-container input,
+.delpics .button-container input {
+    width: 2em;
+}
+.modify .button-container form,
+.delpics .button-container form {
+    display: inline;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+.modify .button-container form div,
+.delpics .button-container form div {
+    display: inline;
+}
+.modify .button-container input[type=submit],
+.delpics .button-container input[type=submit] {
+    font-weight:normal;
+    font-size: 18px;
+    padding:1px 1px;
+    margin-left: 1px;
+    display: inline;
+    font-family: 'Material Icons';
+}
+td.modify {
+    border-style: none;
+}
+th.modify {
+    border-style: none;
+}
+.assists {
+    width: 60px;
+    text-align: right;
+}
+.blocks {
+    width: 60px;
+    text-align: right;
+}
+.kills {
+    width: 60px;
+    text-align: right;
+}
+.digs {
+    width: 60px;
+    text-align: right;
+}
+.serves {
+    width: 60px;
+    text-align: right;
+}
+.aces {
+    width: 60px;
+    text-align: right;
+}
+.sideOut {
+    width: 70px;
+    text-align: right;
+}
+td, th {
+    padding-bottom: 10px;
+    padding-right: 1px;
+    padding-left: 3px;
+}
+form, p.warning {
+	margin-left: 15px;
+}
+label {
+	display: block;
+}
+input {
+	width: 10em;
+}
+input[type=submit] {
+    box-shadow: 0px 1px 0px 0px #fff6af;
+    background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
+    background-color:rgb(23,130,207);
+    border-radius:6px;
+    border:1px solid #ffaa22;
+    color:white;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffee66;
+    margin-left: 10px;
+}
+.useicon {
+    font-family: 'Material Icons';
+}
+input[type=submit]:hover {
+    background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
+    background-color:#ffab23;
+}
+div.message { 
+	border: 2px solid white;
+	color: white; font-weight: bold;
+	margin: 0 0 ; padding: 0.1em; 
+}
+
+/* errors */
+.error {
+	color: #8D0D19; border: 2px solid #8D0D19;
+	margin: 1em 0; padding: 1em;
+}
+.error ul { padding-left: 2em; }
+
+/* Navigation areas */
+#topbar {
+  height: 36px;
+  overflow: hidden;
+  -webkit-transition: height 0.5s linear;
+  -moz-transition: height 0.5s linear;
+  transition: height 0.5s linear;
+}
+#topbar:hover { height: 50%; }
+
+#tophiddenbar {
+  width: 100%;
+}
+
+#topnav {
+  height: 36px;
+  overflow: hidden;
+  -webkit-transition: height 0.5s linear;
+  -moz-transition: height 0.5s linear;
+  transition: height 0.5s linear;
+}
+
+#topnav:hover { 
+    height: 70px;
+}
+#topnav h2 {
+	font-size: 1.4em;
+}
+#tophiddennav {
+  width: 100%;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+#sidebar .add-button-container h2 {
+    padding-right: 2px;
+    padding-top: 0px;
+    display: inline;
+    color: #fff;
+}
+.add-button-container .button-container input[type=submit] {
+    font-weight:normal;
+    font-size: 15px;
+    padding:1px 1px;
+    margin-left: 1px;
+    font-family: 'Material Icons';
+    margin-bottom: 10px;
+}
+.add-button-container div {
+    display: inline;
+}
+.add-button-container .button-container form {
+    display: inline;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+.add-button-container .button-container input {
+    width: 2em;
+}
