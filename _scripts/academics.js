@@ -80,9 +80,13 @@ function getAcademicInfo(callback, season, year, student) {
    * MHM 2019-02-17
    * Comment:
    *  Update table header
+   * 
+   * MHM 2019-02-20
+   * Comment:
+   *  Add student name to header.
    */
   let tableHeader = document.getElementById("seasonYear");
-  tableHeader.innerHTML = season + " " + year;
+  tableHeader.innerHTML = student + " " + season + " " + year;
 
   /*
    * MHM 2019-02-17

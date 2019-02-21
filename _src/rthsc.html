@@ -1,0 +1,111 @@
+<!--
+    MHM 2019-02-20
+    Comment:
+     Production file. This is the home page. Javascript
+     will be used to remove/add elements based on the buttons
+     selected. Buttons we'll be brought on line as the logic
+     is completed.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Rachel and Theodore's High School Page</title>
+    <link rel="stylesheet" type="text/css" href="../_css/play.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body id="main_body">
+    <div class="wrapper">
+        <header>
+            <div class="branding">
+                <img src="../../img/mbhs/Photos/Misc/spft.jpg" width="90" height="75" alt="Logo">
+                <p>Morro Bay High School<br>
+                    Academics • Sports</p>
+            </div>
+            <div class="description">
+                <h1>Rachel and Theo's High School Pages</h1>
+                <p>Highlights of their High School career</p>
+            </div>
+            <nav>
+                <div id="topnav">
+                    <button id="homeBtn" class="navButton">HOME</button>
+                    <div class="dropdown">
+                        <button class="dropbtn">ACADEMICS
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <button id="rABtn" class="navButton">Rachel</button>
+                            <button id="tABtn" class="navButton">Theodore</button>
+                        </div>
+                    </div>
+                    <button class="navButton">SOCCER</button>
+                    <button class="navButton">SOFTBALL</button>
+                    <button class="navButton">TENNIS</button>
+                    <button class="navButton">TRAVEL</button>
+                    <div class="dropdown">
+                        <button class=dropbtn>VOLLEYBALL
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <button class="navButton">Rachel</button>
+                            <button class="navButton">Theodore</button>
+                        </div>
+                    </div>
+                    <a class="navButton" href="http://mbhs.slcusd.org" title="MBHS Homepage" target="_blank" class="btn btn-primary">MBHS
+                        HOME</a>
+                </div>
+            </nav>
+        </header>
+        <div id="rotator">
+            <img src="../../img/mbhs/Photos/Misc/mbhs.jpg" width=100% height="120" alt="MBHS from land">
+        </div>
+        <div id="error panel">
+            <p id=messages>
+
+            </p>
+        </div>
+        <section id="main">
+            <div id="mbPics">
+                <!-- 
+                    MHM 2019-02-20
+                    Comment:
+                     Oddity. The closing arrow brackets need
+                     to be on the next img element. Otherwise
+                     we get whitespace for some unknown reason.
+                -->
+                <img src="../../img/mbhs/Photos/Misc/mbhs.jpg" width="310" height="200" class="floatLeft"
+                ><img src="../../img/mbhs/Photos/Misc/mrock.jpg" width="310" height="200" class="floatRight">
+            </div>
+            <div class="kidPics">
+                <!-- 
+                    MHM 2019-02-20
+                    Comment:
+                     Oddity. The closing arrow brackets need
+                     to be on the next img element. Otherwise
+                     we get whitespace for some unknown reason.
+                -->
+                <img src="../../img/mbhs/Photos/Academics/2013/S7300662.JPG" width="310" height="375" class="floatLeft"
+                ><img src="../../img/mbhs/Photos/Academics/2015/Theo.JPG" width="310" height="375" class="floatLeft">
+            </div>
+        </section>
+        <aside id="sidebar" class="clearfix">
+            <article id="gradyr">
+                <h1>Our</h1>
+                <h1>Morro Bay</h1>
+                <h1>High School</h1>
+                <h1>Students</h1>
+            </article>
+        </aside>
+        <footer>
+            <div class="branding">
+                <img src="../../img/mbhs/Photos/Misc/logo.jpg" alt="Logo">
+            </div>
+            <div class="description">&copy; 2015&ndash;2019 Mark Mackey</div>
+        </footer>
+    </div>
+</body>
+<script src="../_scripts/rthsc.js"></script>
+</html>

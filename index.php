@@ -4,6 +4,10 @@
  * Comment:
  *  If someone attempts to access the base URL, redirect them to
  *  the first page.
+ * 
+ * MHM 2019-02-20
+ * Comment:
+ *  Change to new home page rthsc.js.html
  */
     
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -12,7 +16,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	$uri = 'http://';
 }
 $uri .= $_SERVER['HTTP_HOST'];
-header('Location: '.$uri.'/myJSON/_src/academic.html');
+header('Location: '.$uri.'/myJSON/_src/rthsc.js.html');
 exit;
 ?>
 Something is wrong with the XAMPP installation :-(
