@@ -1,35 +1,132 @@
+<!--
+  MHM 2019-02-20
+  Comment
+   This is a temporary file that allows me to play
+   with the button logic, the HTTP request logic. The
+   actual html page will be similar but alot of the areas
+   will be dynamically created.
+-->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Play with JSON, PHP and SQL</title>
+    <title>Rachel and Theodore's High School Page</title>
     <link rel="stylesheet" type="text/css" href="../_css/play.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body id="page_academics">
+    <div class="wrapper">
+      <header>
+        <div class="branding">
+          <img src="../../img/mbhs/Photos/Misc/spft.jpg" width="90" height="75" alt="Logo">
+          <p>Morro Bay High School<br>
+            Academics • Sports</p>
+        </div>
+        <div class="description">
+          <h1>Rachel and Theo's High School Pages</h1>
+          <p>Highlights of their High School career</p>
+        </div>
+        <nav>
+          <div id="topnav">
+            <button class="navButton">HOME</button>
+            <div class="dropdown">
+              <button class="dropbtn">ACADEMICS
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <button class="navButton">Rachel</button>
+                <button class="navButton">Theodore</button>
+              </div>
+            </div>
+            <button class="navButton">SOCCER</button>
+            <button class="navButton">SOFTBALL</button>
+            <button class="navButton">TENNIS</button>
+            <button class="navButton">TRAVEL</button>
+            <div class="dropdown">
+              <button class=dropbtn>VOLLEYBALL
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <button class="navButton">Rachel</button>
+                <button class="navButton">Theodore</button>
+              </div>
+            </div>
+            <a class="navButton" href="http://mbhs.slcusd.org" title="MBHS Homepage" target="_blank" class="btn btn-primary">MBHS HOME</a>
+          </div>
+        </nav>
+      </header>
+      <div id="rotator">
+        <img src="../../img/mbhs/Photos/Misc/mbhs.jpg" width=100% height="120" alt="MBHS from land">
+      </div>
+      <div id="error panel">
+        <p id=messages>
 
-    <h2>Get data as JSON from a PHP file on the server.</h2>
-
-    <p id="demo"></p>
-    <p id="demo2"></p>
-
-    <div id="semestertab">
-      <table id="semTab" class="semesterTable" cellspacing="3" cellpadding="3" summary="List of classes, teachers and grades">
-        <caption>
-          <h3 id="seasonYear">SPRING 20XX</h3>
-        </caption>
-        <tr id="academicHeaderList">
-          <th scope="col" class="period">Period </th>
-          <th scope="col" class="className">Class </th>
-          <th scope="col" class="teacher">Teacher </th>
-          <th scope="col" class="grade">Grade </th>
-          <th scope="col" class="modify"></th>
-        </tr>
-        <tr id="academicEntry">
-          
-        </tr>
-      </table>
+        </p>
+      </div>
+      <main role="main">
+        <br>
+        <section id="main">
+          <div id="semestertab">
+            <table id="semTab" class="semesterTable" cellspacing="3" cellpadding="3" summary="List of classes, teachers and grades">
+              <caption>
+                <h3 id="seasonYear">SPRING 20XX</h3>
+              </caption>
+              <tr id="academicHeaderList">
+                <th scope="col" class="period">Period </th>
+                <th scope="col" class="className">Class </th>
+                <th scope="col" class="teacher">Teacher </th>
+                <th scope="col" class="grade">Grade </th>
+                <th scope="col" class="modify"></th>
+              </tr>
+              <tr id="academicEntry">
+                    
+              </tr>
+            </table>
+          </div>
+        </section>
+        <aside id="sidebar" class="clearfix">
+          <article id="select_menu">
+            <div id="topbar">
+              <h2 class="highlight">
+                Academic 
+                <i class="material-icons">menu</i>
+              </h2>
+              <h2>Semester</h2>
+              <div class="tooltip">
+                <span class=tooltiptext>Add a class</span>
+                <button class=asideAddButton>&#xE145;</button>
+              </div>
+              <button class=asideButton>SUMMER 2009</button>
+              <button class=asideButton>FALL 2009</button>
+              <button class=asideButton>SPRING 2010</button>
+              <button class=asideButton>FALL 2010</button>
+              <button class=asideButton>SPRING 2011</button>
+              <button class=asideButton>FALL 2011</button>
+              <button class=asideButton>SPRING 2012</button>
+              <button class=asideButton>FALL 2012</button>
+              <button class=asideButton>SPRING 2013</button>
+            </div>
+          </article>
+          <article id="awards">
+            <h2> Awards </h2>
+            <div class="tooltip">
+              <span class="tooltiptext">Add an Award</span>
+              <button class=asideAddButton>&#xE145;</button>
+            </div>
+            <ul>
+              <li>List goes here</li>
+            </ul>
+          </article>
+        </aside>
+      </main>
+      <footer>
+        <div class="branding">
+          <img src="../../img/mbhs/Photos/Misc/logo.jpg" alt="Logo">
+        </div>
+        <div class="description">&copy; 2015&ndash;2019 Mark Mackey</div>
+      </footer>
     </div>
-<script src="../_scripts/academics.js"></script>
-
-</body>
+  </body>
+  <script src="../_scripts/academics.js"></script>
 </html>
