@@ -20,6 +20,14 @@
  *  data into appropriate variables. All manipulation will be
  *  done locally once the data has arrived. May need to have 
  *  logic to deal with data not arriving in a timely manner.
+ * 
+ * MHM 2019-02-25
+ * Comment:
+ *  Enable Rachel and Theo academic buttons to build main and aside
+ *  classes. Remove message class when cleaning the page. Add logic
+ *  to build the academic table and academic aside menu. Begin
+ *  the thought process of moving the returned data into specific
+ *  variables. Consider access functions to support these variables.
  */
 
 let returned_data;
@@ -63,6 +71,7 @@ let performSomeAction = function(returned_data) {
    */
 
   transcriptList = returned_data.transcriptList;
+  
   /*
    * MHM 2019-02-20
    * Comment:
@@ -135,6 +144,10 @@ function getAcademicInfo(callback) {
  *  Remove all child elements from the main and sidebar
  *  element. We will rebuild those elements based on
  *  the event selected.
+ * 
+ * MHM 2019-02-25
+ * Comment:
+ *  Remove class from messages id.
  */
 
 function cleanMainAside() {
@@ -147,6 +160,9 @@ function cleanMainAside() {
   while (asideEl.hasChildNodes()){
     asideEl.removeChild(asideEl.lastChild);
   }
+  let elem = document.getElementById("messages");
+  elem.setAttribute("class","");
+  elem.innerHTML="";
 }
 
 /*
@@ -220,6 +236,305 @@ function build_home_aside() {
 }
 
 /*
+ * MHM 2019-02-25
+ * Comment:
+ *  Build the academic main page given the student, season
+ *  and year.
+ */
+function build_academic_table(student, season, year) {
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Create tham semestertab div
+   */
+  let elem = document.createElement("div");
+  elem.setAttribute("id","semestertab");
+  document.getElementById("main").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Create the academic table.
+   */
+  elem = document.createElement("table");
+  elem.setAttribute("id","semTab");
+  elem.setAttribute("class","semesterTable");
+  elem.setAttribute("cellspacing","3");
+  elem.setAttribute("cellpadding","3");
+  elem.setAttribute("summary","List of classes, teachers and grades");
+  document.getElementById("semestertab").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Create the Table Caption
+   */
+  elem = document.createElement("caption");
+  elem.setAttribute("id","capText");
+  document.getElementById("semTab").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Create the table header
+   */
+  elem = document.createElement("h3");
+  elem.setAttribute("id","seasonYear");
+  elem.innerHTML = student + " " + season + " " + year;
+  document.getElementById("capText").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Create the header row
+   */
+  elem = document.createElement("tr");
+  elem.setAttribute("id","academicHeaderList");
+  document.getElementById("semTab").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Create the five table columns with header titles.
+   *  The fifth column has no header title.
+   */
+  elem = document.createElement("th");
+  elem.setAttribute("scope","col");
+  elem.setAttribute("class","period");
+  elem.innerHTML = "Period";
+  document.getElementById("academicHeaderList").appendChild(elem);
+
+  elem = document.createElement("th");
+  elem.setAttribute("scope","col");
+  elem.setAttribute("class","className");
+  elem.innerHTML = "Class";
+  document.getElementById("academicHeaderList").appendChild(elem);
+
+  elem = document.createElement("th");
+  elem.setAttribute("scope","col");
+  elem.setAttribute("class","teacher");
+  elem.innerHTML = "Teacher";
+  document.getElementById("academicHeaderList").appendChild(elem);
+
+  elem = document.createElement("th");
+  elem.setAttribute("scope","col");
+  elem.setAttribute("class","grade");
+  elem.innerHTML = "Grade";
+  document.getElementById("academicHeaderList").appendChild(elem);
+
+  elem = document.createElement("th");
+  elem.setAttribute("scope","col");
+  elem.setAttribute("class","modify");
+  document.getElementById("academicHeaderList").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Filter the transacriptList to retrieve the semester
+   *  record for the student, season, year provided.
+   *  Then build the table based on the returned records.
+   */
+  let semesterList = transcriptList.filter(function (obj) {
+    return (obj.season===season && obj.year===year && obj.studentName===student);
+  });
+
+  let tableElement = document.getElementById("semTab");
+  let row;
+  let cnt=1;
+  let cell1, cell2, cell3, cell4;
+
+  for (x in semesterList) {
+    row = tableElement.insertRow(cnt++);
+    row.className = "academicEntry";
+    cell1 = row.insertCell(0);
+    cell1.className = "period";
+    cell1.innerHTML = semesterList[x].period;
+    cell2 = row.insertCell(1);
+    cell2.className = "className";
+    cell2.innerHTML = semesterList[x].className;
+    cell3 = row.insertCell(2);
+    cell3.className = "teacher";
+    cell3.innerHTML = semesterList[x].teacherName;
+    cell4 = row.insertCell(3);
+    cell4.className = "grade";
+    cell4.innerHTML = semesterList[x].grade;
+  }
+}
+
+/*
+ * MHM 2019-02-25
+ * Comment:
+ *  Build the aside menu. Since all aside menus are similar, do we
+ *  need a function for each page. For now, assume yes.
+ */
+function build_academic_aside_nav(student) {
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Filer the transcriptList for the specfied student
+   */
+  let findStudentTrans = transcriptList.filter(function (obj) {
+    return (obj.studentName===student);
+  });
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Using the records in findStudentTrans, get distinct season, year values
+   *  in order to build semester buttons.
+   */
+  let years = findStudentTrans.reduce((acc, x) =>
+  acc.concat(acc.find(y => y.season === x.season && y.year === x.year) ? [] : [x]), []);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the selection_menu article
+   */
+  let elem = document.createElement("article");
+  elem.setAttribute("id", "select_menu");
+  document.getElementById("sidebar").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the topbar div
+   */
+  elem = document.createElement("div");
+  elem.setAttribute("id","topbar");
+  document.getElementById("select_menu").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the navigation header. May remove this in the future.
+   */
+  elem = document.createElement("h2");
+  elem.setAttribute("class", "highlight");
+  elem.innerHTML = "Academic " + '<i class="material-icons">menu</i>';
+  document.getElementById("topbar").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the Semester header
+   */
+  elem = document.createElement("h2");
+  elem.innerHTML = "Semester"
+  document.getElementById("topbar").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the tooltip div
+   */
+  elem = document.createElement("div");
+  elem.setAttribute("class","tooltip");
+  elem.setAttribute("id","semTooltip");
+  document.getElementById("topbar").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the tooltip text
+   */
+  elem = document.createElement("span");
+  elem.setAttribute("class","tooltiptext");
+  elem.innerHTML="Add a class";
+  document.getElementById("semTooltip").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the Add academic record button
+   */
+  elem = document.createElement("button");
+  elem.setAttribute("class","asideAddButton");
+  elem.innerHTML="&#xE145;";
+  document.getElementById("semTooltip").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Loop through our distinct list of season, year records
+   *  and build a button for each element in the array.
+   */
+  for (x in years) {
+    elem = document.createElement("button");
+    elem.setAttribute("class","asideButton");
+    elem.innerHTML=years[x].season + " " + years[x].year;
+    document.getElementById("topbar").appendChild(elem)
+  }
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the awards article
+   */
+  elem = document.createElement("article");
+  elem.setAttribute("id","awards");
+  document.getElementById("sidebar").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the Awards header
+   */
+  elem = document.createElement("h2");
+  elem.innerHTML = "Awards"
+  document.getElementById("awards").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the tooltip div
+   */
+  elem = document.createElement("div");
+  elem.setAttribute("class","tooltip");
+  elem.setAttribute("id","awardsTooltip");
+  document.getElementById("awards").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the awards tooltip text
+   */
+  elem = document.createElement("span");
+  elem.setAttribute("class","tooltiptext");
+  elem.innerHTML="Add an Award";
+  document.getElementById("awardsTooltip").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the awards tooltip text
+   */
+  elem = document.createElement("button");
+  elem.setAttribute("class","asideAddButton");
+  elem.innerHTML="&#xE145;";
+  document.getElementById("awardsTooltip").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Build the unorder list place holder for awards
+   */
+  elem = document.createElement("ul");
+  elem.setAttribute("id","awardsList");
+  document.getElementById("awards").appendChild(elem);
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Place holder for awards
+   */
+  elem = document.createElement("li");
+  elem.innerHTML="List goes here"
+  document.getElementById("awardsList").appendChild(elem);
+}
+
+/*
  * MHM 2019-02-17
  * Comment:
  *  Main logic
@@ -246,14 +561,20 @@ homeBtn.addEventListener("click", function() {
 
 let rABtn = document.getElementById("rABtn");
 rABtn.addEventListener("click", function() {
-  cleanMainAside();
-  /*build_academic_table("Rachel", "SPRING", "2013");
-  build_aside_nav("Rachel");*/
+  if (transcriptList === undefined) {
+    elem=document.getElementById("messages");
+    elem.setAttribute("class","error");
+    elem.innerHTML="Data Still Loading, Try Again";
+  } else {
+    cleanMainAside();
+    build_academic_table("Rachel", "SPRING", "2013");
+    build_academic_aside_nav("Rachel");
+  }
 });
 
 let tABtn = document.getElementById("tABtn");
 tABtn.addEventListener("click", function() {
   cleanMainAside();
-  /*build_academic_table("Theodore", "SPRING", "2018");
-  build_aside_nav("Theodore");*/
+  build_academic_table("Theodore", "SPRING", "2015");
+  build_academic_aside_nav("Theodore");
 })
