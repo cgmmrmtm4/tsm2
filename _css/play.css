@@ -309,6 +309,12 @@ caption h3 {
     border-collapse: collapse;
     color: white;
 }
+
+#semestertab {
+    border-collapse: collapse;
+    color: white;
+}
+
 #semestertab pre {
     color: white;
 }
