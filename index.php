@@ -8,6 +8,10 @@
  * MHM 2019-02-20
  * Comment:
  *  Change to new home page rthsc.js.html
+ * 
+ * MHM 2019-02-25
+ * Comment:
+ * Change to actual page rthsc.html
  */
     
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
@@ -16,7 +20,7 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	$uri = 'http://';
 }
 $uri .= $_SERVER['HTTP_HOST'];
-header('Location: '.$uri.'/myJSON/_src/rthsc.js.html');
+header('Location: '.$uri.'/tsm2/_src/rthsc.html');
 exit;
 ?>
 Something is wrong with the XAMPP installation :-(

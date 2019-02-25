@@ -28,6 +28,7 @@
  *  to build the academic table and academic aside menu. Begin
  *  the thought process of moving the returned data into specific
  *  variables. Consider access functions to support these variables.
+ *  The default year for Theodore should be 2018.
  */
 
 let returned_data;
@@ -575,6 +576,6 @@ rABtn.addEventListener("click", function() {
 let tABtn = document.getElementById("tABtn");
 tABtn.addEventListener("click", function() {
   cleanMainAside();
-  build_academic_table("Theodore", "SPRING", "2015");
+  build_academic_table("Theodore", "SPRING", "2018");
   build_academic_aside_nav("Theodore");
 })
