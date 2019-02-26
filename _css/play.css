@@ -521,6 +521,31 @@ td.grade {
     display: inline;
     font-family: 'Material Icons';
 }
+.eBtn, .dBtn {
+    box-shadow: 0px 1px 0px 0px #fff6af;
+    background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
+    background-color:rgb(23,130,207);
+    border:1px solid #ffaa22;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffee66;
+    color:white;
+    font-weight:bold;
+    font-size: 18px;
+    padding:1px 1px;
+    margin-left: 1px;
+    display: inline;
+    font-family: 'Material Icons';
+}
+.eBtn:hover {
+    background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
+    background-color:#ffab23;
+}
+.dBtn:hover {
+    background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
+    background-color:#ffab23;
+}
+
+
 td.modify {
     border-style: none;
 }
@@ -626,7 +651,7 @@ div.message {
 
 .tooltip {
     position: relative;
-    display: block;
+    display: inline-block;
     /*border-bottom: 1px dotted black;*/
 }
 .tooltip .tooltiptext {

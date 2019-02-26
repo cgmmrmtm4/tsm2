@@ -28,11 +28,22 @@
  *  to build the academic table and academic aside menu. Begin
  *  the thought process of moving the returned data into specific
  *  variables. Consider access functions to support these variables.
- *  The default year for Theodore should be 2018.
+ *  The default year for Theodore should be 2018. 
+ * 
+ * MHM 2019-02-26
+ * Comment:
+ *  Provide set and get functions for our global data.
  */
 
-let returned_data;
-let transcriptList;
+let database_data = {
+  transcriptList: undefined,
+  getTranscriptList: function() {
+    return this.transcriptList;
+  },
+  setTranscriptList: function(ts_data) {
+    this.transcriptList = ts_data;
+  }
+};
 
 /*
  * MHM 2019-02-17
@@ -52,26 +63,13 @@ let transcriptList;
 
 let performSomeAction = function(returned_data) {
   /*
-   * MHM 2019-02-17
+   * MHM 2019-02-16
    * Comment:
-   *  Find the table in the HTML document and build it.
-   * 
-   * MHM 2019-02-18
-   * Comment:
-   *  Added the season, year and student parameters since we're going
-   *  doing the filtering here instead of in the database query.
-   *
-   *  We get the complete transcript list from the database. Now
-   *  Filter for the records we want to display.
-   * 
-   * MHM 2019-02-20
-   * Comment:
-   *  Removed all table building logic. Just store the data
-   *  into the appropriate variable. eventListeners will now
-   *  handle the table and page manipulations.
+   *  Clean-up comments. Use the set method to set the global
+   *  information.
    */
 
-  transcriptList = returned_data.transcriptList;
+  database_data.setTranscriptList(returned_data.transcriptList);
   
   /*
    * MHM 2019-02-20
@@ -159,16 +157,17 @@ function getAcademicInfo(callback) {
  *  element. We will rebuild those elements based on
  *  the event selected.
  * 
- * MHM 2019-02-25
+ * MHM 2019-02-26
  * Comment:
- *  Remove class from messages id.
+ *  Remove class from messages id. Use remove_dom_children()
+ *  to remove child elements.
  */
 
 function cleanMainAside() {
   /* Empty main and empty side bar */
   remove_dom_children("main");
   remove_dom_children("sidebar");
-  
+
   /* Remove error class in case it was set. */
   let elem = document.getElementById("messages");
   elem.removeAttribute("class");
@@ -340,6 +339,7 @@ function build_academic_table(student, season, year) {
    *  record for the student, season, year provided.
    *  Then build the table based on the returned records.
    */
+  let transcriptList = database_data.getTranscriptList();
   let semesterList = transcriptList.filter(function (obj) {
     return (obj.season===season && obj.year===year && obj.studentName===student);
   });
@@ -347,7 +347,7 @@ function build_academic_table(student, season, year) {
   let tableElement = document.getElementById("semTab");
   let row;
   let cnt=1;
-  let cell1, cell2, cell3, cell4;
+  let cell1, cell2, cell3, cell4, cell5;
 
   for (x in semesterList) {
     row = tableElement.insertRow(cnt++);
@@ -364,7 +364,57 @@ function build_academic_table(student, season, year) {
     cell4 = row.insertCell(3);
     cell4.className = "grade";
     cell4.innerHTML = semesterList[x].grade;
+    cell5 = row.insertCell(4);
+    cell5.className = "modify";
+    cell5.innerHTML = "<div class='button-container tooltip'> <span class='tooltiptext'>Edit Row</span> <button class='eBtn'>&#xE3C9;</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Delete Row</span> <button class='dBtn'>&#xE872;</button> </div>";
   }
+
+  /*
+   * MHM 2019-02-26
+   * Comment:
+   *  Build the GPA, Running GPA, and Ranking information
+   */
+  addDOMElement("br",null,"semestertab");
+
+  /*
+   * MHM 2019-02-26
+   * Comment:
+   *  We can use reduce on the semesterList to total the GPA
+   *  and WGPA values.
+   */
+  let semesterGPA = semesterList.reduce(function(acc, obj) {
+    return acc + parseFloat(obj.GP);
+  }, 0.000)/semesterList.length;
+  let semesterWGPA = semesterList.reduce(function(acc, obj) {
+    return acc + parseFloat(obj.WGP);
+  }, 0.000)/semesterList.length;
+
+  /*
+   * MHM 2019-02-26
+   * Comment:
+   *  Save the current semesters seasonId and then filter the
+   *  transcriptList for all student entries whose seasonID is
+   *  equal or less than the current seasonId. This builds the
+   *  running GPA and WGPA values.
+   */
+  let localSeasonId = semesterList[0].seasonId;
+  let runningGPAList = transcriptList.filter(function (obj) {
+    return (obj.studentName === student && parseInt(obj.seasonId) <= localSeasonId);
+  });
+  let runningGPA = runningGPAList.reduce(function(acc,obj){
+    return acc + parseFloat(obj.GP);
+  }, 0.000)/runningGPAList.length;
+  let runningWGPA = runningGPAList.reduce(function(acc,obj) {
+    return acc + parseFloat(obj.WGP);
+  }, 0.000)/runningGPAList.length;
+
+  innerStr="\t  Semester GPA: " + semesterGPA.toFixed(3) + "\tSemester Weighted GPA: " + semesterWGPA.toFixed(3);
+  addDOMElement("pre",null,"semestertab", innerStr);
+  innerStr="\t  Overall GPA: " + runningGPA.toFixed(3) + "\tOverall Weighted GPA: " + runningWGPA.toFixed(3);
+  addDOMElement("pre",null,"semestertab", innerStr);
+  addDOMElement("br", null, "semestertab");
+  innerStr="\t  Rank: xx Class Size: xxx Top xx.xx%";
+  addDOMElement("pre",null,"semestertab", innerStr);
 }
 
 /*
@@ -379,6 +429,7 @@ function build_academic_aside_nav(student) {
    * Comment:
    *  Filer the transcriptList for the specfied student
    */
+  let transcriptList = database_data.getTranscriptList();
   let findStudentTrans = transcriptList.filter(function (obj) {
     return (obj.studentName===student);
   });
@@ -554,7 +605,7 @@ homeBtn.addEventListener("click", function() {
 
 let rABtn = document.getElementById("rABtn");
 rABtn.addEventListener("click", function() {
-  if (transcriptList === undefined) {
+  if (database_data.getTranscriptList() === undefined) {
     error_still_loading();
   } else {
     cleanMainAside();
@@ -565,7 +616,7 @@ rABtn.addEventListener("click", function() {
 
 let tABtn = document.getElementById("tABtn");
 tABtn.addEventListener("click", function() {
-  if (transcriptList === undefined) {
+  if (database_data.getTranscriptList() === undefined) {
     error_still_loading();
   } else {
     cleanMainAside();
