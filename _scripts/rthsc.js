@@ -140,6 +140,19 @@ function getAcademicInfo(callback) {
 }
 
 /*
+ * MHM 2019-02-25
+ * Comment:
+ *  Remove all child objects from the selected id
+ */
+
+ function remove_dom_children(tag) {
+   let elem = document.getElementById(tag);
+   while (elem.hasChildNodes()) {
+     elem.removeChild(elem.lastChild);
+   }
+ }
+
+/*
  * MHM 2019-02-20
  * Comment:
  *  Remove all child elements from the main and sidebar
@@ -153,17 +166,30 @@ function getAcademicInfo(callback) {
 
 function cleanMainAside() {
   /* Empty main and empty side bar */
-  let mainEl = document.getElementById("main");
-  while ( mainEl.hasChildNodes() ){
-    mainEl.removeChild(mainEl.lastChild);
-  }
-  let asideEl = document.getElementById("sidebar");
-  while (asideEl.hasChildNodes()){
-    asideEl.removeChild(asideEl.lastChild);
-  }
+  remove_dom_children("main");
+  remove_dom_children("sidebar");
+  
+  /* Remove error class in case it was set. */
   let elem = document.getElementById("messages");
-  elem.setAttribute("class","");
+  elem.removeAttribute("class");
   elem.innerHTML="";
+}
+
+/*
+ * MHM 2019-02-25
+ * Comment:
+ *  Add an element into the DOM
+ */
+function addDOMElement(element, attr, parent, innerText = null) {
+  let elem = document.createElement(element);
+  let attrName;
+  for (attrName in attr) {
+    elem.setAttribute(attrName,attr[attrName]);
+  }
+  if (innerText !== null) {
+    elem.innerHTML=innerText;
+  }
+  document.getElementById(parent).appendChild(elem);
 }
 
 /*
@@ -172,41 +198,44 @@ function cleanMainAside() {
  *  Home event selected. Rebuild the main element
  */
 function build_home_main() {
-  let elem = document.createElement("div");
-  elem.setAttribute("id","mbPics");
-  document.getElementById("main").appendChild(elem);
 
-  elem = document.createElement("img");
-  elem.setAttribute("src", "../../img/mbhs/Photos/Misc/mbhs.jpg");
-  elem.setAttribute("width", "310");
-  elem.setAttribute("height","200");
-  elem.setAttribute("class","floatLeft");
-  document.getElementById("mbPics").appendChild(elem);
+  /* MHM 2019-02-25
+   * Comment:
+   * Add mbPics div
+   */
 
-  elem = document.createElement("img");
-  elem.setAttribute("src", "../../img/mbhs/Photos/Misc/mrock.jpg");
-  elem.setAttribute("width", "310");
-  elem.setAttribute("height","200");
-  elem.setAttribute("class","floatRight");
-  document.getElementById("mbPics").appendChild(elem);
+  let attrs = {
+    "id":"mbPics"
+  }
+  addDOMElement("div", attrs, "main");
 
-  elem = document.createElement("div");
-  elem.setAttribute("id","kidPics");
-  document.getElementById("main").appendChild(elem);
+  /* MHM 2019-02-25
+   * Comment:
+   *  Add MB pictures
+   */
+  attrs = {"src":"../../img/mbhs/Photos/Misc/mbhs.jpg", "width":"310", "height":"200", "class":"floatLeft"};
+  addDOMElement("img", attrs, "mbPics");
 
-  elem = document.createElement("img");
-  elem.setAttribute("src", "../../img/mbhs/Photos/Academics/2013/S7300662.JPG");
-  elem.setAttribute("width", "310");
-  elem.setAttribute("height","375");
-  elem.setAttribute("class","floatLeft");
-  document.getElementById("kidPics").appendChild(elem);
+  attrs = {"src":"../../img/mbhs/Photos/Misc/mrock.jpg", "width":"310", "height":"200", "class":"floatRight"};
+  addDOMElement("img", attrs, "mbPics");
 
-  elem = document.createElement("img");
-  elem.setAttribute("src", "../../img/mbhs/Photos/Academics/2015/Theo.JPG");
-  elem.setAttribute("width", "310");
-  elem.setAttribute("height","375");
-  elem.setAttribute("class","floatLeft");
-  document.getElementById("kidPics").appendChild(elem);
+  /* MHM 2019-02-25
+   * Comment:
+   *  Add kidPics div
+   */
+  attrs = {"id":"kidPics"};
+  addDOMElement("div", attrs, "main");
+
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Add kids images
+   */
+  attrs = {"src":"../../img/mbhs/Photos/Academics/2013/S7300662.JPG", "width":"310", "height":"375", "class":"floatLeft"};
+  addDOMElement("img", attrs, "kidPics");
+
+  attrs = {"src":"../../img/mbhs/Photos/Academics/2015/Theo.JPG", "width":"310", "height":"375", "class":"floatLeft"};
+  addDOMElement("img", attrs, "kidPics");
 }
 
 /*
@@ -215,25 +244,23 @@ function build_home_main() {
  *  Home event selected. Rebuild the aside element
  */
 function build_home_aside() {
-  elem = document.createElement("article");
-  elem.setAttribute("id","gradyr");
-  document.getElementById("sidebar").appendChild(elem);
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Add sidbar article
+   */
+  let attrs = {"id": "gradyr"};
+  addDOMElement("article", attrs, "sidebar");
 
-  elem = document.createElement("h1");
-  elem.innerHTML="Our"
-  document.getElementById("gradyr").appendChild(elem);
-
-  elem = document.createElement("h1");
-  elem.innerHTML="Morro Bay"
-  document.getElementById("gradyr").appendChild(elem);
-
-  elem = document.createElement("h1");
-  elem.innerHTML="High School"
-  document.getElementById("gradyr").appendChild(elem);
-
-  elem = document.createElement("h1");
-  elem.innerHTML="Students"
-  document.getElementById("gradyr").appendChild(elem);
+  /*
+   * MHM 2019-02-25
+   * Comment:
+   *  Add sidebar Header
+   */
+  addDOMElement("h1", null, "gradyr", "Our");
+  addDOMElement("h1", null, "gradyr", "Morro Bay");
+  addDOMElement("h1", null, "gradyr", "High School");
+  addDOMElement("h1", null, "gradyr", "Students");
 }
 
 /*
@@ -249,50 +276,41 @@ function build_academic_table(student, season, year) {
    * Comment:
    *  Create tham semestertab div
    */
-  let elem = document.createElement("div");
-  elem.setAttribute("id","semestertab");
-  document.getElementById("main").appendChild(elem);
+  let attrs = {"id":"semestertab"};
+  addDOMElement("div", attrs, "main");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Create the academic table.
    */
-  elem = document.createElement("table");
-  elem.setAttribute("id","semTab");
-  elem.setAttribute("class","semesterTable");
-  elem.setAttribute("cellspacing","3");
-  elem.setAttribute("cellpadding","3");
-  elem.setAttribute("summary","List of classes, teachers and grades");
-  document.getElementById("semestertab").appendChild(elem);
+  attrs = {"id":"semTab", "class":"semesterTable", "cellspacing":"3", "cellpadding":"3", "summary":"List of classes, teachers and grades"};
+  addDOMElement("table", attrs, "semestertab");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Create the Table Caption
    */
-  elem = document.createElement("caption");
-  elem.setAttribute("id","capText");
-  document.getElementById("semTab").appendChild(elem);
+  attrs = {"id":"capText"};
+  addDOMElement("caption", attrs, "semTab");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Create the table header
    */
-  elem = document.createElement("h3");
-  elem.setAttribute("id","seasonYear");
-  elem.innerHTML = student + " " + season + " " + year;
-  document.getElementById("capText").appendChild(elem);
+  attrs = {"id":"seasonYear"};
+  let innerStr = student + " " + season + " " + year;
+  addDOMElement("h3", attrs, "capText", innerStr);
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Create the header row
    */
-  elem = document.createElement("tr");
-  elem.setAttribute("id","academicHeaderList");
-  document.getElementById("semTab").appendChild(elem);
+  attrs = {"id":"academicHeaderList"};
+  addDOMElement("tr", attrs, "semTab");
 
   /*
    * MHM 2019-02-25
@@ -300,34 +318,20 @@ function build_academic_table(student, season, year) {
    *  Create the five table columns with header titles.
    *  The fifth column has no header title.
    */
-  elem = document.createElement("th");
-  elem.setAttribute("scope","col");
-  elem.setAttribute("class","period");
-  elem.innerHTML = "Period";
-  document.getElementById("academicHeaderList").appendChild(elem);
+  attrs = {"scope":"col", "class":"period",};
+  addDOMElement("th", attrs, "academicHeaderList", "Period");
 
-  elem = document.createElement("th");
-  elem.setAttribute("scope","col");
-  elem.setAttribute("class","className");
-  elem.innerHTML = "Class";
-  document.getElementById("academicHeaderList").appendChild(elem);
+  attrs["class"]="className";
+  addDOMElement("th", attrs, "academicHeaderList", "Class");
 
-  elem = document.createElement("th");
-  elem.setAttribute("scope","col");
-  elem.setAttribute("class","teacher");
-  elem.innerHTML = "Teacher";
-  document.getElementById("academicHeaderList").appendChild(elem);
+  attrs["class"]="teacher";
+  addDOMElement("th", attrs, "academicHeaderList", "Teacher");
 
-  elem = document.createElement("th");
-  elem.setAttribute("scope","col");
-  elem.setAttribute("class","grade");
-  elem.innerHTML = "Grade";
-  document.getElementById("academicHeaderList").appendChild(elem);
+  attrs["class"]="grade";
+  addDOMElement("th", attrs, "academicHeaderList", "Grade");
 
-  elem = document.createElement("th");
-  elem.setAttribute("scope","col");
-  elem.setAttribute("class","modify");
-  document.getElementById("academicHeaderList").appendChild(elem);
+  attrs["class"]="modify";
+  addDOMElement("th", attrs, "academicHeaderList", null);
 
   /*
    * MHM 2019-02-25
@@ -393,67 +397,56 @@ function build_academic_aside_nav(student) {
    * Comment:
    *  Build the selection_menu article
    */
-  let elem = document.createElement("article");
-  elem.setAttribute("id", "select_menu");
-  document.getElementById("sidebar").appendChild(elem);
+  let attrs = {"id":"select_menu"};
+  addDOMElement("article", attrs, "sidebar");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the topbar div
    */
-  elem = document.createElement("div");
-  elem.setAttribute("id","topbar");
-  document.getElementById("select_menu").appendChild(elem);
+  attrs = {"id":"topbar"};
+  addDOMElement("div", attrs, "select_menu");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the navigation header. May remove this in the future.
    */
-  elem = document.createElement("h2");
-  elem.setAttribute("class", "highlight");
-  elem.innerHTML = "Academic " + '<i class="material-icons">menu</i>';
-  document.getElementById("topbar").appendChild(elem);
+  attrs = {"class":"highlight"};
+  let innerStr = "Academic " + '<i class="material-icons">menu</i>';
+  addDOMElement("h2", attrs, "topbar", innerStr);
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the Semester header
    */
-  elem = document.createElement("h2");
-  elem.innerHTML = "Semester"
-  document.getElementById("topbar").appendChild(elem);
+  addDOMElement("h2", null, "topbar", "Semester");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the tooltip div
    */
-  elem = document.createElement("div");
-  elem.setAttribute("class","tooltip");
-  elem.setAttribute("id","semTooltip");
-  document.getElementById("topbar").appendChild(elem);
+  attrs = {"class":"tooltip", "id":"semTooltip"};
+  addDOMElement("div", attrs, "topbar");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the tooltip text
    */
-  elem = document.createElement("span");
-  elem.setAttribute("class","tooltiptext");
-  elem.innerHTML="Add a class";
-  document.getElementById("semTooltip").appendChild(elem);
+  attrs = {"class":"tooltiptext"};
+  addDOMElement("span", attrs, "semTooltip", "Add a class");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the Add academic record button
    */
-  elem = document.createElement("button");
-  elem.setAttribute("class","asideAddButton");
-  elem.innerHTML="&#xE145;";
-  document.getElementById("semTooltip").appendChild(elem);
+  attrs = {"class":"asideAddButton"};
+  addDOMElement("button", attrs, "semTooltip", "&#xE145;");
 
   /*
    * MHM 2019-02-25
@@ -461,11 +454,10 @@ function build_academic_aside_nav(student) {
    *  Loop through our distinct list of season, year records
    *  and build a button for each element in the array.
    */
+  attrs = {"class":"asideButton"};
   for (x in years) {
-    elem = document.createElement("button");
-    elem.setAttribute("class","asideButton");
-    elem.innerHTML=years[x].season + " " + years[x].year;
-    document.getElementById("topbar").appendChild(elem)
+    innerStr = years[x].season + " " + years[x].year;
+    addDOMElement("button", attrs, "topbar", innerStr);
   }
 
   /*
@@ -473,66 +465,66 @@ function build_academic_aside_nav(student) {
    * Comment:
    *  Build the awards article
    */
-  elem = document.createElement("article");
-  elem.setAttribute("id","awards");
-  document.getElementById("sidebar").appendChild(elem);
+  attrs = {"id":"awards"};
+  addDOMElement("article", attrs, "sidebar");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the Awards header
    */
-  elem = document.createElement("h2");
-  elem.innerHTML = "Awards"
-  document.getElementById("awards").appendChild(elem);
+  addDOMElement("h2", null, "awards", "Awards");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the tooltip div
    */
-  elem = document.createElement("div");
-  elem.setAttribute("class","tooltip");
-  elem.setAttribute("id","awardsTooltip");
-  document.getElementById("awards").appendChild(elem);
+  attrs = {"class":"tooltip", "id":"awardsTooltip"};
+  addDOMElement("div", attrs, "awards");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the awards tooltip text
    */
-  elem = document.createElement("span");
-  elem.setAttribute("class","tooltiptext");
-  elem.innerHTML="Add an Award";
-  document.getElementById("awardsTooltip").appendChild(elem);
+  attrs = {"class":"tooltiptext"};
+  addDOMElement("span", attrs, "awardsTooltip", "Add an Award")
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the awards tooltip text
    */
-  elem = document.createElement("button");
-  elem.setAttribute("class","asideAddButton");
-  elem.innerHTML="&#xE145;";
-  document.getElementById("awardsTooltip").appendChild(elem);
+  attrs = {"class":"asideAddButton"};
+  addDOMElement("button", attrs, "awardsTooltip", "&#xE145;");
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the unorder list place holder for awards
    */
-  elem = document.createElement("ul");
-  elem.setAttribute("id","awardsList");
-  document.getElementById("awards").appendChild(elem);
+  attrs = {"id":"awardsList"};
+  addDOMElement("ul", attrs, "awards", null);
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Place holder for awards
    */
-  elem = document.createElement("li");
-  elem.innerHTML="List goes here"
-  document.getElementById("awardsList").appendChild(elem);
+  addDOMElement("li", null, "awardsList", "List goes here");
+}
+
+/*
+ * MHM 2019-02-25
+ * Comment:
+ *  If a button tries to access information from our database lookup, but
+ *  the data still hasn't arrived, set an error essage to try again.
+ */
+function error_still_loading() {
+  let elem=document.getElementById("messages");
+  elem.setAttribute("class","error");
+  elem.innerHTML="Data Still Loading, Try Again";
 }
 
 /*
@@ -563,9 +555,7 @@ homeBtn.addEventListener("click", function() {
 let rABtn = document.getElementById("rABtn");
 rABtn.addEventListener("click", function() {
   if (transcriptList === undefined) {
-    elem=document.getElementById("messages");
-    elem.setAttribute("class","error");
-    elem.innerHTML="Data Still Loading, Try Again";
+    error_still_loading();
   } else {
     cleanMainAside();
     build_academic_table("Rachel", "SPRING", "2013");
@@ -575,7 +565,11 @@ rABtn.addEventListener("click", function() {
 
 let tABtn = document.getElementById("tABtn");
 tABtn.addEventListener("click", function() {
-  cleanMainAside();
-  build_academic_table("Theodore", "SPRING", "2018");
-  build_academic_aside_nav("Theodore");
-})
+  if (transcriptList === undefined) {
+    error_still_loading();
+  } else {
+    cleanMainAside();
+    build_academic_table("Theodore", "SPRING", "2018");
+    build_academic_aside_nav("Theodore");
+  }
+});
