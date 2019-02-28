@@ -33,15 +33,40 @@
  * MHM 2019-02-26
  * Comment:
  *  Provide set and get functions for our global data.
+ * 
+ * MHM 2019-02-28
+ * Comment:
+ *  Add support for class lists, rankings and awards.
  */
 
 let database_data = {
   transcriptList: undefined,
+  classList: undefined,
+  rankingsList: undefined,
+  awardsList: undefined,
   getTranscriptList: function() {
     return this.transcriptList;
   },
   setTranscriptList: function(ts_data) {
     this.transcriptList = ts_data;
+  },
+  getClassList: function() {
+    return this.classList;
+  },
+  setClassList: function(ts_data) {
+    this.classList = ts_data;
+  },
+  getRankingsList: function() {
+    return this.rankingsList;
+  },
+  setRankingsList: function(ts_data) {
+    this.rankingsList = ts_data;
+  },
+  getAwardsList: function() {
+    return this.awardsList;
+  },
+  setAwardsList: function(ts_data) {
+    this.awardsList = ts_data;
   }
 };
 
@@ -67,9 +92,16 @@ let performSomeAction = function(returned_data) {
    * Comment:
    *  Clean-up comments. Use the set method to set the global
    *  information.
+   * 
+   * MHM 2019-02-28
+   * Comment:
+   *  Add support for classList, rankingsList and awardsList
    */
 
   database_data.setTranscriptList(returned_data.transcriptList);
+  database_data.setClassList(returned_data.classList);
+  database_data.setRankingsList(returned_data.rankingsList);
+  database_data.setAwardsList(returned_data.awardsList);
   
   /*
    * MHM 2019-02-20
@@ -151,6 +183,35 @@ function getAcademicInfo(callback) {
  }
 
 /*
+ * MHM 2019-02-28
+ * Comment:
+ *  Create seperate function to clean main elements
+ */
+function cleanMain() {
+  remove_dom_children("main");
+};
+
+/*
+ * MHM 2019-02-28
+ * Comment:
+ *  Create separate function to clean sidebar elements
+ */
+function cleanAside() {
+  remove_dom_children("sidebar");
+}
+
+/*
+ * MHM 2019-02-28
+ * Comment:
+ *  Reset error message area
+ */
+function resetErrorMsgElement() {
+  let elem = document.getElementById("messages");
+  elem.removeAttribute("class");
+  elem.innerHTML = "";
+}
+
+/*
  * MHM 2019-02-20
  * Comment:
  *  Remove all child elements from the main and sidebar
@@ -161,23 +222,31 @@ function getAcademicInfo(callback) {
  * Comment:
  *  Remove class from messages id. Use remove_dom_children()
  *  to remove child elements.
+ * 
+ * MHM 2019-02-28
+ * Comment:
+ *  Call specific clean functions.
  */
 
 function cleanMainAside() {
   /* Empty main and empty side bar */
-  remove_dom_children("main");
-  remove_dom_children("sidebar");
+  cleanMain();
+  cleanAside();
 
   /* Remove error class in case it was set. */
-  let elem = document.getElementById("messages");
-  elem.removeAttribute("class");
-  elem.innerHTML="";
+  resetErrorMsgElement();
 }
 
 /*
  * MHM 2019-02-25
  * Comment:
  *  Add an element into the DOM
+ * 
+ * MHM 2019-02-28
+ * Comment:
+ *  Return the created element, this allows for the creation
+ *  of event handlers. May try to incorporate the feature into
+ *  this function instead of doing a return.
  */
 function addDOMElement(element, attr, parent, innerText = null) {
   let elem = document.createElement(element);
@@ -189,6 +258,7 @@ function addDOMElement(element, attr, parent, innerText = null) {
     elem.innerHTML=innerText;
   }
   document.getElementById(parent).appendChild(elem);
+  return elem;
 }
 
 /*
@@ -396,6 +466,11 @@ function build_academic_table(student, season, year) {
    *  transcriptList for all student entries whose seasonID is
    *  equal or less than the current seasonId. This builds the
    *  running GPA and WGPA values.
+   * 
+   * MHM 2019-02-28
+   * Comment:
+   *  Add the ranking information. May want to test for missing
+   *  ranking data from the database look up.
    */
   let localSeasonId = semesterList[0].seasonId;
   let runningGPAList = transcriptList.filter(function (obj) {
@@ -413,7 +488,11 @@ function build_academic_table(student, season, year) {
   innerStr="\t  Overall GPA: " + runningGPA.toFixed(3) + "\tOverall Weighted GPA: " + runningWGPA.toFixed(3);
   addDOMElement("pre",null,"semestertab", innerStr);
   addDOMElement("br", null, "semestertab");
-  innerStr="\t  Rank: xx Class Size: xxx Top xx.xx%";
+  let rankingList = database_data.getRankingsList();
+  let ranking = rankingList.filter(function (obj) {
+    return (obj.seasonId == localSeasonId)
+  });
+  innerStr ="\t  Rank: " + ranking[0].rank + "   Class Size:  " + ranking[0].totalStudents + "   Top  " + ranking[0].pct + "%";
   addDOMElement("pre",null,"semestertab", innerStr);
 }
 
@@ -504,27 +583,50 @@ function build_academic_aside_nav(student) {
    * Comment:
    *  Loop through our distinct list of season, year records
    *  and build a button for each element in the array.
+   * 
+   * Comment 2019-02-28
+   * Comment:
+   *  Add the event listeners for the academic navigation
+   *  side buttons. Interesting that the only way to get
+   *  the listener functions to work was to assign local
+   *  variables within the loop for the season and year
+   *  parameter. Couldn't just use the data directly from
+   *  the years object. Student didn't require this special
+   *  handling. Interesting memory behavior.
    */
   attrs = {"class":"asideButton"};
   for (x in years) {
-    innerStr = years[x].season + " " + years[x].year;
-    addDOMElement("button", attrs, "topbar", innerStr);
+    let eventSeason=years[x].season;
+    let eventYear=years[x].year;
+    let retElem;
+    innerStr = eventSeason + " " + eventYear;
+    retElem=addDOMElement("button", attrs, "topbar", innerStr);
+    retElem.addEventListener("click", function() {
+      cleanMain();
+      build_academic_table(student, eventSeason, eventYear);
+    });
   }
 
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the awards article
+   * 
+   * MHM 2019-02-28
+   * Comment:
+   *  Add an addtional div for the button and tooltip
    */
   attrs = {"id":"awards"};
   addDOMElement("article", attrs, "sidebar");
 
+  attrs = {"id":"addDiv", "class":"add-button-container"};
+  addDOMElement("div",attrs,"awards");
   /*
    * MHM 2019-02-25
    * Comment:
    *  Build the Awards header
    */
-  addDOMElement("h2", null, "awards", "Awards");
+  addDOMElement("h2", null, "addDiv", "Awards");
 
   /*
    * MHM 2019-02-25
@@ -532,7 +634,7 @@ function build_academic_aside_nav(student) {
    *  Build the tooltip div
    */
   attrs = {"class":"tooltip", "id":"awardsTooltip"};
-  addDOMElement("div", attrs, "awards");
+  addDOMElement("div", attrs, "addDiv"); /*mhm*/
 
   /*
    * MHM 2019-02-25
@@ -559,11 +661,18 @@ function build_academic_aside_nav(student) {
   addDOMElement("ul", attrs, "awards", null);
 
   /*
-   * MHM 2019-02-25
+   * MHM 2019-02-28
    * Comment:
-   *  Place holder for awards
+   *  Add academic awards
    */
-  addDOMElement("li", null, "awardsList", "List goes here");
+  let awardList = database_data.getAwardsList();
+  let award = awardList.filter(function (obj) {
+    return (obj.studentName === student && obj.catagory === "Academic");
+  });
+  for (x in award) {
+    let innerStr = award[x].year + " " + award[x].title
+    addDOMElement("li", null, "awardsList", innerStr);
+  }
 }
 
 /*
