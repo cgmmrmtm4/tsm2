@@ -45,6 +45,36 @@ function get_transcript_academics($connection) {
     return $result;
 }
 
+/*
+ * MHM 2019-02-28
+ * Comment:
+ *  Return all ranking data. We'll use javascript on the client to
+ *  filter the one we want to display.
+ */
+function get_rankings_academics($connection) {
+    $query = "SELECT rankings.seasonId, rankings.rank, rankings.totalStudents, ROUND(((rank / totalStudents)*100),2) AS pct ";
+    $query .= "FROM rankings";
+    $result = mysqli_query($connection, $query);
+    confirm_query($result);
+    return $result;
+}
+
+/*
+ * MHM 2019-02-28
+ * Comment:
+ *  Return all academic awards. We'll use javascript on the
+ *  client to filter the ones we want to display
+ */
+function get_awards($connection) {
+    $query = "SELECT students.studentName, awards.catagory, awards.year, awards.title ";
+    $query .= "FROM students ";
+    $query .= "JOIN awards ON ";
+    $query .= "awards.studentID=students.id";
+    $result = mysqli_query($connection, $query);
+    confirm_query($result);
+    return $result;
+}
+
 $conn = open_db();
 /*
  * MHM 2019-02-18
@@ -52,13 +82,21 @@ $conn = open_db();
  *  Removed header information regarding the database parameters that
  *  are no longer passed in the HTTP request.
  *  Modified semester to transcript.
+ * 
+ * MHM 2019-02-28
+ * Comment:
+ *  Add support for rankings and awards.
  */
 
 $res = array();
 $transcriptList = get_transcript_academics($conn);
 $classList = get_classes_by_student($conn);
+$rankingsList = get_rankings_academics($conn);
+$awardsList = get_awards($conn);
 close_db($conn);
 $res['transcriptList'] = $transcriptList->fetch_all(MYSQLI_ASSOC);
 $res['classList'] = $classList->fetch_all(MYSQLI_ASSOC);
+$res['rankingsList'] = $rankingsList->fetch_all(MYSQLI_ASSOC);
+$res['awardsList'] = $awardsList->fetch_all(MYSQLI_ASSOC);
 echo json_encode($res);
 ?>
