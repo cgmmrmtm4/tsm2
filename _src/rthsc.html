@@ -9,6 +9,10 @@
      MHM 2019-02-25
      Comment:
       Change class error panel to errorPanel
+
+     MHM 2019-03-12
+     Comment:
+      Add jQuery support
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -45,17 +49,17 @@
                             <button id="tABtn" class="navButton">Theodore</button>
                         </div>
                     </div>
-                    <button class="navButton">SOCCER</button>
-                    <button class="navButton">SOFTBALL</button>
-                    <button class="navButton">TENNIS</button>
-                    <button class="navButton">TRAVEL</button>
+                    <button id="socBtn" class="navButton">SOCCER</button>
+                    <button id="sbBtn" class="navButton">SOFTBALL</button>
+                    <button id="tenBtn" class="navButton">TENNIS</button>
+                    <button id="travBtn" class="navButton">TRAVEL</button>
                     <div class="dropdown">
                         <button class=dropbtn>VOLLEYBALL
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="dropdown-content">
-                            <button class="navButton">Rachel</button>
-                            <button class="navButton">Theodore</button>
+                            <button id="rVbBtn" class="navButton">Rachel</button>
+                            <button id="tVbBtn" class="navButton">Theodore</button>
                         </div>
                     </div>
                     <a class="navButton" href="http://mbhs.slcusd.org" title="MBHS Homepage" target="_blank" class="btn btn-primary">MBHS
@@ -111,5 +115,6 @@
         </footer>
     </div>
 </body>
+<script src="../_scripts/jquery-3.3.1.js"></script>
 <script src="../_scripts/rthsc.js"></script>
 </html>
