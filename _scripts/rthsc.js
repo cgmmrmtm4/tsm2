@@ -242,23 +242,26 @@ function cleanMainAside() {
  * Comment:
  *  Add an element into the DOM
  * 
- * MHM 2019-02-28
+ * MHM 2019-03-12
  * Comment:
- *  Return the created element, this allows for the creation
- *  of event handlers. May try to incorporate the feature into
- *  this function instead of doing a return.
+ *  Convert to jQuery from all DOM manipulation. Also made the return
+ *  value optional based on a paramenter sent to the routine. Didn't
+ *  really need to add the parameter. Allows for the addition of buttons
+ *  but with an id, we could have avoided the return. Maybe refactor.
  */
-function addDOMElement(element, attr, parent, innerText = null) {
-  let elem = document.createElement(element);
-  let attrName;
-  for (attrName in attr) {
-    elem.setAttribute(attrName,attr[attrName]);
+function addDOMElement(element, attr, parent, innerText = null, rV = false) {
+  let elem=document.createElement(element);
+  if (attr !== null) {
+    $(elem).attr(attr);
   }
   if (innerText !== null) {
-    elem.innerHTML=innerText;
+    $(elem).html(innerText);
   }
-  document.getElementById(parent).appendChild(elem);
-  return elem;
+  
+  $('#'+parent).append(elem);
+  if (rV === true) {
+    return elem;
+  }
 }
 
 /*
@@ -331,12 +334,105 @@ function build_home_aside() {
   addDOMElement("h1", null, "gradyr", "High School");
   addDOMElement("h1", null, "gradyr", "Students");
 }
+/*
+ * MHM 2019-02-12
+ * Comment:
+ *  Support the Academic Row Cancel Edit button. Now
+ *  doing updates inline within the table. Need to handle
+ *  reverting back to orginal data. I'm thinking a parameter
+ *  will be added in the future.
+ */
+function cancelAcademicRowChange(event) {
+  let parent = $(this).parent().parent().parent();
+  let tdPeriod = parent.children("td:nth-child(1)");
+  let tdClassName = parent.children("td:nth-child(2)");
+  let tdTeacherName = parent.children("td:nth-child(3)");
+  let tdGrade = parent.children("td:nth-child(4)");
+  let tdModify = parent.children("td:nth-child(5)");
 
+  tdPeriod.html(event.data.period);
+  tdClassName.html(event.data.className);
+  tdTeacherName.html(event.data.teacherName);
+  tdGrade.html(event.data.grade);
+  $('.sBtn').off();
+  $('.cBtn').off();
+  tdModify.html("<div class='button-container tooltip'> <span class='tooltiptext'>Edit Row</span> <button class='eBtn material-icons'>edit</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Delete Row</span> <button class='dBtn material-icons'>delete</button> </div>");
+
+  $('.eBtn').on("click", editAcademicRow);
+  $('.dBtn').on("click", error_not_implemented);
+}
+
+/*
+ * MHM 2019-03-12
+ * Comment:
+ *  Edit a table row inline. Covert fields to input type=text
+ */
+function editAcademicRow() {
+  let parent = $(this).parent().parent().parent();
+  let tdPeriod = parent.children("td:nth-child(1)");
+  let tdPeriodVal = tdPeriod.html();
+  let tdClassName = parent.children("td:nth-child(2)");
+  let tdClassNameVal = tdClassName.html();
+  let tdTeacherName = parent.children("td:nth-child(3)");
+  let tdTeacherNameVal = tdTeacherName.html();
+  let tdGrade = parent.children("td:nth-child(4)");
+  let tdGradeVal = tdGrade.html();
+  let tdModify = parent.children("td:nth-child(5)");
+
+  tdPeriod.html("<input type='text' value='"+tdPeriod.html()+"'/>");
+  tdClassName.html("<input type='text' value='"+tdClassName.html()+"'/>");
+  tdTeacherName.html("<input type='text' value='"+tdTeacherName.html()+"'/>");
+  tdGrade.html("<input type='text' value='"+tdGrade.html()+"'/>");
+  $(".eBtn").off();
+  $(".dBtn").off();
+  tdModify.html("<div class='button-container tooltip'> <span class='tooltiptext'>Save Row</span> <button class='sBtn material-icons'>save</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Cancel</span> <button class='cBtn material-icons'>cancel</button> </div>")
+
+  $(".sBtn").on("click", error_not_implemented);
+  $(".cBtn").on("click", {period: tdPeriodVal, className: tdClassNameVal, teacherName: tdTeacherNameVal, grade: tdGradeVal}, cancelAcademicRowChange);
+}
+
+/*
+ * MHM 2019-03=12
+ * Comment:
+ *  Add a row to the academic table. More use of jQuery to
+ *  replace DOM calls.
+ */
+function addAcademicRow(row, tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('period')
+      .html(row.period)
+    )
+    .append($('<td>')
+      .addClass('className')
+      .html(row.className)
+    )
+    .append($('<td>')
+      .addClass('teacher')
+      .html(row.teacherName)
+    )
+    .append($('<td>')
+      .addClass('grade')
+      .html(row.grade)
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html("<div class='button-container tooltip'> <span class='tooltiptext'>Edit Row</span> <button class='eBtn material-icons'>edit</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Delete Row</span> <button class='dBtn material-icons'>delete</button> </div>")
+    )
+  );
+
+  $('.eBtn').on("click", editAcademicRow);
+  $('.dBtn').on("click", error_not_implemented);
+}
 /*
  * MHM 2019-02-25
  * Comment:
  *  Build the academic main page given the student, season
  *  and year.
+ * 
+ * MHM 2019-03-12
+ * Comment:
+ *  Enable edit and delete buttons.
  */
 function build_academic_table(student, season, year) {
 
@@ -414,29 +510,8 @@ function build_academic_table(student, season, year) {
     return (obj.season===season && obj.year===year && obj.studentName===student);
   });
 
-  let tableElement = document.getElementById("semTab");
-  let row;
-  let cnt=1;
-  let cell1, cell2, cell3, cell4, cell5;
-
   for (x in semesterList) {
-    row = tableElement.insertRow(cnt++);
-    row.className = "academicEntry";
-    cell1 = row.insertCell(0);
-    cell1.className = "period";
-    cell1.innerHTML = semesterList[x].period;
-    cell2 = row.insertCell(1);
-    cell2.className = "className";
-    cell2.innerHTML = semesterList[x].className;
-    cell3 = row.insertCell(2);
-    cell3.className = "teacher";
-    cell3.innerHTML = semesterList[x].teacherName;
-    cell4 = row.insertCell(3);
-    cell4.className = "grade";
-    cell4.innerHTML = semesterList[x].grade;
-    cell5 = row.insertCell(4);
-    cell5.className = "modify";
-    cell5.innerHTML = "<div class='button-container tooltip'> <span class='tooltiptext'>Edit Row</span> <button class='eBtn'>&#xE3C9;</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Delete Row</span> <button class='dBtn'>&#xE872;</button> </div>";
+    addAcademicRow(semesterList[x], "semTab");
   }
 
   /*
@@ -501,6 +576,11 @@ function build_academic_table(student, season, year) {
  * Comment:
  *  Build the aside menu. Since all aside menus are similar, do we
  *  need a function for each page. For now, assume yes.
+ * 
+ * MHM 2019-03-11
+ * Comment:
+ *  Add support for aside addition buttons. Currntly set to
+ *  not implemented.
  */
 function build_academic_aside_nav(student) {
   /*
@@ -600,7 +680,7 @@ function build_academic_aside_nav(student) {
     let eventYear=years[x].year;
     let retElem;
     innerStr = eventSeason + " " + eventYear;
-    retElem=addDOMElement("button", attrs, "topbar", innerStr);
+    retElem=addDOMElement("button", attrs, "topbar", innerStr, true);
     retElem.addEventListener("click", function() {
       cleanMain();
       build_academic_table(student, eventSeason, eventYear);
@@ -673,18 +753,33 @@ function build_academic_aside_nav(student) {
     let innerStr = award[x].year + " " + award[x].title
     addDOMElement("li", null, "awardsList", innerStr);
   }
+
+  $(".asideAddButton").click(function(){
+    error_not_implemented();
+  });
 }
+
+/*
+ * MHM 2019-03-11
+ * Comment:
+ *  Message for buttons that have not been implemented yet.
+ */
+function error_not_implemented() {
+  $("#messages").attr("class","error").text("Feature not implemented yet!");
+};
 
 /*
  * MHM 2019-02-25
  * Comment:
  *  If a button tries to access information from our database lookup, but
  *  the data still hasn't arrived, set an error essage to try again.
+ * 
+ * MHM 2019-03-11
+ * Comment:
+ *  Replaced DOM calls with jQuery.
  */
 function error_still_loading() {
-  let elem=document.getElementById("messages");
-  elem.setAttribute("class","error");
-  elem.innerHTML="Data Still Loading, Try Again";
+  $("#messages").attr("class","error").text("Data Still Loading, Try Again");
 }
 
 /*
@@ -692,28 +787,20 @@ function error_still_loading() {
  * Comment:
  *  Main logic
  * 
- * MHM 2019-02-18
- * Comment:
- *  Change 2010 to "2010". The database year field is a string.
- * 
- * MHM 2019-02-20
- * Comment:
- *  Simplify getAcademicInfo. Note need to rename function
- *  Activate the first EventListners. Only home is
- *  functional.
+ * MHM 2019-03-11
+ *  Comment:
+ *  Replace DOM calls with jQuery call.
  */
 
 getAcademicInfo(performSomeAction);
 
-let homeBtn = document.getElementById("homeBtn");
-homeBtn.addEventListener("click", function() {
+$("#homeBtn").click(function(){
   cleanMainAside();
   build_home_main();
   build_home_aside();
 });
 
-let rABtn = document.getElementById("rABtn");
-rABtn.addEventListener("click", function() {
+$("#rABtn").click(function(){
   if (database_data.getTranscriptList() === undefined) {
     error_still_loading();
   } else {
@@ -723,8 +810,7 @@ rABtn.addEventListener("click", function() {
   }
 });
 
-let tABtn = document.getElementById("tABtn");
-tABtn.addEventListener("click", function() {
+$("#tABtn").click(function(){
   if (database_data.getTranscriptList() === undefined) {
     error_still_loading();
   } else {
@@ -732,4 +818,28 @@ tABtn.addEventListener("click", function() {
     build_academic_table("Theodore", "SPRING", "2018");
     build_academic_aside_nav("Theodore");
   }
+});
+
+$("#socBtn").click(function(){
+  error_not_implemented();
+});
+
+$("#sbBtn").click(function(){
+  error_not_implemented();
+});
+
+$("#tenBtn").click(function(){
+  error_not_implemented();
+});
+
+$("#travBtn").click(function(){
+  error_not_implemented();
+})
+
+$("#rVbBtn").click(function(){
+  error_not_implemented();
+});
+
+$("#tVbBtn").click(function(){
+  error_not_implemented();
 });
