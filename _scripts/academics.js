@@ -152,5 +152,26 @@ function removeElementsByClassName(className) {
  * Comment:
  *  Change 2010 to "2010". The database year field is a string.
  */
+function resetErrorMsgElement() {
+  $("#messages").removeClass("error");
+  $("#messages").html("skippy");
+}
+
+function error_not_implemented() {
+  console.log("foo");
+  resetErrorMsgElement();
+  $("#messages").attr("class","error").text("Feature not implemented yet!");
+};
+
 removeElementsByClassName("academicEntry");
 getAcademicInfo(performSomeAction, "FALL", "2011", "Rachel");
+console.log("too foo");
+$(".asideAddButton").click(function(){
+  console.log("you foo");
+  error_not_implemented();
+});
+/*$(".asideButton").click(function(){
+  console.log("how foo");
+  error_not_implemented();
+});*/
+$(".asideButton").on("click", error_not_implemented);
