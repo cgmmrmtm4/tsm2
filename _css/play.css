@@ -7,116 +7,85 @@ html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquot
 	vertical-align: baseline;
 	background: transparent;
 }
-article, aside, figure, footer, header, hgroup, nav, section {
-    display: block;
-}
-img {
-    max-width: 100%;
-}
-html {
-    overflow-y: scroll;
-}
-ul {
-    list-style: none;
-}
 a {
     margin: 0;
     padding: 0;
     font-size: 100%;
     vertical-align: baseline;
     background: transparent;
+    color: #03f;
 }
-input, select {
-	vertical-align: middle;
-}
-
-input[type="radio"] {
-	vertical-align: text-bottom;
-}
-input[type="checkbox"] {
-	vertical-align: bottom;
-*vertical-align: baseline;
-}
-
-select, input, textarea {
-	font: 99% sans-serif;
-}
-
-/* Accessible focus treatment
-	people.opera.com/patrickl/experiments/keyboard/test */
-a:hover, a:active {
+a:active {
 	outline: none;
 }
-
-/* hand cursor on clickable elements */
-.clickable, label, input[type=button], input[type=submit], button {
-	cursor: pointer;
-}
-/* Webkit browsers add a 2px margin outside the chrome of form elements */
-button, input, select, textarea {
-	margin: 0;
-}
-/* make buttons play nice in IE */
-button {
-	width: auto;
-	overflow: visible;
-}
-/* let's clear some floats */
-.clearfix:before, .clearfix:after {
-	content: "\0020";
-	display: block;
-	height: 0;
-	overflow: hidden;
-}
-.clearfix:after {
-	clear: both;
-}
-body {
-	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
-}
-/* we like off-black for text */
-body, select, input, textarea {
-	color: #333;
-}
-a {
-	color: #03f;
-}
 a:hover {
-	color: #69f;
+    outline: none;
+    color: #69f;
 }
-
-/* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
-::-moz-selection {
-background: #fcd700;
-color: #fff;
-text-shadow: none;
-}
-::selection {
-	background: #fcd700;
-	color: #fff;
-	text-shadow: none;
-}
-/*	j.mp/webkit-tap-highlight-color */
 a:link {
 	-webkit-tap-highlight-color: #fcd700;
 }
-/* MyStuff
--------------------------------------------------------------------------------*/
+article, aside, nav, section {
+    display: block;
+}
 body {
-	background: #495B95 /*url(../../img/mbhs/Photos/Misc/logo.jpg) repeat-x*/;
+    font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    color: #333;
+    background: #495B95
+}
+button {
+    cursor: pointer;
+    margin: 0;
+    width: auto;
+    overflow: visible;
+}
+caption h3 {
+    font-size: 1.2em;
+    color: rgb(255,255,255);
+}
+footer {
+    display: block;
+    background: #FFF;
+	width: 100%;
+	height: 55px;
+	bottom: 0px;
+	color: #1782CF;
+	position: relative;
+	clear: left;
+}
+footer .branding {
+	position: absolute;
+	left: 40px;
+	top: 5px;
+}
+footer .branding img {
+	width: 45px;
+    height: 45px;
+}
+footer .description {
+	position: absolute;
+	left: 140px;
+	top: 20px;
+	width: 260px;
+	font-size: .8em;
 }
 header {
-	height: 130px;
+    display: block;
+    height: 130px;
 	background: #FFF;
 	color: #1782CF;
 	position: relative;
 }
-.wrapper {
-	width: 1000px;
-	background: #0E4182;
-	margin-right: auto;
-	margin-left: auto;
-	margin-bottom: 0;
+header nav {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	background-image: -moz-linear-gradient(82% 0% -90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: -webkit-gradient(linear, 82% 0%, 82% 100%, color-stop(0, rgb(23,130,207)), color-stop(1, rgb(14,65,130)));
+	background-image: -webkit-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: -o-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: -ms-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
+	background-image: linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
 }
 header .branding {
 	position: relative;
@@ -141,520 +110,199 @@ header .description h1 {
 	font-size: 2em;
 	padding-bottom: 5px;
 }
-.highlight {
-	color: whitesmoke;
-}
-/* Header --------------------- */
-header nav {
-	position: absolute;
-	bottom: 0px;
-	width: 100%;
-	background-image: -moz-linear-gradient(82% 0% -90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
-	background-image: -webkit-gradient(linear, 82% 0%, 82% 100%, color-stop(0, rgb(23,130,207)), color-stop(1, rgb(14,65,130)));
-	background-image: -webkit-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
-	background-image: -o-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
-	background-image: -ms-linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
-	background-image: linear-gradient(-90deg, rgb(23,130,207) 0%, rgb(14,65,130) 100%);
-}
-
-/* Footer --------------------- */
-
-footer {
-	background: #FFF;
-	width: 100%;
-	height: 55px;
-	bottom: 0px;
-	color: #1782CF;
-	position: relative;
-	clear: left;
-}
-footer .branding {
-	position: absolute;
-	left: 40px;
-	top: 5px;
-}
-footer .branding img {
-	width: 45px;
-    height: 45px;
-}
-footer .description {
-	position: absolute;
-	left: 140px;
-	top: 20px;
-	width: 260px;
-	font-size: .8em;
-}
-/* Footer Nav
--------------------------------------------------------------------------------*/
-footer {
-	color: #1782CF;
-}
-
-/* Content
--------------------------------------------------------------------------------*/
-
-/* Main
--------------------------------------------------------------------------------*/
-#main {
-	width: 730px;
-	float: left;
-	display: block;
-	margin: 10px 0;
-}
-#main h1, #main h2, #main h3, #main h4, #main h5, #main h6, #main p {
-	margin: 0 70px;
-}
-#main h2 {
-	font-size:1.5em;
-	margin-bottom: 10px;
-	padding-top: 20px;
-}
-#main h1 {
-    font-size: 2.7em;
-    align-content: center;
-    color: white;
-}
-#main article:nth-of-type(1) h2 {
-	padding-top: 0;
-}
-#main p {
-	font-size:.8em;
-	line-height: 1.4;
-	margin-bottom: 10px;
-}
-#main div.vbpics {
-    width: 100%;
-    height: 210px;
-    padding: 3px 0px;
-    margin: 1px 0px 5px 0px; 
-}
-#main img.sportLeft {
-    width: 200px;
-    height: 200px;
-    float: left;
-    padding: 2px 25px;
-}
-#main img.sportRight {
-    width: 200px;
-    height: 200px;
-    padding: 2px 25px;
-    float: right;
-}
-
-/* Sidebar
--------------------------------------------------------------------------------*/
-#sidebar {
-	width: 270px;
-	float: left;
-	margin: 10px 0;
-}
-#sidebar h1, #sidebar h2, #sidebar h3, #sidebar h4, #sidebar h5, #sidebar p {
-	padding-right: 80px;
-}
-#sidebar h2 {
-	font-size: 1.4em;
-	margin-bottom: 10px;
-	padding-top: 20px;
-}
-#sidebar article:nth-of-type(1) h2 {
-	padding-top: 0;
-	margin-bottom: 0px;
-}
-#sidebar h3 {
-	font-size:1em;
-	margin-bottom: 3px;
-	color: #777;
-}
-#sidebar p {
-	font-size:.8em;
-	line-height: 1.4;
-	margin-bottom: 10px;
-	padding-right: 60px;
-    color: white;
-}
-
-#awards h2, #select_menu h2 {
-    font-size: 1.4em;
-	margin-bottom: 10px;
-	padding-top: 20px;
-    color: white;
-}
-#awards li {
-    color: white;
-}
-#gradyr h2 {
-    text-align: center;
-    font-size: 2.0em;
-	line-height: 1.4;
-	margin-bottom: 10px;
-	padding-right: 60px;
-    color: white;
-}
-#gradyr h1 {
-    text-align: center;
-    font-size: 3.0em;
-	line-height: 1.4;
-	margin-bottom: 10px;
-	padding-right: 60px;
-    color: white;
-}
-/* Mark Stuff
---------------------------------------------------------------------------*/
-
-caption h3 {
-    font-size: 1.2em;
-    color: rgb(255,255,255);
-}
-#page_academics table {
-    border-collapse: collapse;
-    color: white;
-}
-
-#semestertab {
-    border-collapse: collapse;
-    color: white;
-}
-
-#semestertab pre {
-    color: white;
-}
-#soccertab h4 {
-    color: white;
-    font-style: italic;
-}
-#volleyballtab h4 {
-    color: white;
-    font-style: italic;
-}
-#page_soccer table {
-    color: white;
-    border-collapse: collapse;
-}
-#page_soccer td, th {
-    border: none;
-}
-#soccertab h1 {
-    text-align: center;
-}
-#page_volleyball table {
-    border-collapse: collapse;
-    color: white;
-}
-#page_volleyball td, th {
-    border: none;
-}
-#volleyballtab h1 {
-    text-align: center;
-}
-#stattab thead, tfoot {
-    display: block;
-    width: 97%;
-}
-#stattab tbody.scrollable {
-    display: block;
-    height: 400px;
-    overflow-y: auto;
-    width: 100%;
-}
-#stattab tfoot.scrollable {
-    display: block;
-    height: 90px;
-    overflow-y: auto;
-}
-#page_softball table {
-    border-collapse: collapse;
-    color: white;
-}
-#page_softball td, th {
-    border: none;
-}
-#softballtab h1 {
-    text-align: center;
-}
-#selectsemester a {
-    color: white;
-}
-#selectsemester a:hover {
-    color: gainsboro;
-}
-#selsocseason a {
-    color: white;
-}
-#selsocseason a:hover {
-    color: gainsboro;
-}
-#selvbseason a {
-    color: white;
-}
-#selvbseason a:hover {
-    color: gainsboro;
-}
-.sportLeft {
-    padding: 2px 25px;
-    float: left;
-}
-.sportRight {
-    padding: 2px 25px;
-    float: right;   
-}
-.centered-table {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-}
-.semesterTable {
-    margin-left: auto;
-    margin-right: auto;
-}
-.thumbnail {
-    width: 200px;
-    height: 100px;
-    border-color: aqua;
-    border-style: groove;
-    float: left;
-}
-.thumbvideo {
-    width: 200px;
-    height: 100px;
-    border-color: aqua;
-    border-style: groove;
-    float: left;
-}
-.vidcap {
-    color: white;
-}
-.vidcap a {
-    color: white;
-}
-.vidcap a:hover {
-    color: cyan;
-}
-#record td {
-    text-align: right;
-    font-weight: bold;
-}
-.gameDate {
-    width: 65px;
-}
-.location {
-    width: 125px;
-}
-.matchScore {
-    font-weight: bold;
-    width: 150px;
-}
-.soccerMatchScore {
-    font-weight: bold;
-    width: 65px;
-}
-.opponent {
-    font-style: italic;
-    width: 125px;
-}
-.league {
-    width: 2px;
-}
-.result {
-    width: 2px;
-}
-td.period {
-    border: 2px solid white;
-}
-.period {
-    width: 20px;
-    text-align: center;
-}
-td.className {
-    border: 2px solid white;
-}
-td.className input, td.period input, td.teacher input, td.grade input {
-    width: inherit;
-    color: inherit;
-    background-color: inherit;
-}
-.className {
-    width: 200px;
-}
-td.teacher {
-    border: 2px solid white;
-}
-.teacher {
-    width: 150px;
-}
-td.grade {
-    border: 2px solid white;
-}
-.grade {
-    width: 20px;
-    text-align: center;
-}
-.addNewItem {
-    font-size: 20px;
-    font-weight: bold;
-    padding-left: 0;
-}
-.delpics {
-    width: 150px;
-    height: 150px;
-}
-.modify {
-    width: 100px;
-}
-.delpics .button-container p {
-    width: 150px;
-}
-.modify .button-container input,
-.delpics .button-container input {
-    width: 2em;
-}
-.modify .button-container form,
-.delpics .button-container form {
-    display: inline;
-    margin-left: 1px;
-    margin-right: 1px;
-}
-.modify .button-container form div,
-.delpics .button-container form div {
-    display: inline;
-}
-.modify .button-container input[type=submit],
-.delpics .button-container input[type=submit] {
-    font-weight:normal;
-    font-size: 18px;
-    padding:1px 1px;
-    margin-left: 1px;
-    display: inline;
-    font-family: 'Material Icons';
-}
-.eBtn, .dBtn, .cBtn, .sBtn {
-    box-shadow: 0px 1px 0px 0px #fff6af;
-    background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
-    background-color:rgb(23,130,207);
-    border:1px solid #ffaa22;
-    text-decoration:none;
-    text-shadow:0px 1px 0px #ffee66;
-    color:white;
-    font-weight:bold;
-    font-size: 18px;
-    padding:1px 1px;
-    margin-left: 1px;
-    display: inline;
-    font-family: 'Material Icons';
-}
-.eBtn:hover, .sBtn:hover, .cBtn:hover, .dBtn:hover {
-    background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
-    background-color:#ffab23;
-}
-
-td.modify {
-    border-style: none;
-}
-th.modify {
-    border-style: none;
-}
-.assists {
-    width: 60px;
-    text-align: right;
-}
-.blocks {
-    width: 60px;
-    text-align: right;
-}
-.kills {
-    width: 60px;
-    text-align: right;
-}
-.digs {
-    width: 60px;
-    text-align: right;
-}
-.serves {
-    width: 60px;
-    text-align: right;
-}
-.aces {
-    width: 60px;
-    text-align: right;
-}
-.sideOut {
-    width: 70px;
-    text-align: right;
+html {
+    overflow-y: scroll;
+}
+img {
+    max-width: 100%;
+}
+input {
+	vertical-align: middle;
+    font: 99% sans-serif;
+    margin: 0;
+    color: #333;
+    width: 10em;
 }
 td, th {
     padding-bottom: 10px;
     padding-right: 1px;
     padding-left: 3px;
 }
-form, p.warning {
-	margin-left: 15px;
+td.className, td.grade, td.period, td.teacher {
+    border: 2px solid white;
 }
-label {
-	display: block;
+td.className, th.className {
+    width: 200px;
 }
-input {
-	width: 10em;
+td.className input, td.grade input, td.period input, td.teacher input {
+    width: inherit;
+    color: inherit;
+    background-color: inherit;
 }
-input[type=submit] {
+td.grade, th.grade {
+    width: 20px;
+    text-align: center;
+}
+td.modify, th.modify {
+    width: 100px;
+    border-style: none;
+}
+td.period, th.period {
+    width: 20px;
+    text-align: center;
+}
+td.teacher, th.teacher {
+    width: 150px;
+}
+th.modify {
+    border-style: none;
+}
+ul {
+    list-style: none;
+}
+
+/* classes */
+.add-button-container div {
+    display: inline;
+}
+.asideAddButton, .mainAddButton {
+    background-color: inherit;
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    cursor: pointer;
+    width: 60%;
+    display:block;
+    font-size: 16px;
+    font-family: 'Material Icons';
+}
+.asideAddButton:hover, .asideButton:hover, .mainAddButton:hover {
+    background-color: red;
+}
+.asideButton {
+    background-color: inherit;
+    color: white;
+    cursor: pointer;
+    display:block;
+    font-size: 20px;
+    width: 80px;
+    height: 30px;
+    border-radius: 45%;
+    border: 2px solid white;
+}
+.cBtn, .dBtn, .eBtn, .sBtn {
     box-shadow: 0px 1px 0px 0px #fff6af;
     background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
     background-color:rgb(23,130,207);
-    border-radius:6px;
     border:1px solid #ffaa22;
-    color:white;
-    font-weight:bold;
-    padding:6px 24px;
     text-decoration:none;
     text-shadow:0px 1px 0px #ffee66;
-    margin-left: 10px;
-}
-.useicon {
+    color:white;
+    font-weight:bold;
+    font-size: 18px;
+    padding:1px 1px;
+    margin-left: 1px;
+    display: inline;
     font-family: 'Material Icons';
 }
-input[type=submit]:hover {
+.cBtn:hover, .sBtn:hover, .eBtn:hover, .dBtn:hover {
     background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
     background-color:#ffab23;
 }
-div.message { 
-	border: 2px solid white;
-	color: white; font-weight: bold;
-	margin: 0 0 ; padding: 0.1em; 
+.clearfix:after {
+	content: "\0020";
+	display: block;
+	height: 0;
+    overflow: hidden;
+    clear: both;
 }
-
-/* errors */
+.clearfix:before {
+	content: "\0020";
+	display: block;
+	height: 0;
+	overflow: hidden;
+}
+.dropdown, .dropdownSoccer, .dropdownSoftBall, .dropdownTennis, .dropdownTravel, .dropdownVolleyBall {
+    float: left;
+    overflow: hidden;
+}
+.dropdown:hover .dropbtn, .dropdownSoccer:hover .dropbtnSoccer, .dropdownSoftBall:hover .dropbtnSoftBall, .dropdownTennis:hover .dropbtnTennis, .dropdownTravel:hover .dropbtnTravel, .dropdownVolleyBall:hover .dropbtnVolleyBall {
+    background-color: red;
+}
+.dropdown:hover .dropdown-content, .dropdownSoccer:hover .dropdownSoccer-content, .dropdownSoftBall:hover .dropdownSoftBall-content, .dropdownTennis:hover .dropdownTennis-content, .dropdownTravel:hover .dropdownTravel-content, .dropdownVolleyBall:hover .dropdownVolleyBall-content {
+    display: block;
+}
+.dropdown .dropbtn, .dropdownSoccer .dropbtnSoccer, .dropdownSoftBall .dropbtnSoftBall, .dropdownTennis .dropbtnTennis, .dropdownTravel .dropbtnTravel, .dropdownVolleyBall .dropbtnVolleyBall {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+.dropdown-content, .dropdownSoccer-content, .dropdownSoftBall-content, .dropdownTennis-content, .dropdownTravel-content, .dropdownVolleyBall-content {
+    display: none;
+    position: absolute;
+    background-color: blue;
+    min-width: 80px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.dropdown-content button:hover, .dropdownSoccer-content button:hover, .dropdownSoftBall-content button:hover, .dropdownTennis-content button:hover, .dropdownTravel-content button:hover, .dropdownVolleyBall-content button:hover {
+    background-color: green;
+}
+.dropdown-content button, .dropdownSoccer-content button, .dropdownSoftBall-content button, .dropdownTennis-content button, .dropdownTravel-content button, .dropdownVolleyBall-content button {
+    float: none;
+    width: 100%;
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
 .error {
 	color: #8D0D19; border: 2px solid #8D0D19;
-	margin: 1em 0; padding: 1em;
+    margin: 1em 0; padding: 1em;
+    background-color: whitesmoke;
 }
-.error ul { padding-left: 2em; }
-
-/* Navigation areas */
-#topbar {
-  height: 36px;
-  overflow: hidden;
-  -webkit-transition: height 0.5s linear;
-  -moz-transition: height 0.5s linear;
-  transition: height 0.5s linear;
+.error ul { 
+    padding-left: 2em;
 }
-#topbar:hover { height: 50%; }
-
-#tophiddenbar {
-  width: 100%;
+.highlight {
+	color: whitesmoke;
 }
-
-#topnav {
-  /*height: 40px;*/
-  overflow: hidden;
-  -webkit-transition: height 0.5s linear;
-  -moz-transition: height 0.5s linear;
-  transition: height 0.5s linear;
+.mainAddButton {
+    margin-left: 100px;
 }
-
+.navButton {
+    float: left;
+    overflow: hidden;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+.navButton:hover {
+    background-color: green;
+}
+.seasonTable {
+    margin: 0;
+}
+.semesterTable {
+    margin-left: auto;
+    margin-right: auto;
+}
 .tooltip {
     position: relative;
     display: inline-block;
-    /*border-bottom: 1px dotted black;*/
 }
-.tooltip .tooltiptext {
+.tooltip .tooltiptext, .tooltip .maintooltiptext {
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -670,7 +318,10 @@ div.message {
     opacity: 0;
     transition: opacity 0.3s;
 }
-.tooltip .tooltiptext::after {
+.tooltip .maintooltiptext {
+    margin-left: 5px;
+}
+.tooltip .tooltiptext::after, .tooltip .maintooltiptext::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -680,9 +331,132 @@ div.message {
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
-.tooltip:hover .tooltiptext {
+.tooltip:hover .tooltiptext, .tooltip:hover .maintooltiptext {
     visibility: visible;
     opacity: 1;
+}
+.wrapper {
+	width: 1000px;
+	background: #0E4182;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 0;
+}
+/* ids */
+#awards h2 {
+    font-size: 1.4em;
+	margin-bottom: 10px;
+	padding-top: 20px;
+    color: white;
+}
+#awards li {
+    color: white;
+}
+#gradyr h1 {
+    font-size: 3.0em;
+}
+#gradyr h1, #gradyr h2 {
+    text-align: center;
+	line-height: 1.4;
+	margin-bottom: 10px;
+	padding-right: 60px;
+    color: white;
+}
+#gradyr h2 {
+    font-size: 2.0em;
+}
+#main {
+	width: 730px;
+	float: left;
+	display: block;
+	margin: 10px 0;
+}
+#main article:nth-of-type(1) h2 {
+	padding-top: 0;
+}
+#main div.vbpics {
+    width: 100%;
+    height: 210px;
+    padding: 3px 0px;
+    margin: 1px 0px 5px 0px; 
+}
+#main h1 {
+    font-size: 2.7em;
+    align-content: center;
+    color: white;
+}
+#main h1, #main h2, #main h3, #main h4, #main h5, #main h6, #main p {
+	margin: 0 70px;
+}
+#main h2 {
+	font-size:1.5em;
+	margin-bottom: 10px;
+	padding-top: 20px;
+}
+#main img.sportLeft {
+    float: left;
+}
+#main img.sportLeft, #main img.sportRight {
+    width: 200px;
+    height: 200px;
+    padding: 2px 25px;
+}
+#main img.sportRight {
+    float: right;
+}
+#main p {
+	font-size:.8em;
+	line-height: 1.4;
+	margin-bottom: 10px;
+}
+#page_academics table {
+    border-collapse: collapse;
+    color: white;
+}
+#seasonTab {
+    color: white;
+}
+#semestertab {
+    border-collapse: collapse;
+    color: white;
+}
+#seasonTab tr td {
+    width: 70px;
+}
+#semestertab pre {
+    color: white;
+}
+#semTooltip {
+    width: 270px;
+}
+#sidebar {
+	width: 270px;
+	float: left;
+	margin: 10px 0;
+}
+#sidebar article:nth-of-type(1) h2 {
+	padding-top: 0;
+	margin-bottom: 0px;
+}
+#sidebar h1, #sidebar h2, #sidebar h3, #sidebar h4, #sidebar h5 {
+	padding-right: 80px;
+}
+#sidebar h2 {
+	font-size: 1.4em;
+	margin-bottom: 10px;
+	padding-top: 20px;
+}
+#sidebar h3 {
+	font-size:1em;
+	margin-bottom: 3px;
+	color: #777;
+}
+#sidebar p {
+	font-size:.8em;
+	line-height: 1.4;
+	margin-bottom: 10px;
+	padding-right: 60px;
+    color: white;
 }
 #sidebar .add-button-container h2 {
     padding-right: 2px;
@@ -690,109 +464,36 @@ div.message {
     display: inline;
     color: #fff;
 }
-.add-button-container .button-container input[type=submit] {
-    font-weight:normal;
-    font-size: 15px;
-    padding:1px 1px;
-    margin-left: 1px;
-    font-family: 'Material Icons';
-    margin-bottom: 10px;
+#select_menu h2 {
+    font-size: 1.4em;
+	margin-bottom: 10px;
+	padding-top: 20px;
+    color: white;
 }
-.add-button-container div {
-    display: inline;
-}
-.add-button-container .button-container form {
-    display: inline;
-    margin-left: 1px;
-    margin-right: 1px;
-}
-.add-button-container .button-container input {
-    width: 2em;
-}
-
-.dropdown {
-    float: left;
+#topbar {
+    -webkit-transition: height 0.5s linear;
+    -moz-transition: height 0.5s linear;
+    transition: height 0.5s linear;
+  }
+#topnav {
     overflow: hidden;
-}
-
-.dropdown .dropbtn {
-    font-size: 16px;
-    border: none;
+    -webkit-transition: height 0.5s linear;
+    -moz-transition: height 0.5s linear;
+    transition: height 0.5s linear;
+  }
+#topnav a:hover {
     outline: none;
     color: white;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit;
-    margin: 0;
 }
 
-.dropdown:hover .dropbtn {
-    background-color: red;
+/* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
+::-moz-selection {
+background: #fcd700;
+color: #fff;
+text-shadow: none;
 }
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: blue;
-    min-width: 80px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content button {
-    float: none;
-    width: 100%;
-    color: white;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.dropdown-content button:hover {
-    background-color: green;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.navButton {
-    float: left;
-    overflow: hidden;
-    font-size: 16px;
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit;
-    margin: 0;
-}
-
-.navButton:hover, .asideButton:hover, .asideAddButton:hover {
-    background-color: red;
-}
-
-.asideAddButton {
-    background-color: inherit;
-    border: none;
-    color: white;
-    padding: 10px 24px;
-    cursor: pointer;
-    width: 60%;
-    display:block;
-    font-family: 'Material Icons';
-    font-size: 16px;
-}
-
-.asideButton {
-    background-color: inherit;
-    border: none;
-    color: white;
-    padding: 10px 24px;
-    cursor: pointer;
-    width: 60%;
-    display:block;
-    font-size: 16px;
+::selection {
+	background: #fcd700;
+	color: #fff;
+	text-shadow: none;
 }
