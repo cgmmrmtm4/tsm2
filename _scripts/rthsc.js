@@ -41,6 +41,8 @@
  * MHM 2019-03-21
  * Comment:
  *  Switch from DOM manipulation to JQuery
+ *  Redo top navigation header. Complex css, may want to
+ *  investigate rework to make it simple.
  */
 
  /*
@@ -555,19 +557,19 @@ $("#tABtn").click(function(){
  * Comment:
  *  Think about creating an Athletic pulldown
  */
-$("#socBtn").click(function(){
+$("#tSocBtn").click(function(){
   error_not_implemented();
 });
 
-$("#sbBtn").click(function(){
+$("#rSbBtn").click(function(){
   error_not_implemented();
 });
 
-$("#tenBtn").click(function(){
+$("#rTenBtn").click(function(){
   error_not_implemented();
 });
 
-$("#travBtn").click(function(){
+$("#tTravBtn").click(function(){
   error_not_implemented();
 })
 

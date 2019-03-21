@@ -222,17 +222,17 @@ ul {
 	height: 0;
 	overflow: hidden;
 }
-.dropdown {
+.dropdown, .dropdownSoccer, .dropdownSoftBall, .dropdownTennis, .dropdownTravel, .dropdownVolleyBall {
     float: left;
     overflow: hidden;
 }
-.dropdown:hover .dropbtn {
+.dropdown:hover .dropbtn, .dropdownSoccer:hover .dropbtnSoccer, .dropdownSoftBall:hover .dropbtnSoftBall, .dropdownTennis:hover .dropbtnTennis, .dropdownTravel:hover .dropbtnTravel, .dropdownVolleyBall:hover .dropbtnVolleyBall {
     background-color: red;
 }
-.dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content, .dropdownSoccer:hover .dropdownSoccer-content, .dropdownSoftBall:hover .dropdownSoftBall-content, .dropdownTennis:hover .dropdownTennis-content, .dropdownTravel:hover .dropdownTravel-content, .dropdownVolleyBall:hover .dropdownVolleyBall-content {
     display: block;
 }
-.dropdown .dropbtn {
+.dropdown .dropbtn, .dropdownSoccer .dropbtnSoccer, .dropdownSoftBall .dropbtnSoftBall, .dropdownTennis .dropbtnTennis, .dropdownTravel .dropbtnTravel, .dropdownVolleyBall .dropbtnVolleyBall {
     font-size: 16px;
     border: none;
     outline: none;
@@ -242,7 +242,7 @@ ul {
     font-family: inherit;
     margin: 0;
 }
-.dropdown-content {
+.dropdown-content, .dropdownSoccer-content, .dropdownSoftBall-content, .dropdownTennis-content, .dropdownTravel-content, .dropdownVolleyBall-content {
     display: none;
     position: absolute;
     background-color: blue;
@@ -250,10 +250,10 @@ ul {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-.dropdown-content button:hover {
+.dropdown-content button:hover, .dropdownSoccer-content button:hover, .dropdownSoftBall-content button:hover, .dropdownTennis-content button:hover, .dropdownTravel-content button:hover, .dropdownVolleyBall-content button:hover {
     background-color: green;
 }
-.dropdown-content button {
+.dropdown-content button, .dropdownSoccer-content button, .dropdownSoftBall-content button, .dropdownTennis-content button, .dropdownTravel-content button, .dropdownVolleyBall-content button {
     float: none;
     width: 100%;
     color: white;
@@ -289,7 +289,7 @@ ul {
     margin: 0;
 }
 .navButton:hover {
-    background-color: red;
+    background-color: green;
 }
 .seasonTable {
     margin: 0;
@@ -481,6 +481,10 @@ ul {
     -moz-transition: height 0.5s linear;
     transition: height 0.5s linear;
   }
+#topnav a:hover {
+    outline: none;
+    color: white;
+}
 
 /* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
 ::-moz-selection {
