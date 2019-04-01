@@ -12,6 +12,18 @@
  */
 
 require_once("../_library/db_functions.php");
+/*
+ * MHM 2019-03-25
+ * Comment:
+ *  Get a distintct list of teachers.
+ */
+function get_teachers($connection) {
+    $query = "SELECT DISTINCT academics.teacherName FROM academics ";
+    $query .= "ORDER BY academics.teacherName ASC;";
+    $result = mysqli_query($connection, $query);
+    confirm_query($result);
+    return $result;
+}
 
 /*
  * MHM 2019-02-18
@@ -19,7 +31,7 @@ require_once("../_library/db_functions.php");
  *  Simplify database class lookup to return all classes and not just
  *  classes specific to a student.
  */
-function get_classes_by_student($connection) {
+function get_classes($connection) {
     $query  = "SELECT DISTINCT academics.className FROM academics ";
     $query .= "ORDER BY academics.className ASC;";
     $result = mysqli_query($connection, $query);
@@ -90,12 +102,14 @@ $conn = open_db();
 
 $res = array();
 $transcriptList = get_transcript_academics($conn);
-$classList = get_classes_by_student($conn);
+$classList = get_classes($conn);
+$teacherList = get_teachers($conn);
 $rankingsList = get_rankings_academics($conn);
 $awardsList = get_awards($conn);
 close_db($conn);
 $res['transcriptList'] = $transcriptList->fetch_all(MYSQLI_ASSOC);
 $res['classList'] = $classList->fetch_all(MYSQLI_ASSOC);
+$res['teacherList'] = $teacherList->fetch_all(MYSQLI_ASSOC);
 $res['rankingsList'] = $rankingsList->fetch_all(MYSQLI_ASSOC);
 $res['awardsList'] = $awardsList->fetch_all(MYSQLI_ASSOC);
 echo json_encode($res);

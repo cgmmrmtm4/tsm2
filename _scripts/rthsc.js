@@ -52,6 +52,7 @@
 let database_data = {
   transcriptList: undefined,
   classList: undefined,
+  teacherList: undefined,
   rankingsList: undefined,
   awardsList: undefined,
   getTranscriptList: function() {
@@ -65,6 +66,12 @@ let database_data = {
   },
   setClassList: function(ts_data) {
     this.classList = ts_data;
+  },
+  getTeacherList: function() {
+    return this.teacherList;
+  },
+  setTeacherList: function(ts_data) {
+    this.teacherList = ts_data;
   },
   getRankingsList: function() {
     return this.rankingsList;
@@ -88,6 +95,7 @@ let database_data = {
 let performSomeAction = function(returned_data) {
   database_data.setTranscriptList(returned_data.transcriptList);
   database_data.setClassList(returned_data.classList);
+  database_data.setTeacherList(returned_data.teacherList);
   database_data.setRankingsList(returned_data.rankingsList);
   database_data.setAwardsList(returned_data.awardsList);
   
@@ -184,6 +192,106 @@ function build_home_aside() {
 }
 
 /*
+ * Build the pull down option menu
+ */
+function buildSelectionOptions(options, currentValue) {
+  let element = '';
+  let selectStr = '';
+  for (element of options) {
+    if (element == currentValue) {
+      selectStr += "<option selected='selected' value='"+currentValue+"'>"+currentValue+"</option>";
+    } else {
+      selectStr += "<option value='"+element+"'>"+element+"</option>";
+    }
+  }
+  return selectStr;
+}
+
+/*
+ * Build the period pull down menu, used in edit and add a class
+ */
+function buildPeriodSelectionMenu(currentValue) {
+  let selectStr = '';
+  let periods = ['0','1','2','3','4','5','6','7'];
+  selectStr = buildSelectionOptions(periods, currentValue);
+  return selectStr;
+}
+
+/*
+ * Build the grade pull down menu, used in edit and add a class
+ */
+function buildGradeSelectionMenu(currentValue) {
+  let selectStr = '';
+  let grades = ["A+","A","A-","B+","B","B-","C+","C","C-","D","F"];
+  selectStr = buildSelectionOptions(grades, currentValue);
+  return selectStr;
+}
+
+/*
+ * When editing a class, we may need to change the class
+ * weighting.
+ */
+function buildEditRadioButtons(honors, ap) {
+  let radioStr = '';
+  /*
+   * So these are pretty much constants that one will be
+   * replaced depending on the type of weighing of the
+   * class
+   */
+  let noneStr = "<input class='dbradio' type='radio' id='none' name='weighted' value='0'><label class='dbradio' for='none'>NONE</label>";
+  let honorStr = "<input class='dbradio' type='radio' id='honors' name='weighted' value='1'><label class='dbradio' for='honors'>HONORS</label>";
+  let apStr = "<input class='dbradio' type='radio' id='ap' name='weighted' value='1'><label class='dbradio' for='ap'>AP</label>";
+
+  /*
+   * Based on the weighing of the class, check the appropriate
+   * radio button.
+   */
+  if (honors == 0 && ap == 0) {
+    noneStr = "<input class='dbradio' type='radio' id='none' name='weighted' value='0' checked><label class='dbradio' for='none'>NONE</label>";
+  } else if (honors == 1) {
+    honorStr = "<input class='dbradio' type='radio' id='honors' name='weighted' value='1' checked><label class='dbradio' for='honors'>HONORS</label>";    
+  } else if (ap == 1) {
+    apStr = "<input class='dbradio' type='radio' id='ap' name='weighted' value='1' checked><label class='dbradio' for='ap'>AP</label>";
+  }
+  radioStr = noneStr+honorStr+apStr;
+  return radioStr;
+}
+
+/*
+ * Builds the list of classes that are currently in the dataset
+ * and put them into a datalist that can be used to fill the
+ * classname field.
+ */
+function buildClassDataList() {
+  let dataList = '<datalist id="studentClasses">';
+  let dataListOptions = '';
+  let classList = database_data.getClassList();
+  for (x in classList) {
+    dataListOptions += "<option value='"+classList[x].className+"'>"
+  }
+  dataList += dataListOptions;
+  dataList += '</datalist>';
+  return dataList;
+}
+
+/*
+ * Builds the list of teachers that are currently in the dataset
+ * and put them into a datalist that can be used to fill the
+ * teachername field.
+ */
+function buildTeacherDataList() {
+  let dataList = '<datalist id="Teachers">';
+  let dataListOptions = '';
+  let teacherList = database_data.getTeacherList();
+  for (x in teacherList) {
+    dataListOptions += "<option value='"+teacherList[x].teacherName+"'>";
+  }
+  dataList += dataListOptions;
+  dataList += '</datalist>';
+  return dataList;
+}
+
+/*
  * MHM 2019-02-12
  * Comment:
  *  Support the Academic Row Cancel Edit button. Now
@@ -193,14 +301,18 @@ function build_home_aside() {
  */
 function cancelAcademicRowChange(event) {
   let parent = $(this).parent().parent().parent();
-  let tdPeriod = parent.children("td:nth-child(1)");
-  let tdClassName = parent.children("td:nth-child(2)");
-  let tdTeacherName = parent.children("td:nth-child(3)");
-  let tdGrade = parent.children("td:nth-child(4)");
-  let tdModify = parent.children("td:nth-child(5)");
+  let tdPeriod = parent.children("td:nth-child(2)");
+  let tdClassName = parent.children("td:nth-child(3)");
+  let tdHonors = parent.children("td:nth-child(4)");
+  let tdAP = parent.children("td:nth-child(5)");
+  let tdTeacherName = parent.children("td:nth-child(6)");
+  let tdGrade = parent.children("td:nth-child(7)");
+  let tdModify = parent.children("td:nth-child(8)");
 
   tdPeriod.html(event.data.period);
   tdClassName.html(event.data.className);
+  tdHonors.html(event.data.honors);
+  tdAP.html(event.data.ap);
   tdTeacherName.html(event.data.teacherName);
   tdGrade.html(event.data.grade);
   $('.sBtn').off();
@@ -217,26 +329,45 @@ function cancelAcademicRowChange(event) {
 function editAcademicRow() {
   resetErrorMsgElement();
   let parent = $(this).parent().parent().parent();
-  let tdPeriod = parent.children("td:nth-child(1)");
-  let tdPeriodVal = tdPeriod.html();
-  let tdClassName = parent.children("td:nth-child(2)");
-  let tdClassNameVal = tdClassName.html();
-  let tdTeacherName = parent.children("td:nth-child(3)");
-  let tdTeacherNameVal = tdTeacherName.html();
-  let tdGrade = parent.children("td:nth-child(4)");
-  let tdGradeVal = tdGrade.html();
-  let tdModify = parent.children("td:nth-child(5)");
+  let tdDbId = parent.children("td:nth-child(1)");
+  let currentDbId = tdDbId.html();
+  let tdPeriod = parent.children("td:nth-child(2)");
+  let currentPeriod = tdPeriod.html();
+  let tdClassName = parent.children("td:nth-child(3)");
+  let currentClassName = tdClassName.html();
+  let tdHonors = parent.children("td:nth-child(4)");
+  let currentHonors = tdHonors.html();
+  let tdAP = parent.children("td:nth-child(5)");
+  let currentAP = tdAP.html();
+  let tdTeacherName = parent.children("td:nth-child(6)");
+  let currentTeacherName = tdTeacherName.html();
+  let tdGrade = parent.children("td:nth-child(7)");
+  let currentGrade = tdGrade.html();
+  let tdModify = parent.children("td:nth-child(8)");
 
-  tdPeriod.html("<input type='text' value='"+tdPeriod.html()+"'/>");
-  tdClassName.html("<input type='text' value='"+tdClassName.html()+"'/>");
-  tdTeacherName.html("<input type='text' value='"+tdTeacherName.html()+"'/>");
-  tdGrade.html("<input type='text' value='"+tdGrade.html()+"'/>");
+  let selectOptions = '';
+  selectOptions = buildPeriodSelectionMenu(currentPeriod);
+  tdPeriod.html("<select>"+selectOptions+"</select>");
+
+  let dataList = buildClassDataList();
+  let buildRadio='';
+  buildRadio=buildEditRadioButtons(currentHonors, currentAP);
+  tdClassName.html("<input class='dbtext' maxlength='30' type='text' list='studentClasses' value='"+currentClassName+"'/>"+dataList+buildRadio);
+
+  dataList = buildTeacherDataList();
+  tdTeacherName.html("<input class='dbtext' maxlength='30' type='text' list='Teachers' value='"+currentTeacherName+"'/>"+dataList);
+
+  selectOptions = '';
+  selectOptions = buildGradeSelectionMenu(currentGrade);
+  tdGrade.html("<select>"+selectOptions+"</select>");
+
   $(".eBtn").off();
   $(".dBtn").off();
   tdModify.html("<div class='button-container tooltip'> <span class='tooltiptext'>Save Row</span> <button class='sBtn material-icons'>save</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Cancel</span> <button class='cBtn material-icons'>cancel</button> </div>")
 
+  let cancelCBParms = {'dbId':currentDbId, 'period':currentPeriod,'className':currentClassName, 'honors':currentHonors, 'ap':currentAP, 'teacherName':currentTeacherName, 'grade':currentGrade};
   $(".sBtn").on("click", error_not_implemented);
-  $(".cBtn").on("click", {period: tdPeriodVal, className: tdClassNameVal, teacherName: tdTeacherNameVal, grade: tdGradeVal}, cancelAcademicRowChange);
+  $(".cBtn").on("click", cancelCBParms, cancelAcademicRowChange);
 }
 
 /*
@@ -245,12 +376,27 @@ function editAcademicRow() {
 function addAcademicRow(row, tableId) {
   $('#'+tableId).append($('<tr>')
     .append($('<td>')
+      .addClass('dbId')
+      .html(row.id)
+      .hide()
+    )
+    .append($('<td>')
       .addClass('period')
       .html(row.period)
     )
     .append($('<td>')
       .addClass('className')
       .html(row.className)
+    )
+    .append($('<td>')
+      .addClass('honors')
+      .html(row.honors)
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('ap')
+      .html(row.AP)
+      .hide()
     )
     .append($('<td>')
       .addClass('teacher')
