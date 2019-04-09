@@ -49,43 +49,108 @@
   * Data returned from database call. Use get and set
   * functions to access the data.
   */
-let database_data = {
-  transcriptList: undefined,
-  classList: undefined,
-  teacherList: undefined,
-  rankingsList: undefined,
-  awardsList: undefined,
-  getTranscriptList: function() {
-    return this.transcriptList;
-  },
-  setTranscriptList: function(ts_data) {
-    this.transcriptList = ts_data;
-  },
-  getClassList: function() {
-    return this.classList;
-  },
-  setClassList: function(ts_data) {
-    this.classList = ts_data;
-  },
-  getTeacherList: function() {
-    return this.teacherList;
-  },
-  setTeacherList: function(ts_data) {
-    this.teacherList = ts_data;
-  },
-  getRankingsList: function() {
-    return this.rankingsList;
-  },
-  setRankingsList: function(ts_data) {
-    this.rankingsList = ts_data;
-  },
-  getAwardsList: function() {
-    return this.awardsList;
-  },
-  setAwardsList: function(ts_data) {
-    this.awardsList = ts_data;
+let database_data = (function () {
+  let transcriptList = undefined;
+  let studentList = undefined;
+  let classList =  undefined;
+  let teacherList = undefined;
+  let rankingsList = undefined;
+  let awardsList = undefined;
+
+  let getTranscriptList = function() {
+    return transcriptList;
+  };
+  let setTranscriptList = function(ts_data) {
+    transcriptList = ts_data;
+  };
+  let getStudentList = function() {
+    return studentList;
+  };
+  let setStudentList = function(ts_data) {
+    studentList = ts_data;
+  };
+  let getClassList = function() {
+    return classList;
+  };
+  let setClassList = function(ts_data) {
+    classList = ts_data;
+  };
+  let getTeacherList = function() {
+    return teacherList;
+  };
+  let setTeacherList = function(ts_data) {
+    teacherList = ts_data;
+  };
+  let getRankingsList = function() {
+    return rankingsList;
+  };
+  let setRankingsList = function(ts_data) {
+    rankingsList = ts_data;
+  };
+  let getAwardsList = function() {
+    return awardsList;
+  };
+  let setAwardsList = function(ts_data) {
+    awardsList = ts_data;
+  };
+
+  return {
+    getTranscripts: getTranscriptList,
+    setTranscripts: setTranscriptList,
+    getStudents: getStudentList,
+    setStudents: setStudentList,
+    getClasses: getClassList,
+    setClasses: setClassList,
+    getTeachers: getTeacherList,
+    setTeachers: setTeacherList,
+    getRankings: getRankingsList,
+    setRankings: setRankingsList,
+    getAwards: getAwardsList,
+    setAwards: setAwardsList
   }
-};
+})();
+
+/*
+ * Build Student List
+ */
+function buildStudentList() {
+  let retVal = [];
+  let transcriptList = database_data.getTranscripts();
+  for (let record of transcriptList) {
+    if (!retVal.includes(record.studentName)) {
+      retVal.push(record.studentName);
+    }
+  }
+  return retVal.sort();
+}
+
+/*
+ * Build Teacher List
+ */
+function buildTeacherList() {
+  let retVal = [];
+  let transcriptList = database_data.getTranscripts();
+  for (let record of transcriptList) {
+    if (!retVal.includes(record.teacherName)) {
+      retVal.push(record.teacherName);
+    }
+  }
+  return retVal.sort();
+}
+
+/*
+ * Build Class List
+ */
+function buildClassList() {
+  let retVal = [];
+  let transcriptList = database_data.getTranscripts();
+  for (let record of transcriptList) {
+    if (!retVal.includes(record.className)) {
+      retVal.push(record.className);
+    }
+  }
+  return retVal.sort();
+}
 
 /*
  *  Callback function to assign return value from AJAX call
@@ -93,21 +158,12 @@ let database_data = {
  */
 
 let performSomeAction = function(returned_data) {
-  database_data.setTranscriptList(returned_data.transcriptList);
-  database_data.setClassList(returned_data.classList);
-  database_data.setTeacherList(returned_data.teacherList);
-  database_data.setRankingsList(returned_data.rankingsList);
-  database_data.setAwardsList(returned_data.awardsList);
-  
-  /*
-   * MHM 2019-02-20
-   * Comment:
-   *  Uncomment the two lines below to check to see that
-   *  data is being successfully returned from the HTTP
-   *  request.
-   * let tableElement = document.getElementById("messages");
-   * tableElement.innerHTML=transcriptList;
-   */
+  database_data.setTranscripts(returned_data.transcriptList);
+  database_data.setClasses(buildClassList());
+  database_data.setTeachers(buildTeacherList());
+  database_data.setRankings(returned_data.rankingsList);
+  database_data.setAwards(returned_data.awardsList);
+  database_data.setStudents(buildStudentList());
 }
 
 /*
@@ -265,9 +321,9 @@ function buildEditRadioButtons(honors, ap) {
 function buildClassDataList() {
   let dataList = '<datalist id="studentClasses">';
   let dataListOptions = '';
-  let classList = database_data.getClassList();
-  for (x in classList) {
-    dataListOptions += "<option value='"+classList[x].className+"'>"
+  let classList = database_data.getClasses();
+  for (let name of classList) {
+    dataListOptions += "<option value='"+name+"'>"
   }
   dataList += dataListOptions;
   dataList += '</datalist>';
@@ -282,15 +338,45 @@ function buildClassDataList() {
 function buildTeacherDataList() {
   let dataList = '<datalist id="Teachers">';
   let dataListOptions = '';
-  let teacherList = database_data.getTeacherList();
-  for (x in teacherList) {
-    dataListOptions += "<option value='"+teacherList[x].teacherName+"'>";
+  let teacherList = database_data.getTeachers();
+  for (let name of teacherList) {
+    dataListOptions += "<option value='"+name+"'>";
   }
   dataList += dataListOptions;
   dataList += '</datalist>';
   return dataList;
 }
 
+/*
+ * Edit/Delete Button Pair
+ */
+function getEditDeleteButtons() {
+  let buttonStr = '';
+  buttonStr = "\
+  <div class='button-container tooltip'>\
+    <span class='tooltiptext'>Edit Row</span>\
+    <button class='eBtn material-icons'>edit</button>\
+  </div>\
+  <div class='button-container tooltip'>\
+    <span class='tooltiptext'>Delete Row</span>\
+    <button class='dBtn material-icons'>delete</button>\
+  </div>";
+  return buttonStr;
+}
+
+function getSaveCancelButtons() {
+  let buttonStr = '';
+  buttonStr = "\
+  <div class='button-container tooltip'>\
+    <span class='tooltiptext'>Save Row</span>\
+    <button class='sBtn material-icons'>save</button>\
+  </div>\
+  <div class='button-container tooltip'>\
+    <span class='tooltiptext'>Cancel</span>\
+    <button class='cBtn material-icons'>cancel</button>\
+  </div>";
+  return buttonStr;
+}
 /*
  * MHM 2019-02-12
  * Comment:
@@ -317,7 +403,7 @@ function cancelAcademicRowChange(event) {
   tdGrade.html(event.data.grade);
   $('.sBtn').off();
   $('.cBtn').off();
-  tdModify.html("<div class='button-container tooltip'> <span class='tooltiptext'>Edit Row</span> <button class='eBtn material-icons'>edit</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Delete Row</span> <button class='dBtn material-icons'>delete</button> </div>");
+  tdModify.html(getEditDeleteButtons());
 
   $('.eBtn').on("click", editAcademicRow);
   $('.dBtn').on("click", error_not_implemented);
@@ -363,7 +449,7 @@ function editAcademicRow() {
 
   $(".eBtn").off();
   $(".dBtn").off();
-  tdModify.html("<div class='button-container tooltip'> <span class='tooltiptext'>Save Row</span> <button class='sBtn material-icons'>save</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Cancel</span> <button class='cBtn material-icons'>cancel</button> </div>")
+  tdModify.html(getSaveCancelButtons());
 
   let cancelCBParms = {'dbId':currentDbId, 'period':currentPeriod,'className':currentClassName, 'honors':currentHonors, 'ap':currentAP, 'teacherName':currentTeacherName, 'grade':currentGrade};
   $(".sBtn").on("click", error_not_implemented);
@@ -408,7 +494,7 @@ function addAcademicRow(row, tableId) {
     )
     .append($('<td>')
       .addClass('modify')
-      .html("<div class='button-container tooltip'> <span class='tooltiptext'>Edit Row</span> <button class='eBtn material-icons'>edit</button> </div> <div class='button-container tooltip'> <span class='tooltiptext'>Delete Row</span> <button class='dBtn material-icons'>delete</button> </div>")
+      .html(getEditDeleteButtons())
     )
   );
 
@@ -454,7 +540,7 @@ function build_academic_table(student, season, year) {
    *  record for the student, season, year provided.
    *  Then build the table based on the returned records.
    */
-  let transcriptList = database_data.getTranscriptList();
+  let transcriptList = database_data.getTranscripts();
   let semesterList = transcriptList.filter(function (obj) {
     return (obj.season===season && obj.year===year && obj.studentName===student);
   });
@@ -513,7 +599,7 @@ function build_academic_table(student, season, year) {
      *  Add the ranking information. May want to test for missing
      *  ranking data from the database look up.
      */
-    let rankingList = database_data.getRankingsList();
+    let rankingList = database_data.getRankings();
     let ranking = rankingList.filter(function (obj) {
       return (parseInt(obj.seasonId) == localSeasonId)
     });
@@ -532,7 +618,7 @@ function build_academic_aside_nav(student) {
   /*
    *  Filter the transcriptList for the specfied student
    */
-  let transcriptList = database_data.getTranscriptList();
+  let transcriptList = database_data.getTranscripts();
   let findStudentTrans = transcriptList.filter(function (obj) {
     return (obj.studentName===student);
   });
@@ -633,7 +719,7 @@ function build_academic_aside_nav(student) {
   /*
    *  Add academic awards
    */
-  let awardList = database_data.getAwardsList();
+  let awardList = database_data.getAwards();
   let award = awardList.filter(function (obj) {
     return (obj.studentName === student && obj.catagory === "Academic");
   });
@@ -679,7 +765,7 @@ $("#homeBtn").click(function(){
 });
 
 $("#rABtn").click(function(){
-  if (database_data.getTranscriptList() === undefined) {
+  if (database_data.getTranscripts() === undefined) {
     error_still_loading();
   } else {
     cleanMainAside();
@@ -689,7 +775,7 @@ $("#rABtn").click(function(){
 });
 
 $("#tABtn").click(function(){
-  if (database_data.getTranscriptList() === undefined) {
+  if (database_data.getTranscripts() === undefined) {
     error_still_loading();
   } else {
     cleanMainAside();
