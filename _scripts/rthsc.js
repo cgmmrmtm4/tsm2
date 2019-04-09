@@ -164,9 +164,6 @@ let performSomeAction = function(returned_data) {
   database_data.setRankings(returned_data.rankingsList);
   database_data.setAwards(returned_data.awardsList);
   database_data.setStudents(buildStudentList());
-  for (let x of database_data.getStudents()) {
-    console.log(x);
-  }
 }
 
 /*
