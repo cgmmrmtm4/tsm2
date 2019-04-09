@@ -134,10 +134,17 @@ td.className, td.grade, td.period, td.teacher {
 td.className, th.className {
     width: 200px;
 }
-td.className input, td.grade input, td.period input, td.teacher input {
+td.className input, td.teacher input {
     width: inherit;
     color: inherit;
     background-color: inherit;
+}
+td.className .dbradio {
+    width: 4em;
+}
+td.period select, td.grade select {
+    background-color: inherit;
+    color: inherit;
 }
 td.grade, th.grade {
     width: 20px;
@@ -221,6 +228,13 @@ ul {
 	display: block;
 	height: 0;
 	overflow: hidden;
+}
+.dbradio {
+    width: 7em;
+    font-size: 8px;
+}
+.dbradio input {
+    width: 1em;
 }
 .dropdown, .dropdownSoccer, .dropdownSoftBall, .dropdownTennis, .dropdownTravel, .dropdownVolleyBall {
     float: left;
