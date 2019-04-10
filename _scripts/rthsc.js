@@ -56,6 +56,8 @@ let database_data = (function () {
   let teacherList = undefined;
   let rankingsList = undefined;
   let awardsList = undefined;
+  let athleticList = undefined;
+  let sportsList = undefined;
 
   let getTranscriptList = function() {
     return transcriptList;
@@ -93,6 +95,18 @@ let database_data = (function () {
   let setAwardsList = function(ts_data) {
     awardsList = ts_data;
   };
+  let getAthleticList = function() {
+    return athleticList;
+  };
+  let setAthleticList = function(ts_data) {
+    athleticList = ts_data;
+  };
+  let getSportsList = function() {
+    return sportsList;
+  };
+  let setSportsList = function(ts_data) {
+    sportsList = ts_data;
+  }
 
   return {
     getTranscripts: getTranscriptList,
@@ -106,7 +120,11 @@ let database_data = (function () {
     getRankings: getRankingsList,
     setRankings: setRankingsList,
     getAwards: getAwardsList,
-    setAwards: setAwardsList
+    setAwards: setAwardsList,
+    getAthletics: getAthleticList,
+    setAthletics: setAthleticList,
+    getSports: getSportsList,
+    setSports: setSportsList
   }
 })();
 
@@ -153,6 +171,120 @@ function buildClassList() {
 }
 
 /*
+ * Build Sport List
+ */
+function buildSportsList() {
+  let retVal = [];
+  let athleticList = database_data.getAthletics();
+  for (let record of athleticList) {
+    if (!retVal.includes(record.sport)) {
+      retVal.push(record.sport);
+    }
+  }
+  return retVal.sort();
+}
+
+/*
+ * Get the list of years a student was in school
+ */
+function getStudentYears(studentName) {
+  /*
+   * Filter the transcriptList for the specfied student
+   */
+  let transcriptList = database_data.getTranscripts();
+  let findStudentTrans = transcriptList.filter(function (obj) {
+    return (obj.studentName===studentName);
+  });
+
+  /*
+   * Using the records in findStudentTrans, get distinct
+   * semester, year values.
+   */
+  let years = findStudentTrans.reduce((acc, x) =>
+  acc.concat(acc.find(y => y.year === x.year) ? [] : [x]), []);
+  return years;
+}
+
+/*
+ * Arm the student navigation buttons
+ */
+function armStudentNavButton(studentName) {
+  let years = getStudentYears(studentName);
+  if (years.length != 0) {
+    $("#"+studentName+"Btn").click(function(){
+      cleanMainAside();
+      build_academic_table(studentName, years[years.length-1].season, years[years.length-1].year);
+      build_academic_aside_nav(studentName);
+    });
+  }
+}
+
+/*
+ * Create Pull down buttons and arm them
+ */
+function buildAcademicPullDown(studentList) {
+  for (let studentName of studentList) {
+    $("#studentName").append($('<button>')
+      .attr("id", studentName+"Btn")
+      .addClass("navButton")
+      .text(studentName)
+    );
+    armStudentNavButton(studentName);
+  }
+}
+
+/*
+ * Create and add the sport drop down to the
+ * Athletic drop down.
+ */
+function buildSportDropDown(sportName) {
+  $('#sportName').append($('<div>')
+    .addClass("dropdown"+sportName)
+    .append($('<button>')
+      .addClass("dropbtn"+sportName)
+      .text(sportName.toUpperCase())
+      .append($('<i>')
+        .addClass("fa fa-caret-down")
+      )
+    )
+    .append($('<div>')
+      .addClass("dropdown"+sportName+"-content")
+      .attr("id",sportName.toLowerCase()+"AthName")
+    )
+  )
+}
+
+/*
+ * Add Athlete name to sport dropdown
+ */
+function addAthleteToDropdown(sportName, studentName) {
+  let authId = sportName+studentName;
+  $('#'+sportName.toLowerCase()+'AthName').append($('<button>')
+    .attr("id",authId)
+    .addClass("navButton")
+    .text(studentName)
+  );
+  $('#'+authId).on("click", error_not_implemented);
+}
+
+/*
+ * Create and arm the athletic buttons
+ */
+function buildAthleticPullDown(sportList, studentList) {
+  let athleticList = database_data.getAthletics();
+  for (let sportName of sportList) {
+    buildSportDropDown(sportName);
+    for (let studentName of studentList) {
+      if (athleticList.find(function (obj) {
+        return (obj.studentName === studentName && obj.sport === sportName);
+      })) {
+        addAthleteToDropdown(sportName, studentName);
+      }
+    }
+  }
+}
+
+/*
  *  Callback function to assign return value from AJAX call
  * 
  */
@@ -164,6 +296,15 @@ let performSomeAction = function(returned_data) {
   database_data.setRankings(returned_data.rankingsList);
   database_data.setAwards(returned_data.awardsList);
   database_data.setStudents(buildStudentList());
+  database_data.setAthletics(returned_data.athleticList);
+  database_data.setSports(buildSportsList());
+
+  /*
+   * Build Navigation Buttons
+   */
+
+  buildAcademicPullDown(database_data.getStudents());
+  buildAthleticPullDown(database_data.getSports(), database_data.getStudents());
 }
 
 /*
@@ -347,6 +488,16 @@ function buildTeacherDataList() {
   return dataList;
 }
 
+function getInsertButton() {
+  let buttonStr = '';
+  buttonStr = "\
+  <div class='button-container tooltip'>\
+    <span class='tooltiptext'>Insert Row</span>\
+    <button class='iBtn material-icons'>add</button>\
+  </div>";
+  return buttonStr;
+}
+
 /*
  * Edit/Delete Button Pair
  */
@@ -502,6 +653,47 @@ function addAcademicRow(row, tableId) {
   $('.dBtn').on("click", error_not_implemented);
 }
 
+function addHiddenInsertRow(tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('dbId')
+      .html("")
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('period noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('className noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('honors')
+      .html("")
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('ap')
+      .html("")
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('teacher noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('grade noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getInsertButton())
+    )
+  );
+
+  $('.iBtn').on("click", error_not_implemented);
+}
 /*
  *  Build the academic main page given the student, season
  *  and year.
@@ -513,10 +705,6 @@ function build_academic_table(student, season, year) {
    */
   let academicPage = '\
   <div id="semestertab">\
-    <div id="addAclass" class="tooltip">\
-      <span class="maintooltiptext">Add a class</span>\
-      <button class="mainAddButton">&#xE145;</button>\
-    </div>\
     <table id="semTab" class="semesterTable" cellspacing="3" cellpadding="3" summary="List of classes, teachers and grades">\
       <caption id="capText">\
         <h3 id="seasonYear"></h3>\
@@ -608,7 +796,7 @@ function build_academic_table(student, season, year) {
       $("#rank").html(innerStr);
     }
   }
-  $(".mainAddButton").on("click", error_not_implemented);
+  addHiddenInsertRow("semTab");
 }
 
 /*
@@ -616,19 +804,10 @@ function build_academic_table(student, season, year) {
  */
 function build_academic_aside_nav(student) {
   /*
-   *  Filter the transcriptList for the specfied student
-   */
-  let transcriptList = database_data.getTranscripts();
-  let findStudentTrans = transcriptList.filter(function (obj) {
-    return (obj.studentName===student);
-  });
-
-  /*
-   *  Using the records in findStudentTrans, get distinct year values
+   *  Get distinct season, year values
    *  in order to build semester buttons.
    */
-  let years = findStudentTrans.reduce((acc, x) =>
-  acc.concat(acc.find(y => y.year === x.year) ? [] : [x]), []);
+  let years = getStudentYears(student);
 
   /*
    *  Build the selection_menu article
@@ -764,51 +943,6 @@ $("#homeBtn").click(function(){
   build_home_aside();
 });
 
-$("#rABtn").click(function(){
-  if (database_data.getTranscripts() === undefined) {
-    error_still_loading();
-  } else {
-    cleanMainAside();
-    build_academic_table("Rachel", "SPRING", "2013");
-    build_academic_aside_nav("Rachel");
-  }
-});
-
-$("#tABtn").click(function(){
-  if (database_data.getTranscripts() === undefined) {
-    error_still_loading();
-  } else {
-    cleanMainAside();
-    build_academic_table("Theodore", "SPRING", "2018");
-    build_academic_aside_nav("Theodore");
-  }
-});
-
-/*
- * MHM 2019-03-21
- * Comment:
- *  Think about creating an Athletic pulldown
- */
-$("#tSocBtn").click(function(){
-  error_not_implemented();
-});
-
-$("#rSbBtn").click(function(){
-  error_not_implemented();
-});
-
-$("#rTenBtn").click(function(){
-  error_not_implemented();
-});
-
 $("#tTravBtn").click(function(){
   error_not_implemented();
 })
-
-$("#rVbBtn").click(function(){
-  error_not_implemented();
-});
-
-$("#tVbBtn").click(function(){
-  error_not_implemented();
-});

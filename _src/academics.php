@@ -61,6 +61,20 @@ function get_awards($connection) {
     return $result;
 }
 
+/*
+ * Get Athletic records and results
+ */
+function get_athletics($connection) {
+    $query = "SELECT students.studentName, hsseasons.season, hsseasons.year, sports.*, records.* ";
+    $query .= "FROM students ";
+    $query .= "JOIN hsseasons ON hsseasons.studentId=students.id ";
+    $query .= "JOIN sports ON sports.seasonId=hsseasons.id ";
+    $query .= "JOIN records ON records.sportId = sports.id";
+    $result = mysqli_query($connection, $query);
+    confirm_query($result);
+    return $result;
+}
+
 $conn = open_db();
 /*
  * MHM 2019-02-18
@@ -78,9 +92,11 @@ $res = array();
 $transcriptList = get_transcript_academics($conn);
 $rankingsList = get_rankings_academics($conn);
 $awardsList = get_awards($conn);
+$athleticList = get_athletics($conn);
 close_db($conn);
 $res['transcriptList'] = $transcriptList->fetch_all(MYSQLI_ASSOC);
 $res['rankingsList'] = $rankingsList->fetch_all(MYSQLI_ASSOC);
 $res['awardsList'] = $awardsList->fetch_all(MYSQLI_ASSOC);
+$res['athleticList'] = $athleticList->fetch_all(MYSQLI_ASSOC);
 echo json_encode($res);
 ?>

@@ -161,6 +161,9 @@ td.period, th.period {
 td.teacher, th.teacher {
     width: 150px;
 }
+td.noborder {
+    border-style: none;
+}
 th.modify {
     border-style: none;
 }
@@ -197,7 +200,7 @@ ul {
     border-radius: 45%;
     border: 2px solid white;
 }
-.cBtn, .dBtn, .eBtn, .sBtn {
+.cBtn, .dBtn, .eBtn, .iBtn, .sBtn {
     box-shadow: 0px 1px 0px 0px #fff6af;
     background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
     background-color:rgb(23,130,207);
@@ -212,7 +215,7 @@ ul {
     display: inline;
     font-family: 'Material Icons';
 }
-.cBtn:hover, .sBtn:hover, .eBtn:hover, .dBtn:hover {
+.cBtn:hover, .sBtn:hover, .eBtn:hover, .dBtn:hover, .iBtn:hover {
     background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
     background-color:#ffab23;
 }
@@ -236,17 +239,17 @@ ul {
 .dbradio input {
     width: 1em;
 }
-.dropdown, .dropdownSoccer, .dropdownSoftBall, .dropdownTennis, .dropdownTravel, .dropdownVolleyBall {
+.dropdown, .dropdownSoccer, .dropdownSoftball, .dropdownTennis, .dropdownTravel, .dropdownVolleyball {
     float: left;
     overflow: hidden;
 }
-.dropdown:hover .dropbtn, .dropdownSoccer:hover .dropbtnSoccer, .dropdownSoftBall:hover .dropbtnSoftBall, .dropdownTennis:hover .dropbtnTennis, .dropdownTravel:hover .dropbtnTravel, .dropdownVolleyBall:hover .dropbtnVolleyBall {
+.dropdown:hover .dropbtn, .dropdownSoccer:hover .dropbtnSoccer, .dropdownSoftball:hover .dropbtnSoftball, .dropdownTennis:hover .dropbtnTennis, .dropdownTravel:hover .dropbtnTravel, .dropdownVolleyball:hover .dropbtnVolleyball {
     background-color: red;
 }
-.dropdown:hover .dropdown-content, .dropdownSoccer:hover .dropdownSoccer-content, .dropdownSoftBall:hover .dropdownSoftBall-content, .dropdownTennis:hover .dropdownTennis-content, .dropdownTravel:hover .dropdownTravel-content, .dropdownVolleyBall:hover .dropdownVolleyBall-content {
+.dropdown:hover .dropdown-content, .dropdownSoccer:hover .dropdownSoccer-content, .dropdownSoftball:hover .dropdownSoftball-content, .dropdownTennis:hover .dropdownTennis-content, .dropdownTravel:hover .dropdownTravel-content, .dropdownVolleyball:hover .dropdownVolleyball-content {
     display: block;
 }
-.dropdown .dropbtn, .dropdownSoccer .dropbtnSoccer, .dropdownSoftBall .dropbtnSoftBall, .dropdownTennis .dropbtnTennis, .dropdownTravel .dropbtnTravel, .dropdownVolleyBall .dropbtnVolleyBall {
+.dropdown .dropbtn, .dropdownSoccer .dropbtnSoccer, .dropdownSoftball .dropbtnSoftball, .dropdownTennis .dropbtnTennis, .dropdownTravel .dropbtnTravel, .dropdownVolleyball .dropbtnVolleyball {
     font-size: 16px;
     border: none;
     outline: none;
@@ -256,7 +259,7 @@ ul {
     font-family: inherit;
     margin: 0;
 }
-.dropdown-content, .dropdownSoccer-content, .dropdownSoftBall-content, .dropdownTennis-content, .dropdownTravel-content, .dropdownVolleyBall-content {
+.dropdown-content, .dropdownSoccer-content, .dropdownSoftball-content, .dropdownTennis-content, .dropdownTravel-content, .dropdownVolleyball-content {
     display: none;
     position: absolute;
     background-color: blue;
@@ -264,10 +267,10 @@ ul {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-.dropdown-content button:hover, .dropdownSoccer-content button:hover, .dropdownSoftBall-content button:hover, .dropdownTennis-content button:hover, .dropdownTravel-content button:hover, .dropdownVolleyBall-content button:hover {
+.dropdown-content button:hover, .dropdownSoccer-content button:hover, .dropdownSoftball-content button:hover, .dropdownTennis-content button:hover, .dropdownTravel-content button:hover, .dropdownVolleyball-content button:hover {
     background-color: green;
 }
-.dropdown-content button, .dropdownSoccer-content button, .dropdownSoftBall-content button, .dropdownTennis-content button, .dropdownTravel-content button, .dropdownVolleyBall-content button {
+.dropdown-content button, .dropdownSoccer-content button, .dropdownSofbBall-content button, .dropdownTennis-content button, .dropdownTravel-content button, .dropdownVolleyball-content button {
     float: none;
     width: 100%;
     color: white;
