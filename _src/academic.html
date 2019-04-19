@@ -67,93 +67,48 @@
       <main role="main">
         <br>
         <section id="main">
-          <div id="semestertab">
-              <div class="tooltip">
-                  <span class="maintooltiptext">Add a class</span>
-                  <button class="mainAddButton">&#xE145;</button>
-                </div>
-            <table id="semTab" class="semesterTable" cellspacing="3" cellpadding="3" summary="List of classes, teachers and grades">
-              <caption>
-                <h3 id="seasonYear">SPRING 20XX</h3>
-              </caption>
-              <tr id="academicHeaderList">
-                <th scope="col" class="period">Period </th>
-                <th scope="col" class="className">Class </th>
-                <th scope="col" class="teacher">Teacher </th>
-                <th scope="col" class="grade">Grade </th>
-                <th scope="col" class="modify"></th>
-              </tr>
-              <tr id="academicEntry">
-                    
-              </tr>
-            </table>
+          <div class="athleticPics">
+            <img id='p1' class="sportLeft" src="">
+            <img id='p2' class="sportRight" src="">
+          </div>
+          <div id="athTable">
+            <h1 class="athTabMainHead">20xx</h1>
+            <h3 class="athTabSubHead">Thumbnails</h3>
+            <br>
+            <br>
+            <div id="floatPics">
+
+            </div>
           </div>
         </section>
         <aside id="sidebar" class="clearfix">
           <article id="select_menu">
-            <div id="topbar">
-              <h2 class="highlight">Semester </h2>
-              <div class="seasons">
-                <table id="seasonTab" class="seasonTable" cellspacing="3" cellpadding="3" summary="List of classes, teachers and grades">
-                  <tr>
-                    <th scope="col" class="summer">SUMMER</th>
-                    <th scope="col" class="fall">FALL</th>
-                    <th scope="col" class="spring">SPRING</th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <button class=asideButton>2009</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2009</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2010</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <button class=asideButton>2010</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2010</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2011</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <button class=asideButton>2011</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2011</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2012</button>
-                    </td>                    
-                  </tr>
-                  <tr>
-                    <td>
-                      <button class=asideButton>2012</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2012</button>
-                    </td>
-                    <td>
-                      <button class=asideButton>2013</button>
-                    </td>
-                  </tr>
-                </table>
+            <div id="navMenu">
+              <div id="seasonSelect">
+                <div class='add-button-container'>
+                  <h2 class="highlight">Season </h2>
+                  <div class='button-container tooltip'>
+                    <span class='tooltiptext'> Add Season</span>
+                    <button class='iBtn material-icons'>add</button>
+                  </div>
+                </div>
+                <nav>
+                  <button class='asideButton'>2018</button>
+                  <button class='asideButton'>2017</button>
+                </nav>
+              </div>
+              <br>
+              <div id="statsSelect">
+                <h2 class="highlight">Stats </h2>
+                  <nav>
+                    <button class='asideButton'>2018</button>
+                    <button class='asideButton'>2017</button>
+                  </nav> 
               </div>
             </div>
           </article>
           <article id="awards">
             <h2> Awards </h2>
-            <div class="tooltip">
-              <span class="tooltiptext">Add an Award</span>
-              <button class=asideAddButton>&#xE145;</button>
-            </div>
             <ul>
               <li>List goes here</li>
             </ul>

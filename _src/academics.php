@@ -75,6 +75,16 @@ function get_athletics($connection) {
     return $result;
 }
 
+function get_avod($connection) {
+    $query = "SELECT students.studentName, hsseasons.season, hsseasons.year, avod.* ";
+    $query .= "FROM students ";
+    $query .= "JOIN hsseasons ON hsseasons.studentId=students.id ";
+    $query .= "JOIN avod ON avod.seasonId=hsseasons.id";
+    $result = mysqli_query($connection, $query);
+    confirm_query($result);
+    return $result;
+}
+
 $conn = open_db();
 /*
  * MHM 2019-02-18
@@ -93,10 +103,12 @@ $transcriptList = get_transcript_academics($conn);
 $rankingsList = get_rankings_academics($conn);
 $awardsList = get_awards($conn);
 $athleticList = get_athletics($conn);
+$avodList = get_avod($conn);
 close_db($conn);
 $res['transcriptList'] = $transcriptList->fetch_all(MYSQLI_ASSOC);
 $res['rankingsList'] = $rankingsList->fetch_all(MYSQLI_ASSOC);
 $res['awardsList'] = $awardsList->fetch_all(MYSQLI_ASSOC);
 $res['athleticList'] = $athleticList->fetch_all(MYSQLI_ASSOC);
+$res['avodList'] = $avodList->fetch_all(MYSQLI_ASSOC);
 echo json_encode($res);
 ?>

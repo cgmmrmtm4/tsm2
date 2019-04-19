@@ -1,17 +1,150 @@
 /*
- * MHM 2019-02-17
- * Comment:
  *  Retrieve academic information from the database.
- * 
- * MHM 2019-02-18
- * Comment:
- *  Simplify database lookup to return all records and then use
- *  javascript to get the information we are after. Since we're no
- *  longer doing a specfic database lookup, we'll change the HTTP
- *  request to a GET instead of a POST.
  */
 
-let returned_data;
+let database_data = (function () {
+  let transcriptList = undefined;
+  let studentList = undefined;
+  let classList =  undefined;
+  let teacherList = undefined;
+  let rankingsList = undefined;
+  let awardsList = undefined;
+  let athleticList = undefined;
+  let sportsList = undefined;
+  let avodList = undefined;
+
+  let getTranscriptList = function() {
+    return transcriptList;
+  };
+  let setTranscriptList = function(ts_data) {
+    transcriptList = ts_data;
+  };
+  let getStudentList = function() {
+    return studentList;
+  };
+  let setStudentList = function(ts_data) {
+    studentList = ts_data;
+  };
+  let getClassList = function() {
+    return classList;
+  };
+  let setClassList = function(ts_data) {
+    classList = ts_data;
+  };
+  let getTeacherList = function() {
+    return teacherList;
+  };
+  let setTeacherList = function(ts_data) {
+    teacherList = ts_data;
+  };
+  let getRankingsList = function() {
+    return rankingsList;
+  };
+  let setRankingsList = function(ts_data) {
+    rankingsList = ts_data;
+  };
+  let getAwardsList = function() {
+    return awardsList;
+  };
+  let setAwardsList = function(ts_data) {
+    awardsList = ts_data;
+  };
+  let getAthleticList = function() {
+    return athleticList;
+  };
+  let setAthleticList = function(ts_data) {
+    athleticList = ts_data;
+  };
+  let getSportsList = function() {
+    return sportsList;
+  };
+  let setSportsList = function(ts_data) {
+    sportsList = ts_data;
+  };
+  let getAvodList = function() {
+    return avodList;
+  }
+  let setAvodList = function(ts_data) {
+    avodList = ts_data;
+  }
+
+  return {
+    getTranscripts: getTranscriptList,
+    setTranscripts: setTranscriptList,
+    getStudents: getStudentList,
+    setStudents: setStudentList,
+    getClasses: getClassList,
+    setClasses: setClassList,
+    getTeachers: getTeacherList,
+    setTeachers: setTeacherList,
+    getRankings: getRankingsList,
+    setRankings: setRankingsList,
+    getAwards: getAwardsList,
+    setAwards: setAwardsList,
+    getAthletics: getAthleticList,
+    setAthletics: setAthleticList,
+    getSports: getSportsList,
+    setSports: setSportsList,
+    getAvod: getAvodList,
+    setAvod: setAvodList
+  }
+})();
+
+/*
+ * Build Student List
+ */
+function buildStudentList() {
+  let retVal = [];
+  let transcriptList = database_data.getTranscripts();
+  for (let record of transcriptList) {
+    if (!retVal.includes(record.studentName)) {
+      retVal.push(record.studentName);
+    }
+  }
+  return retVal.sort();
+}
+
+/*
+ * Build Teacher List
+ */
+function buildTeacherList() {
+  let retVal = [];
+  let transcriptList = database_data.getTranscripts();
+  for (let record of transcriptList) {
+    if (!retVal.includes(record.teacherName)) {
+      retVal.push(record.teacherName);
+    }
+  }
+  return retVal.sort();
+}
+
+/*
+ * Build Class List
+ */
+function buildClassList() {
+  let retVal = [];
+  let transcriptList = database_data.getTranscripts();
+  for (let record of transcriptList) {
+    if (!retVal.includes(record.className)) {
+      retVal.push(record.className);
+    }
+  }
+  return retVal.sort();
+}
+
+/*
+ * Build Sport List
+ */
+function buildSportsList() {
+  let retVal = [];
+  let athleticList = database_data.getAthletics();
+  for (let record of athleticList) {
+    if (!retVal.includes(record.sport)) {
+      retVal.push(record.sport);
+    }
+  }
+  return retVal.sort();
+}
 
 /*
  * MHM 2019-02-17
@@ -24,50 +157,17 @@ let returned_data;
  *  data request.
  */
 
-let performSomeAction = function(returned_data, season, year, student) {
-  /*
-   * MHM 2019-02-17
-   * Comment:
-   *  Find the table in the HTML document and build it.
-   * 
-   * MHM 2019-02-18
-   * Comment:
-   *  Added the season, year and student parameters since we're going
-   *  doing the filtering here instead of in the database query.
-   */
-  let tableElement = document.getElementById("semTab");
-  let row;
-  let cnt=1;
-  let cell1, cell2, cell3, cell4;
-
-  /*
-   * MHM 2019-02-18
-   * Comment:
-   *  We get the complete transcript list from the database. Now
-   *  Filter for the records we want to display.
-   */
-
-  let transcriptList = returned_data.transcriptList;
-  let semesterList = transcriptList.filter(function (obj) {
-    return (obj.season===season && obj.year===year && obj.studentName===student);
-  });
-
-  for (x in semesterList) {
-    row = tableElement.insertRow(cnt++);
-    row.className = "academicEntry";
-    cell1 = row.insertCell(0);
-    cell1.className = "period";
-    cell1.innerHTML = semesterList[x].period;
-    cell2 = row.insertCell(1);
-    cell2.className = "className";
-    cell2.innerHTML = semesterList[x].className;
-    cell3 = row.insertCell(2);
-    cell3.className = "teacher";
-    cell3.innerHTML = semesterList[x].teacherName;
-    cell4 = row.insertCell(3);
-    cell4.className = "grade";
-    cell4.innerHTML = semesterList[x].grade;
-  }
+let performSomeAction = function(returned_data) {
+  database_data.setTranscripts(returned_data.transcriptList);
+  database_data.setClasses(buildClassList());
+  database_data.setTeachers(buildTeacherList());
+  database_data.setRankings(returned_data.rankingsList);
+  database_data.setAwards(returned_data.awardsList);
+  database_data.setStudents(buildStudentList());
+  database_data.setAthletics(returned_data.athleticList);
+  database_data.setSports(buildSportsList());
+  database_data.setAvod(returned_data.avodList);
+  build_pictures();
 }
 
 /*
@@ -75,55 +175,12 @@ let performSomeAction = function(returned_data, season, year, student) {
  * Comment:
  *  Get academic information from the database. Use AJAX POST.
  */
-function getAcademicInfo(callback, season, year, student) {
-  /*
-   * MHM 2019-02-17
-   * Comment:
-   *  Update table header
-   * 
-   * MHM 2019-02-20
-   * Comment:
-   *  Add student name to header.
-   */
-  let tableHeader = document.getElementById("seasonYear");
-  tableHeader.innerHTML = student + " " + season + " " + year;
-
-  /*
-   * MHM 2019-02-17
-   * Comment:
-   *  Build parameter list for db query
-   * 
-   * MHM 2019-02-18
-   * Comment:
-   *  Removed DB query parameters.
-   */
-
-  /*
-   * MHM 2019-02-17
-   * Comment:
-   *  Set-up and call AJAX POST request, provide a callback routine
-   *  for the results
-   * 
-   * MHM 2019-02-18
-   * Comment:
-   *  Since we removed the DB parameters, change the POST request to
-   *  a GET request.
-   */
+function getAcademicInfo(callback) {
   let xhttp = new XMLHttpRequest();
 
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      /*
-       * MHM 2019-02-17
-       * Comment: 
-       *  Call callback function and send result as an array 
-       * 
-       * MHM 2019-02-18
-       * Comment:
-       *  Add season, year and student to callback. We'll use
-       *  javascript to filter the information we're looking for.
-       */
-      callback.apply(this,[JSON.parse(this.responseText), season, year, student]);
+      callback.apply(this,[JSON.parse(this.responseText)]);
     }
   };
 
@@ -163,15 +220,74 @@ function error_not_implemented() {
   $("#messages").attr("class","error").text("Feature not implemented yet!");
 };
 
+function randomPicture(student, activity) {
+  defRetVal = 'https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none';
+  let pictureList = database_data.getAvod();
+  let filteredList = pictureList.filter(function (obj) {
+    return (obj.studentName === student && obj.activity === activity);
+  });
+  if (filteredList.length !== 0) {
+    return filteredList[Math.floor(Math.random() * filteredList.length)].thumbName;
+  } else {
+    return defRetVal;
+  }
+}
+
+function build_pictures() {
+  let pictureList = database_data.getAvod();
+  for (let x in pictureList) {
+    $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .addClass('tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Download Picture')
+        )
+        .append($('<a>')
+          .attr('href', pictureList[x].fileName)
+          .attr('download', '')
+          .attr('target','_blank')
+          .append($('<img>')
+            .addClass('thumbnail')
+            .attr('src', pictureList[x].thumbName)
+          )
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Delete Picture')
+        )
+        .append($('<button>')
+          .addClass('dBtn material-icons')
+          .text('delete')
+        )
+      )
+    );
+  }
+  $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .addClass('thumbnail')
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Add Picture')
+        )
+        .append($('<button>')
+          .addClass('iBtn material-icons')
+          .text('add')
+        )
+      )
+  )
+  $('#p1').attr('src', randomPicture('Rachel', 'Academic'));
+  $('#p2').attr('src', randomPicture('Theo', 'Academic'));
+}
+
 removeElementsByClassName("academicEntry");
-getAcademicInfo(performSomeAction, "FALL", "2011", "Rachel");
+getAcademicInfo(performSomeAction);
 console.log("too foo");
-$(".asideAddButton").click(function(){
-  console.log("you foo");
-  error_not_implemented();
-});
-/*$(".asideButton").click(function(){
-  console.log("how foo");
-  error_not_implemented();
-});*/
-$(".asideButton").on("click", error_not_implemented);

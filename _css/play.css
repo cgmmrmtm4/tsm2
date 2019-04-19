@@ -175,6 +175,12 @@ ul {
 .add-button-container div {
     display: inline;
 }
+.aPic {
+    width: 150px;
+    height: 150px;
+    float: left;
+    padding: 5px 15px;
+}
 .asideAddButton, .mainAddButton {
     background-color: inherit;
     border: none;
@@ -200,6 +206,23 @@ ul {
     border-radius: 45%;
     border: 2px solid white;
 }
+.athleticPics {
+    width: 100%;
+    padding: 3px 0px;
+    margin: 1px 0px 250px 0px;
+}
+.athTabMainHead {
+    font-size: 2.7em;
+    align-content: center;
+    text-align: center;
+    color: white;
+}
+.athTabSubHead {
+    font-size: 1.2em;
+    align-content: center;
+    text-align: center;
+    color: white;
+}
 .cBtn, .dBtn, .eBtn, .iBtn, .sBtn {
     box-shadow: 0px 1px 0px 0px #fff6af;
     background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
@@ -218,6 +241,11 @@ ul {
 .cBtn:hover, .sBtn:hover, .eBtn:hover, .dBtn:hover, .iBtn:hover {
     background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
     background-color:#ffab23;
+}
+.centered-table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
 }
 .clearfix:after {
 	content: "\0020";
@@ -287,11 +315,32 @@ ul {
 .error ul { 
     padding-left: 2em;
 }
+.floatLeft {
+    width: 50%;
+    float: left;
+}
+.floatRight {
+    width: 50%;
+    float: right;
+}
+.gameDate {
+    width: 65px;
+}
 .highlight {
 	color: whitesmoke;
 }
+.league p {
+    width: 2px;
+}
+.location {
+    width: 125px;
+}
 .mainAddButton {
     margin-left: 100px;
+}
+.matchScore {
+    font-weight: bold;
+    width: 150px;
 }
 .navButton {
     float: left;
@@ -308,12 +357,26 @@ ul {
 .navButton:hover {
     background-color: green;
 }
+.opponent {
+    font-style: italic;
+    width: 125px;
+}
+.result {
+    width: 2px;
+}
 .seasonTable {
     margin: 0;
 }
 .semesterTable {
     margin-left: auto;
     margin-right: auto;
+}
+.thumbnail {
+    width: 125px;
+    height: 125px;
+    border-color: aqua;
+    border-style: groove;
+    float: left;
 }
 .tooltip {
     position: relative;
@@ -360,6 +423,17 @@ ul {
 	margin-bottom: 0;
 }
 /* ids */
+#athleticTab h1 {
+    text-align: center;
+}
+#athleticTab h4 {
+    color: white;
+    font-style: italic;
+}
+#athleticTab table {
+    border-collapse: collapse;
+    color: white;
+}
 #awards h2 {
     font-size: 1.4em;
 	margin-bottom: 10px;
@@ -391,15 +465,16 @@ ul {
 #main article:nth-of-type(1) h2 {
 	padding-top: 0;
 }
-#main div.vbpics {
+#main div.athleticPics {
     width: 100%;
-    height: 210px;
+    height: 175px;
     padding: 3px 0px;
     margin: 1px 0px 5px 0px; 
 }
 #main h1 {
     font-size: 2.7em;
     align-content: center;
+    text-align: center;
     color: white;
 }
 #main h1, #main h2, #main h3, #main h4, #main h5, #main h6, #main p {
@@ -411,12 +486,16 @@ ul {
 	padding-top: 20px;
 }
 #main img.sportLeft {
+    width: 150px;
+    height: 150px;
     float: left;
-}
-#main img.sportLeft, #main img.sportRight {
-    width: 200px;
-    height: 200px;
     padding: 2px 25px;
+}
+#main img.sportRight {
+    width: 150px;
+    height: 150px;
+    padding: 2px 25px;
+    float: right;
 }
 #main img.sportRight {
     float: right;
@@ -429,6 +508,10 @@ ul {
 #page_academics table {
     border-collapse: collapse;
     color: white;
+}
+#record td {
+    text-align: right;
+    font-weight: bold;
 }
 #seasonTab {
     color: white;
