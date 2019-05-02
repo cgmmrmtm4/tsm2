@@ -59,6 +59,7 @@ let database_data = (function () {
   let athleticList = undefined;
   let sportsList = undefined;
   let avodList = undefined;
+  let statList = undefined;
 
   let getTranscriptList = function() {
     return transcriptList;
@@ -114,6 +115,12 @@ let database_data = (function () {
   let setAvodList = function(ts_data) {
     avodList = ts_data;
   }
+  let getStatList = function() {
+    return statList;
+  }
+  let setStatList = function(ts_data) {
+    statList = ts_data;
+  }
 
   return {
     getTranscripts: getTranscriptList,
@@ -133,7 +140,9 @@ let database_data = (function () {
     getSports: getSportsList,
     setSports: setSportsList,
     getAvod: getAvodList,
-    setAvod: setAvodList
+    setAvod: setAvodList,
+    getStats: getStatList,
+    setStats: setStatList
   }
 })();
 
@@ -233,7 +242,7 @@ function randomPicture(student, activity) {
   defRetVal = 'https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none';
   let pictureList = database_data.getAvod();
   let filteredList = pictureList.filter(function (obj) {
-    return (obj.studentName === student && obj.activity === activity);
+    return (obj.studentName === student && obj.activity === activity && obj.video === "No");
   });
   if (filteredList.length !== 0) {
     return filteredList[Math.floor(Math.random() * filteredList.length)].thumbName;
@@ -353,6 +362,7 @@ let performSomeAction = function(returned_data) {
   database_data.setAthletics(returned_data.athleticList);
   database_data.setSports(buildSportsList());
   database_data.setAvod(returned_data.avodList);
+  database_data.setStats(returned_data.statList);
 
   /*
    * Build Navigation Buttons
@@ -1036,11 +1046,13 @@ function build_academic_aside_nav(student) {
    */
   let awardsList = '\
   <article id="awards">\
-    <div class="add-button-container">\
-      <h2>Awards</h2>\
-      <div id="awardsTooltip" class="button-container tooltip">\
-        <span class="tooltiptext">Add an Award</span>\
-        <button class="iBtn material-icons">add</button>\
+    <div id="awardsDiv">\
+      <div class="add-button-container">\
+        <h2>Awards</h2>\
+        <div id="awardsTooltip" class="button-container tooltip">\
+          <span class="tooltiptext">Add an Award</span>\
+          <button class="iBtn material-icons">add</button>\
+        </div>\
       </div>\
     </div>\
     <ul id="awardsList">\
@@ -1193,6 +1205,396 @@ function build_athletic_table(student, sport, year, varsity) {
   addHiddenAthleticInsertRow("schdres");
 }
 
+function build_pictures(picList) {
+  for (x in picList) {
+    $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .addClass('tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Download Picture')
+        )
+        .append($('<a>')
+          .attr('href', picList[x].fileName)
+          .attr('download', '')
+          .attr('target','_blank')
+          .append($('<img>')
+            .addClass('thumbnail')
+            .attr('src', picList[x].thumbName)
+          )
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Delete Picture')
+        )
+        .append($('<button>')
+          .addClass('dBtn material-icons')
+          .text('delete')
+          .click(function() {
+            error_not_implemented()
+          })
+        )
+      )
+    );
+  }
+  $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .append($('<img>')
+          .attr('src', "https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none")
+          .addClass('thumbnail')
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Add Picture')
+        )
+        .append($('<button>')
+          .addClass('iBtn material-icons')
+          .text('add')
+          .click(function(){
+            error_not_implemented();
+          })
+        )
+      )
+  );
+}
+
+function build_videos(vidList) {
+  for (x in vidList) {
+    $("#floatPics").append($('<div>')
+      .addClass('aVid')
+      .append($('<div>')
+        .addClass('tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Play Video')
+        )
+        .append($('<video>')
+          .addClass("thumbnail")
+          .attr('preload', 'none')
+          .attr('controls','')
+          .attr('poster', vidList[x].thumbName)
+          .append($('<source>')
+            .attr('src', vidList[x].fileName)
+          )
+        )
+        .append($('<span>')
+          .append($('<b>')
+            .addClass('vidTitle')
+            .text(vidList[x].title)
+          )
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Delete Video')
+        )
+        .append($('<button>')
+          .addClass('dBtn material-icons')
+          .text('delete')
+          .click(function() {
+            error_not_implemented()
+          })
+        )
+      )
+    );
+  }
+  $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .append($('<img>')
+          .attr('src', "https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none")
+          .addClass('thumbnail')
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Add Video')
+        )
+        .append($('<button>')
+          .addClass('iBtn material-icons')
+          .text('add')
+          .click(function(){
+            error_not_implemented();
+          })
+        )
+      )
+  );
+}
+
+function buildThumbnailTable(student, sport, year, video) {
+  let thumbNailPage = '\
+  <div class="athleticPics">\
+    <img id="p1" class="sportLeft" src="">\
+    <img id="p2" class="sportRight" src="">\
+  </div>\
+  <div id="athTable">\
+    <h1 id="athPicYear" class="athTabMainHead"></h1>\
+    <h3 id="athAVType" class="athTabSubHead"></h2>\
+    <br>\
+    <br>\
+    <div id="floatPics">\
+    </div>\
+  </div>'
+
+  $("#main").append(thumbNailPage);
+  $("#athPicYear").text(year);
+  if (video === "No") {
+    $("#athAVType").text("Thumbnails");
+  } else {
+    $("#athAVType").text("Videos")
+  }
+  $("#p1").attr("src", randomPicture(student, sport));
+  $("#p2").attr("src", randomPicture(student, sport));
+  let pictureList = database_data.getAvod();
+  let sportAv = pictureList.filter(function (obj){
+    return (obj.studentName === student && obj.activity === sport && obj.year === year && obj.video === video)
+  });
+  if (sportAv.length !== 0) {
+    if (video === "No") {
+      build_pictures(sportAv);
+    } else {
+      build_videos(sportAv);
+    }
+  }
+}
+
+function addDynRow(tableId, prefix) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('opponent')
+      .html(prefix)
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Assists')
+      .addClass('assists')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Blocks')
+      .addClass('blocks')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Kills')
+      .addClass('kills')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Digs')
+      .addClass('digs')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Serves')
+      .addClass('serves')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Aces')
+      .addClass('aces')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Sideouts')
+      .addClass('sideOut')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html("")
+      .hide()
+    )
+  );
+}
+
+function addHiddenInsertStatRow(tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('opponent')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('assists')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('blocks')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('kills')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('digs')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('serves')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('aces')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('sideOut')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getInsertButton())
+    )
+  );
+
+  $('.iBtn').on("click", error_not_implemented);
+}
+
+function addStatRow(row, tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('opponent')
+      .html(row.opponent)
+    )
+    .append($('<td>')
+      .addClass('assists')
+      .html(row.assists)
+    )
+    .append($('<td>')
+      .addClass('blocks')
+      .html(row.blocks)
+    )
+    .append($('<td>')
+      .addClass('kills')
+      .html(row.kills)
+    )
+    .append($('<td>')
+      .addClass('digs')
+      .html(row.digs)
+    )
+    .append($('<td>')
+      .addClass('serves')
+      .html(row.serves)
+    )
+    .append($('<td>')
+      .addClass('aces')
+      .html(row.aces)
+    )
+    .append($('<td>')
+      .addClass('sideOut')
+      .html(row.sideouts)
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getEditDeleteButtons())
+    )
+  );
+
+  $('.eBtn').on("click", error_not_implemented);
+  $('.dBtn').on("click", error_not_implemented);
+}
+
+function get_property_sum_avg(arr, property) {
+  let tot = 0;
+  let avg = 0;
+  tot = arr.reduce(function(a,b) {
+    return a+parseInt(b[property])
+  }, 0);
+  avg = (tot/arr.length).toFixed(2);
+  return {total: tot, average: avg};
+}
+
+function getYearStats(year) {
+  let result = 0;
+  let statList = database_data.getStats();
+  let yearStats = statList.filter(function (obj){
+    return (obj.year === year)
+  });
+  
+  for (let x in yearStats) {
+    addStatRow(yearStats[x], "statTab");
+  }
+  addHiddenInsertStatRow('statTab');
+  addDynRow('statTab', 'Totals');
+  addDynRow('statTab', 'Averages');
+
+  result = get_property_sum_avg(yearStats, 'assists');
+  $('#TotalsAssists').text(result.total);
+  $('#AveragesAssists').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'blocks');
+  $('#TotalsBlocks').text(result.total);
+  $('#AveragesBlocks').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'kills');
+  $('#TotalsKills').text(result.total);
+  $('#AveragesKills').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'digs');
+  $('#TotalsDigs').text(result.total);
+  $('#AveragesDigs').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'serves');
+  $('#TotalsServes').text(result.total);
+  $('#AveragesServes').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'aces');
+  $('#TotalsAces').text(result.total);
+  $('#AveragesAces').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'sideouts');
+  $('#TotalsSideouts').text(result.total);
+  $('#AveragesSideouts').text(result.average);
+}
+
+function buildStatsTable(student, sport, year) {
+  let statsPage = '\
+  <div class="athleticPics">\
+    <img id="p1" src="" class="sportLeft">\
+    <img id="p2" src="" class="sportRight">\
+  </div>\
+  <div id="vbStatsTab">\
+    <h1 id="statsSportYear"></h1>\
+    <br>\
+    <table id="statTab" class="centered-table" cellspacing="5" cellpadding="5" border="1" summary="Stats">\
+      <caption>\
+        <h3>Statistics</h3>\
+      </caption>\
+      <tbody>\
+        <tr>\
+          <th scope="col" class="opponent">Opponent</th>\
+          <th scope="col" class="assits">Assists</th>\
+          <th scope="col" class="blocks">Blocks</th>\
+          <th scope="col" class="kills">Kills</th>\
+          <th scope="col" class="digs">Digs</th>\
+          <th scope="col" class="serves">Serves</th>\
+          <th scope="col" class="aces">Aces</th>\
+          <th scope="col" class="sideOut">Side Out</th>\
+          <th scope="col" class="modify"></th>\
+        </tr>\
+      </tbody>\
+    </table>\
+  </div>'
+
+  $("#main").append(statsPage);
+  $("#statsSportYear").text(year + " " + sport + " Stats");
+  $("#p1").attr("src", randomPicture(student, sport));
+  $("#p2").attr("src", randomPicture(student, sport));
+  getYearStats(year);
+}
+
 function build_athletic_aside_nav(student, sport, years) {
   /*
    *  Build the selection_menu article
@@ -1200,55 +1602,73 @@ function build_athletic_aside_nav(student, sport, years) {
   let athleticList = '\
   <article id="select_menu">\
     <div id="topbar">\
-      <div id="navMenu">\
+      <div id="seasonSelect">\
         <div class="add-button-container">\
           <h2 class="highlight">Season </h2>\
           <div class="button-container tooltip">\
             <span class="tooltiptext">Add New Year</span>\
-            <button class="iBtn material-icons">add</button>\
+            <button id="addASeason" class="iBtn material-icons">add</button>\
           </div>\
         </div>\
         <nav id="selectSeason">\
         </nav>\
-        <br>\
+      </div>\
+      <div id="picturesSelect">\
         <div class="add-button-container">\
           <h2 class="highlight">Pictures </h2>\
           <div class="button-container tooltip">\
             <span class="tooltiptext">Add New Year</span>\
-            <button class="iBtn material-icons">add</button>\
+            <button id="addAPicture" class="iBtn material-icons">add</button>\
           </div>\
         </div>\
         <nav id="selectPictures">\
         </nav>\
-        <br>\
+      </div>\
+      <div id="videosSelect">\
         <div class="add-button-container">\
           <h2 class="highlight">Videos </h2>\
           <div class="button-container tooltip">\
             <span class="tooltiptext">Add New Year</span>\
-            <button class="iBtn material-icons">add</button>\
+            <button id="addAVideo" class="iBtn material-icons">add</button>\
           </div>\
         </div>\
         <nav id="selectVideos">\
         </nav>\
-        <br>\
+      </div>\
+      <div id="statsSelect">\
         <div class="add-button-container">\
           <h2 class="highlight">Stats </h2>\
           <div class="button-container tooltip">\
             <span class="tooltiptext">Add New Year</span>\
-            <button class="iBtn material-icons">add</button>\
+            <button id="addAStat" class="iBtn material-icons">add</button>\
           </div>\
         </div>\
         <nav id="selectStats">\
         </nav>\
-        <br>\
       </div>\
     </div>\
   </article>';
   $("#sidebar").append(athleticList);
-  //$('#selectStats').hide();
+  if (!(student === "Theodore" && sport === "Volleyball")) {
+    $('#statsSelect').hide();
+  }
   //$('#selectVideos').hide();
   //$('#selectPictures').hide();
+  $("#addASeason").click(function() {
+    error_not_implemented();
+  });
+  $("#addAPicture").click(function() {
+    error_not_implemented();
+  });
+  $("#addAVideo").click(function() {
+    error_not_implemented();
+  });
+  $("#addAStat").click(function() {
+    error_not_implemented();
+  });
 
+  let getAVList = database_data.getAvod();
+  let getStatList = database_data.getStats();
   for (x in years) {
     let thisYear = years[x].year;
     let varsity = strVJV(student, sport, years, thisYear);
@@ -1260,7 +1680,51 @@ function build_athletic_aside_nav(student, sport, years) {
         resetErrorMsgElement();
         build_athletic_table(student, sport, thisYear, varsity);
       })
-    )
+    );
+    let thisYearsPictures = getAVList.filter(function(obj) {
+      return (obj.studentName === student && obj.activity === sport && obj.year == thisYear && obj.video === "No")
+    });
+    if (thisYearsPictures.length !== 0) {
+      $("#selectPictures").append($('<button>')
+        .addClass('asideButton')
+        .html(thisYear)
+        .click(function() {
+          cleanMain();
+          resetErrorMsgElement();
+          buildThumbnailTable(student, sport, thisYear, "No");
+        })
+      );
+    };
+    let thisYearsVideos = getAVList.filter(function(obj) {
+      return (obj.studentName === student && obj.activity === sport && obj.year == thisYear && obj.video === "Yes")
+    });
+    if (thisYearsVideos.length !== 0) {
+      $("#selectVideos").append($('<button>')
+        .addClass('asideButton')
+        .html(thisYear)
+        .click(function() {
+          cleanMain();
+          resetErrorMsgElement();
+          buildThumbnailTable(student, sport, thisYear, "Yes");
+        })
+      );
+    };
+    if (student === "Theodore" && sport === "Volleyball") {
+      let thisYearsStats = getStatList.filter(function(obj) {
+        return (obj.year === thisYear)
+      });
+      if (thisYearsStats.length !== 0) {
+        $("#selectStats").append($('<button>')
+          .addClass('asideButton')
+          .html(thisYear)
+          .click(function() {
+            cleanMain();
+            resetErrorMsgElement();
+            buildStatsTable(student, sport, thisYear);
+          })
+        )
+      }
+    }
   }
 
   /*
@@ -1268,11 +1732,13 @@ function build_athletic_aside_nav(student, sport, years) {
    */
   let awardsList = '\
   <article id="awards">\
-    <div class="add-button-container">\
-      <h2>Awards</h2>\
-      <div id="awardsTooltip" class="button-container tooltip">\
-        <span class="tooltiptext">Add an Award</span>\
-        <button class="iBtn material-icons">add</button>\
+    <div id="awardsDiv">\
+      <div class="add-button-container">\
+        <h2>Awards</h2>\
+        <div id="awardsTooltip" class="button-container tooltip">\
+          <span class="tooltiptext">Add an Award</span>\
+          <button id="addAAward" class="iBtn material-icons">add</button>\
+        </div>\
       </div>\
     </div>\
     <ul id="awardsList">\
@@ -1294,7 +1760,7 @@ function build_athletic_aside_nav(student, sport, years) {
     }
   }
 
-  $(".asideAddButton").click(function(){
+  $("#addAAward").click(function(){
     error_not_implemented();
   });
 }

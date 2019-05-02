@@ -206,6 +206,10 @@ ul {
     border-radius: 45%;
     border: 2px solid white;
 }
+.assists, .blocks, .kills, .digs, .serves, .aces {
+    width: 60px;
+    text-align: right;
+}
 .athleticPics {
     width: 100%;
     padding: 3px 0px;
@@ -222,6 +226,12 @@ ul {
     align-content: center;
     text-align: center;
     color: white;
+}
+.aVid {
+    width: 175px;
+    height: 200px;
+    float: left;
+    padding: 5px 15px;
 }
 .cBtn, .dBtn, .eBtn, .iBtn, .sBtn {
     box-shadow: 0px 1px 0px 0px #fff6af;
@@ -371,6 +381,10 @@ ul {
     margin-left: auto;
     margin-right: auto;
 }
+.sideOut {
+    width: 70px;
+    text-align: right;
+}
 .thumbnail {
     width: 125px;
     height: 125px;
@@ -415,6 +429,13 @@ ul {
     visibility: visible;
     opacity: 1;
 }
+.vidTitle {
+    color: white;
+    text-align: left;
+    width: 100px;
+    font-size: 12px;
+    display: block;
+}
 .wrapper {
 	width: 1000px;
 	background: #0E4182;
@@ -430,7 +451,7 @@ ul {
     color: white;
     font-style: italic;
 }
-#athleticTab table {
+#athleticTab table, #vbStatsTab table {
     border-collapse: collapse;
     color: white;
 }
@@ -442,6 +463,10 @@ ul {
 }
 #awards li {
     color: white;
+}
+#awardsDiv {
+    padding-top: 20px;
+    clear: both;
 }
 #gradyr h1 {
     font-size: 3.0em;
@@ -520,6 +545,10 @@ ul {
     border-collapse: collapse;
     color: white;
 }
+#seasonSelect, #statsSelect, #videosSelect, #picturesSelect {
+    float: left;
+    padding: 5px 5px;
+}
 #seasonTab tr td {
     width: 70px;
 }
@@ -586,6 +615,9 @@ ul {
     color: white;
 }
 
+#videosSelect {
+    clear: both;
+}
 /* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
 ::-moz-selection {
 background: #fcd700;

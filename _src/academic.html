@@ -71,14 +71,25 @@
             <img id='p1' class="sportLeft" src="">
             <img id='p2' class="sportRight" src="">
           </div>
-          <div id="athTable">
+          <div id="vbStatsTab">
             <h1 class="athTabMainHead">20xx</h1>
-            <h3 class="athTabSubHead">Thumbnails</h3>
             <br>
-            <br>
-            <div id="floatPics">
-
-            </div>
+            <table id="statTab" class="centered-table" border="1" cellspacing="0" cellpadding="0" summary="Stats">
+              <caption>
+                <h3>Statistics</h3>
+              </caption>
+              <tr>
+                <th scope="col" class="opponent">Opponent</th>
+                <th scope="col" class="assists">Assists</th>
+                <th scope="col" class="blocks">Blocks</th>
+                <th scope="col" class="kills">Kills</th>
+                <th scope="col" class="digs">Digs</th>
+                <th scope="col" class="serves">Serves</th>
+                <th scope="col" class="aces">Aces</th>
+                <th scope="col" class="sideOut">Side Out</th>
+                <th scope="col" class="modify"></th>
+              </tr>
+            </table>
           </div>
         </section>
         <aside id="sidebar" class="clearfix">
@@ -97,19 +108,32 @@
                   <button class='asideButton'>2017</button>
                 </nav>
               </div>
-              <br>
               <div id="statsSelect">
-                <h2 class="highlight">Stats </h2>
-                  <nav>
-                    <button class='asideButton'>2018</button>
-                    <button class='asideButton'>2017</button>
-                  </nav> 
+                <div class='add-button-container'>
+                  <h2 class="highlight">Stats </h2>
+                  <div class='button-container tooltip'>
+                    <span class='tooltiptext'> Add Season</span>
+                    <button class='iBtn material-icons'>add</button>
+                  </div>
+                </div>
+                <nav>
+                  <button class='asideButton'>2018</button>
+                  <button class='asideButton'>2017</button>
+                </nav>
               </div>
             </div>
           </article>
           <article id="awards">
-            <h2> Awards </h2>
-            <ul>
+            <div id=awardsDiv>
+              <div class="add-button-container">
+                <h2>Awards</h2>
+                <div id="awardsTooltip" class="button-container tooltip">
+                  <span class="tooltiptext">Add an Award</span>
+                  <button class="iBtn material-icons">add</button>
+                </div>
+              </div>
+            </div>
+            <ul id="awardsList">
               <li>List goes here</li>
             </ul>
           </article>
@@ -124,5 +148,5 @@
     </div>
   </body>
   <script src="../_scripts/jquery-3.3.1.js"></script>
-  <script src="../_scripts/academics.js"></script>
+  <script type="module" src="../_scripts/academics.js"></script>
 </html>
