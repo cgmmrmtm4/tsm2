@@ -19,7 +19,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Rachel and Theodore's High School Page</title>
+    <title>Rachel and Theodore's High School Site</title>
     <link rel="stylesheet" type="text/css" href="../_css/play.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -29,12 +29,12 @@
     <div class="wrapper">
         <header>
             <div class="branding">
-                <img src="../../img/mbhs/Photos/Misc/spft.jpg" width="90" height="75" alt="Logo">
+                <img id="hdrImg" src="https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none" width="90" height="75" alt="Logo">
                 <p>Morro Bay High School<br>
                     Academics • Athletics</p>
             </div>
             <div class="description">
-                <h1>Rachel and Theo's High School Pages</h1>
+                <h1>Rachel and Theo's High School Site</h1>
                 <p>Highlights of their High School career</p>
             </div>
             <nav>
@@ -45,8 +45,6 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div id="studentName" class="dropdown-content">
-                            <button id="rABtn" class="navButton">Rachel</button>
-                            <button id="tABtn" class="navButton">Theodore</button>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -54,39 +52,6 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div id="sportName" class="dropdown-content">
-                            <div class="dropdownSoccer">
-                                <button class=dropbtnSoccer>SOCCER
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div id="socAthName" class="dropdownSoccer-content">
-                                    <button id="tSocBtn" class="navButton">Theodore</button>
-                                </div>
-                            </div>
-                            <div class="dropdownSoftBall">
-                                <button class=dropbtnSoftBall>SOFTBALL
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div id="sbAthName" class="dropdownSoftBall-content">
-                                    <button id="rSbBtn" class="navButton">Rachel</button>
-                                </div>
-                            </div>
-                            <div class="dropdownTennis">
-                                <button class=dropbtnTennis>TENNIS
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div id="tenAthName" class="dropdownTennis-content">
-                                    <button id="rTenBtn" class="navButton">Rachel</button>
-                                </div>
-                            </div>
-                            <div class="dropdownVolleyBall">
-                                <button class=dropbtnVolleyBall>VOLLEYBALL
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div id="vbAthName" class="dropdownVolleyBall-content">
-                                    <button id="rVbBtn" class="navButton">Rachel</button>
-                                    <button id="tVbBtn" class="navButton">Theodore</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -110,7 +75,7 @@
             </nav>
         </header>
         <div id="rotator">
-            <img src="../../img/mbhs/Photos/Misc/mbhs.jpg" width=100% height="120" alt="MBHS from land">
+            <img src="https://icqp9q.dm.files.1drv.com/y4mPlkRe7IND5abwHq1TM2Hi6g2DYC_t1DhOHO_sBAb0-sI_cfJ2h-cpB5VlqDwi3uxIRailvnRuEAm7GY04yzDtvK0zV8Aoal6f6cOz5szWFA9gOWVT3EfhABYY7JHK0BrwmaX1RVIlY2XHrE2wEZIBEXgP2AT-VDZKyze_EQGpDU_UYDtcyPnQEpwPMj8-M22XwcIW4cxPipmIOHOYgUZ_Q?width=267&height=189&cropmode=none" width=100% height="120" alt="Morro Rock">
         </div>
         <div id="errorPanel">
             <p id=messages>
@@ -118,40 +83,12 @@
             </p>
         </div>
         <section id="main">
-            <div id="mbPics">
-                <!-- 
-                    MHM 2019-02-20
-                    Comment:
-                     Oddity. The closing arrow brackets need
-                     to be on the next img element. Otherwise
-                     we get whitespace for some unknown reason.
-                -->
-                <img src="../../img/mbhs/Photos/Misc/mbhs.jpg" width="310" height="200" class="floatLeft"
-                ><img src="../../img/mbhs/Photos/Misc/mrock.jpg" width="310" height="200" class="floatRight">
-            </div>
-            <div class="kidPics">
-                <!-- 
-                    MHM 2019-02-20
-                    Comment:
-                     Oddity. The closing arrow brackets need
-                     to be on the next img element. Otherwise
-                     we get whitespace for some unknown reason.
-                -->
-                <img src="../../img/mbhs/Photos/Academics/2013/S7300662.JPG" width="310" height="375" class="floatLeft"
-                ><img src="../../img/mbhs/Photos/Academics/2015/Theo.JPG" width="310" height="375" class="floatLeft">
-            </div>
         </section>
         <aside id="sidebar" class="clearfix">
-            <article id="gradyr">
-                <h1>Our</h1>
-                <h1>Morro Bay</h1>
-                <h1>High School</h1>
-                <h1>Students</h1>
-            </article>
         </aside>
         <footer>
             <div class="branding">
-                <img src="../../img/mbhs/Photos/Misc/logo.jpg" alt="Logo">
+                <img src="https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none" alt="Logo">
             </div>
             <div class="description">&copy; 2015&ndash;2019 Mark Mackey</div>
         </footer>

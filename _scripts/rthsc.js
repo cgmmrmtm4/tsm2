@@ -56,6 +56,10 @@ let database_data = (function () {
   let teacherList = undefined;
   let rankingsList = undefined;
   let awardsList = undefined;
+  let athleticList = undefined;
+  let sportsList = undefined;
+  let avodList = undefined;
+  let statList = undefined;
 
   let getTranscriptList = function() {
     return transcriptList;
@@ -93,6 +97,30 @@ let database_data = (function () {
   let setAwardsList = function(ts_data) {
     awardsList = ts_data;
   };
+  let getAthleticList = function() {
+    return athleticList;
+  };
+  let setAthleticList = function(ts_data) {
+    athleticList = ts_data;
+  };
+  let getSportsList = function() {
+    return sportsList;
+  };
+  let setSportsList = function(ts_data) {
+    sportsList = ts_data;
+  };
+  let getAvodList = function() {
+    return avodList;
+  }
+  let setAvodList = function(ts_data) {
+    avodList = ts_data;
+  }
+  let getStatList = function() {
+    return statList;
+  }
+  let setStatList = function(ts_data) {
+    statList = ts_data;
+  }
 
   return {
     getTranscripts: getTranscriptList,
@@ -106,7 +134,15 @@ let database_data = (function () {
     getRankings: getRankingsList,
     setRankings: setRankingsList,
     getAwards: getAwardsList,
-    setAwards: setAwardsList
+    setAwards: setAwardsList,
+    getAthletics: getAthleticList,
+    setAthletics: setAthleticList,
+    getSports: getSportsList,
+    setSports: setSportsList,
+    getAvod: getAvodList,
+    setAvod: setAvodList,
+    getStats: getStatList,
+    setStats: setStatList
   }
 })();
 
@@ -153,6 +189,165 @@ function buildClassList() {
 }
 
 /*
+ * Build Sport List
+ */
+function buildSportsList() {
+  let retVal = [];
+  let athleticList = database_data.getAthletics();
+  for (let record of athleticList) {
+    if (!retVal.includes(record.sport)) {
+      retVal.push(record.sport);
+    }
+  }
+  return retVal.sort();
+}
+
+/*
+ * Get the list of years a student was in school
+ */
+function getStudentYears(studentName) {
+  /*
+   * Filter the transcriptList for the specfied student
+   */
+  let transcriptList = database_data.getTranscripts();
+  let findStudentTrans = transcriptList.filter(function (obj) {
+    return (obj.studentName===studentName);
+  });
+
+  /*
+   * Using the records in findStudentTrans, get distinct
+   * semester, year values.
+   */
+  let years = findStudentTrans.reduce((acc, x) =>
+  acc.concat(acc.find(y => y.year === x.year) ? [] : [x]), []);
+  return years;
+}
+
+function getAthleticYears(studentName, sportName) {
+  let sportList = database_data.getAthletics();
+  let findStudentAthlete = sportList.filter(function (obj) {
+    return (obj.studentName === studentName && obj.sport === sportName);
+  });
+
+  let years = findStudentAthlete.reduce((acc, x) => acc.concat(acc.find(y => y.year === x.year) ? [] : [x]), []);
+  return years;
+}
+
+/*
+ * Return a random picture based on 
+ * student name and activity to populate
+ * the main section picture headers.
+ */
+function randomPicture(student, activity) {
+  defRetVal = 'https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none';
+  let pictureList = database_data.getAvod();
+  let filteredList = pictureList.filter(function (obj) {
+    return (obj.studentName === student && obj.activity === activity && obj.video === "No");
+  });
+  if (filteredList.length !== 0) {
+    return filteredList[Math.floor(Math.random() * filteredList.length)].thumbName;
+  } else {
+    return defRetVal;
+  }
+}
+
+/*
+ * Arm the student navigation buttons
+ */
+function armStudentNavButton(studentName) {
+  let years = getStudentYears(studentName);
+  if (years.length != 0) {
+    $("#"+studentName+"Btn").click(function(){
+      cleanMainAside();
+      build_academic_table(studentName, years[years.length-1].season, years[years.length-1].year);
+      build_academic_aside_nav(studentName);
+    });
+  }
+}
+
+/*
+ * Create Pull down buttons and arm them
+ */
+function buildAcademicPullDown(studentList) {
+  for (let studentName of studentList) {
+    $("#studentName").append($('<button>')
+      .attr("id", studentName+"Btn")
+      .addClass("navButton")
+      .text(studentName)
+    );
+    armStudentNavButton(studentName);
+  }
+}
+
+/*
+ * Create and add the sport drop down to the
+ * Athletic drop down.
+ */
+function buildSportDropDown(sportName) {
+  $('#sportName').append($('<div>')
+    .addClass("dropdown"+sportName)
+    .append($('<button>')
+      .addClass("dropbtn"+sportName)
+      .text(sportName.toUpperCase())
+      .append($('<i>')
+        .addClass("fa fa-caret-down")
+      )
+    )
+    .append($('<div>')
+      .addClass("dropdown"+sportName+"-content")
+      .attr("id",sportName.toLowerCase()+"AthName")
+    )
+  )
+}
+
+function strVJV(studentName, sportName, years, buildYear) {
+  let varsity = years.filter(function (obj) {
+    return (obj.studentName === studentName && obj.sport === sportName && obj.year === buildYear);
+  });
+  if (varsity[0].varsity == 1) {
+    return "Varsity";
+  } else {
+    return "JV";
+  }
+}
+/*
+ * Add Athlete name to sport dropdown
+ */
+function addAthleteToDropdown(sportName, studentName) {
+  let authId = sportName+studentName;
+  let years = getAthleticYears(studentName, sportName);
+  let buildYear = years[years.length-1].year;
+  let varsity = strVJV(studentName, sportName, years, buildYear);
+  $('#'+sportName.toLowerCase()+'AthName').append($('<button>')
+    .attr("id",authId)
+    .addClass("navButton")
+    .text(studentName)
+  );
+  $("#"+authId).click(function(){
+    cleanMainAside();
+    build_athletic_table(studentName, sportName, years[years.length-1].year, varsity);
+    build_athletic_aside_nav(studentName, sportName, years);
+  });
+}
+
+/*
+ * Create and arm the athletic buttons
+ */
+function buildAthleticPullDown(sportList, studentList) {
+  let athleticList = database_data.getAthletics();
+  for (let sportName of sportList) {
+    buildSportDropDown(sportName);
+    for (let studentName of studentList) {
+      if (athleticList.find(function (obj) {
+        return (obj.studentName === studentName && obj.sport === sportName);
+      })) {
+        addAthleteToDropdown(sportName, studentName);
+      }
+    }
+  }
+}
+
+/*
  *  Callback function to assign return value from AJAX call
  * 
  */
@@ -164,6 +359,17 @@ let performSomeAction = function(returned_data) {
   database_data.setRankings(returned_data.rankingsList);
   database_data.setAwards(returned_data.awardsList);
   database_data.setStudents(buildStudentList());
+  database_data.setAthletics(returned_data.athleticList);
+  database_data.setSports(buildSportsList());
+  database_data.setAvod(returned_data.avodList);
+  database_data.setStats(returned_data.statList);
+
+  /*
+   * Build Navigation Buttons
+   */
+
+  buildAcademicPullDown(database_data.getStudents());
+  buildAthleticPullDown(database_data.getSports(), database_data.getStudents());
 }
 
 /*
@@ -220,12 +426,13 @@ function cleanMainAside() {
  *  Home event selected. Rebuild the main element
  */
 function build_home_main() {
+  $('#hdrImg').attr('src', 'https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none');
   let homeMain = '\
   <div id="mbPics">\
-    <img src="../../img/mbhs/Photos/Misc/mbhs.jpg" width="310" height="200" class="floatLeft"><img src="../../img/mbhs/Photos/Misc/mrock.jpg" width="310" height="200" class="floatRight">\
+    <img src="https://icqp9q.dm.files.1drv.com/y4mPlkRe7IND5abwHq1TM2Hi6g2DYC_t1DhOHO_sBAb0-sI_cfJ2h-cpB5VlqDwi3uxIRailvnRuEAm7GY04yzDtvK0zV8Aoal6f6cOz5szWFA9gOWVT3EfhABYY7JHK0BrwmaX1RVIlY2XHrE2wEZIBEXgP2AT-VDZKyze_EQGpDU_UYDtcyPnQEpwPMj8-M22XwcIW4cxPipmIOHOYgUZ_Q?width=267&height=189&cropmode=none" width="310" height="200" class="floatLeft"><img src="https://icqo9q.dm.files.1drv.com/y4m7m_KzbYtvldJomyqicDM0fYcFVzCAQjTYBZXFwChn5JBDJsAF4V8kQ7GBKPo8tkCom-Z-MKETkmPwpbgxHzMSnCE1RaXu6XiGL3UvHb2EUrPUbUjHFCOJLz_OzSOmT255Oj2eefSbjnbYZzGwVzjzWAmNq7Td03fgUtzMfw2WLBxL-0t-MFNsLciQsgsNH1Gv2-B9VZgRKivMfXO5XIbLg?width=377&height=133&cropmode=none" width="310" height="200" class="floatRight">\
   </div>\
   <div id="kidPics">\
-    <img src="../../img/mbhs/Photos/Academics/2013/S7300662.JPG" width="310" height="375" class="floatLeft"><img src="../../img/mbhs/Photos/Academics/2015/Theo.JPG" width="310" height="375" class="floatLeft">\
+    <img src="https://8ydviw.bl.files.1drv.com/y4mE65P6QJwr5Qq7YZaj5t5zFXbFGyJYEBUumtZxCKZ_UpZpnuQf88cTcuARqUd0hEE4hKdv3gBSBx8T_MG47GcDrERKCnKAuTJ16S6ldxHbnnIcV6PzO6VoumZpcIv8LlLtgIcCLuTgYPE8AZY20VbPFBG3B41qL8zhaM0wGRN2lbaYl-CSvwQpa4JoHicCzTutUEQQVFXx4M75t0MCLwBlQ?width=660&height=495&cropmode=none" width="310" height="375" class="floatLeft"><img src="https://q4fcdq.bl.files.1drv.com/y4mefARGRexS_vyBEBKsgsGYOBFrDP2sEoDpR9ayLjetxbSZ2hsyuunjiFIRdKXjlyNCZdwqBQUFF3CnsFIpR4vZYLk9syyNZ29qhCLpFRV6WtWmXFYFtAh2de0dxPBqFtULjhdtSZU-HETdqiz-nu3q3kAARcOD-EtjcytLT-mgkZMfKTQ_V4_0dnQcD1PIt6v0dYHzZyY6JffPgXe62ZEoA?width=660&height=437&cropmode=none" width="310" height="375" class="floatLeft">\
   </div>';
   $("#main").append(homeMain);
 }
@@ -345,6 +552,16 @@ function buildTeacherDataList() {
   dataList += dataListOptions;
   dataList += '</datalist>';
   return dataList;
+}
+
+function getInsertButton() {
+  let buttonStr = '';
+  buttonStr = "\
+  <div class='button-container tooltip'>\
+    <span class='tooltiptext'>Insert Row</span>\
+    <button class='iBtn material-icons'>add</button>\
+  </div>";
+  return buttonStr;
 }
 
 /*
@@ -503,20 +720,146 @@ function addAcademicRow(row, tableId) {
 }
 
 /*
+ *  Add a row to the academic table.
+ */
+function addAthleticRow(row, tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('dbId')
+      .html(row.id)
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('gameDate')
+      .html(row.date.slice(5))
+    )
+    .append($('<td>')
+      .addClass('location')
+      .html(row.location)
+    )
+    .append($('<td>')
+      .addClass('league')
+      .html(row.league)
+    )
+    .append($('<td>')
+      .addClass('opponent')
+      .html(row.opponent)
+    )
+    .append($('<td>')
+      .addClass('matchScore')
+      .html(row.score)
+    )
+    .append($('<td>')
+      .addClass('result')
+      .html(row.result)
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getEditDeleteButtons())
+    )
+  );
+
+  $('.eBtn').on("click", error_not_implemented);
+  $('.dBtn').on("click", error_not_implemented);
+}
+
+function addHiddenInsertRow(tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('dbId')
+      .html("")
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('period noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('className noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('honors')
+      .html("")
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('ap')
+      .html("")
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('teacher noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('grade noborder')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getInsertButton())
+    )
+  );
+
+  $('.iBtn').on("click", error_not_implemented);
+}
+
+function addHiddenAthleticInsertRow(tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('dbId')
+      .html("")
+      .hide()
+    )
+    .append($('<td>')
+      .addClass('gameDate')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('location')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('league')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('opponent')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('matchScore')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('result')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getInsertButton())
+    )
+  );
+
+  $('.iBtn').on("click", error_not_implemented);
+}
+
+/*
  *  Build the academic main page given the student, season
  *  and year.
  */
 function build_academic_table(student, season, year) {
-
+  $('#hdrImg').attr('src', 'https://icqt9q.dm.files.1drv.com/y4mypK3ZqfCqMeHAQ9-Gh-zOvoD6mINfspLLb-ISKs3gZBpv0lGf67HNFffxhy7z-0WHfCTcEgVubnFGirYqQREeS4rd9MhAo4Sgdj5JBU3dr4gOSSBWWALl-c3kHL_fjzats4IpkzlGCzLNChbP7mjNoxmVgbOrLQwavYNLQ6kYSWyW-ws_Bx9S6fJIVao4CFL5mmbohCy3BLz4LfdPfqUpQ?width=341&height=334&cropmode=none');
   /*
    *  Create tham semestertab div
    */
   let academicPage = '\
+  <div class="athleticPics">\
+    <img id="p1" src="" class="sportLeft">\
+    <img id="p2" src="" class="sportRight">\
+  </div>\
   <div id="semestertab">\
-    <div id="addAclass" class="tooltip">\
-      <span class="maintooltiptext">Add a class</span>\
-      <button class="mainAddButton">&#xE145;</button>\
-    </div>\
     <table id="semTab" class="semesterTable" cellspacing="3" cellpadding="3" summary="List of classes, teachers and grades">\
       <caption id="capText">\
         <h3 id="seasonYear"></h3>\
@@ -535,6 +878,8 @@ function build_academic_table(student, season, year) {
   let innerStr = student + " " + season + " " + year;
   $("#seasonYear").html(innerStr);
 
+  $('#p1').attr('src', randomPicture(student, 'Academic'));
+  $('#p2').attr('src', randomPicture(student, 'Academic'));
   /*
    *  Filter the transacriptList to retrieve the semester
    *  record for the student, season, year provided.
@@ -608,7 +953,7 @@ function build_academic_table(student, season, year) {
       $("#rank").html(innerStr);
     }
   }
-  $(".mainAddButton").on("click", error_not_implemented);
+  addHiddenInsertRow("semTab");
 }
 
 /*
@@ -616,19 +961,10 @@ function build_academic_table(student, season, year) {
  */
 function build_academic_aside_nav(student) {
   /*
-   *  Filter the transcriptList for the specfied student
-   */
-  let transcriptList = database_data.getTranscripts();
-  let findStudentTrans = transcriptList.filter(function (obj) {
-    return (obj.studentName===student);
-  });
-
-  /*
-   *  Using the records in findStudentTrans, get distinct year values
+   *  Get distinct season, year values
    *  in order to build semester buttons.
    */
-  let years = findStudentTrans.reduce((acc, x) =>
-  acc.concat(acc.find(y => y.year === x.year) ? [] : [x]), []);
+  let years = getStudentYears(student);
 
   /*
    *  Build the selection_menu article
@@ -636,7 +972,13 @@ function build_academic_aside_nav(student) {
   let semesterList = '\
   <article id="select_menu">\
     <div id="topbar">\
-      <h2 class="highlight">Semester</h2>\
+      <div class="add-button-container">\
+        <h2 class="highlight">Semester</h2>\
+        <div id="awardsTooltip" class="button-container tooltip">\
+          <span class="tooltiptext">Add a Semester</span>\
+          <button class="iBtn material-icons">add</button>\
+        </div>\
+      </div>\
       <div id="seasonDiv" class="seasons">\
         <table id="seasonTab" class="seasonTable" cellspacing="3" cellpadding="3" summary="List of Semesters">\
           <tr id="seasonHeaderList">\
@@ -704,11 +1046,13 @@ function build_academic_aside_nav(student) {
    */
   let awardsList = '\
   <article id="awards">\
-    <div id="addDiv" class="add-button-container">\
-      <h2>Awards</h2>\
-      <div id="awardsTooltip" class="tooltip">\
-        <span class="tooltiptext">Add an Award</span>\
-        <button class="asideAddButton">&#xE145;</button>\
+    <div id="awardsDiv">\
+      <div class="add-button-container">\
+        <h2>Awards</h2>\
+        <div id="awardsTooltip" class="button-container tooltip">\
+          <span class="tooltiptext">Add an Award</span>\
+          <button class="iBtn material-icons">add</button>\
+        </div>\
       </div>\
     </div>\
     <ul id="awardsList">\
@@ -722,7 +1066,7 @@ function build_academic_aside_nav(student) {
   let awardList = database_data.getAwards();
   let award = awardList.filter(function (obj) {
     return (obj.studentName === student && obj.catagory === "Academic");
-  });
+  }).sort((a,b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
   if (award.length !== 0) {
     for (x in award) {
       let innerStr = award[x].year + " " + award[x].title
@@ -731,6 +1075,692 @@ function build_academic_aside_nav(student) {
   }
 
   $(".asideAddButton").click(function(){
+    error_not_implemented();
+  });
+}
+
+function build_athletic_table(student, sport, year, varsity) {
+  let oWins = 0;
+  let lWins = 0;
+  let oLoses = 0;
+  let lLoses = 0;
+  let oTies = 0;
+  let lTies = 0;
+  switch (sport) {
+    case 'Tennis':
+      $('#hdrImg').attr('src', 'https://icqr9q.dm.files.1drv.com/y4m7I6d1MQxJSPuB2T2FxI-igJuhLjSxe3LeaOl6lBksFCC1GUTFdevbrogvKRrYVzDcDl8LPBunh1ZnmA-tDWac2SS-8rOHwHD35XUn9kz2vDDnqpT_FndplrhwRYP5V5u9zgWWkp2SyEjyEHNZnruucfv2DaSsNL5VKvYhXPDxq2dxB2IatecbGaqzWCP_Cs7xQvEy3KMEXo79doLST8Hzg?width=118&height=118&cropmode=none');
+      break;
+    case 'Softball':
+      $('#hdrImg').attr('src', 'https://icqu9q.dm.files.1drv.com/y4mG6H46dsfBY7chZeq3wBn1HeeK_GoQXiCf_gJQ5WKooNm0fHkTzSYWVwWvy3pVC-SomvnD9wOxZZilbISW-JC7Qi2oxs80orLdQRDOke2OfQTatFF61aEhMTfQs3wLdZfQ1M29ZVND4Zb1LOZiUwqNwGmWK5S4CJXsPcPDVQbjh3YukgkWoXuXnOVBZBp8WNl0M779ehnxg4qXEWddaDMDA?width=225&height=225&cropmode=none');
+      break;
+    case 'Soccer':
+      $('#hdrImg').attr('src', 'https://hyqh9q.dm.files.1drv.com/y4mM2EIP5qzCCuZLwtTxelj0vVsvgtq93AvSOuMlZEzC5GwtAHnIYV1u1GjVY4BNynd7_StkSgPMllLWUSpjo5AZm0YMSHNuXC1s1v0SQR7G9WYDgCkHUVUmyzCFNQ1tRZVGh6WlVAmyRZikX2vRKo9ubG-WdFdjqwAj80PCoknawL-REud4nry2lRFFst65JGt12KMN3rdI62V5iEHOM7PLw?width=341&height=255&cropmode=none');
+      break;
+    case 'Volleyball':
+      $('#hdrImg').attr('src', 'https://hyqi9q.dm.files.1drv.com/y4mSbAYLBp-zq8kAHVTLXbLTSYPjE5xz0Eu6EFvFiwwxpvS5tiOX-qV3GKti_2YAsztvcwEttAWy8oZrPHu0qGMQHJuARqYkZeYDoJJDCfKmmFXki-8whF5xjg17i_e6w3pGvdBMKRI4g8gsbQwXvk2fkX1sN5FJT6vTuvciLxba6dKlY1rDPALfVlwrIKluG4G5IsCERWUyaDMdY-Exy5A5Q?width=341&height=341&cropmode=none');
+      break;
+    default:
+      $('#hdrImg').attr('src', 'https://icqt9q.dm.files.1drv.com/y4mypK3ZqfCqMeHAQ9-Gh-zOvoD6mINfspLLb-ISKs3gZBpv0lGf67HNFffxhy7z-0WHfCTcEgVubnFGirYqQREeS4rd9MhAo4Sgdj5JBU3dr4gOSSBWWALl-c3kHL_fjzats4IpkzlGCzLNChbP7mjNoxmVgbOrLQwavYNLQ6kYSWyW-ws_Bx9S6fJIVao4CFL5mmbohCy3BLz4LfdPfqUpQ?width=341&height=334&cropmode=none'); 
+  }
+  let athleticPage = '\
+  <div class="athleticPics">\
+    <img id="p1" src="" class="sportLeft">\
+    <img id="p2" src="" class="sportRight">\
+  </div>\
+  <div id="athleticTab">\
+    <h1 id="sportYear"></h1>\
+    <br>\
+    <table id="record" class="centered-table" cellspacing="5" cellpadding="5" border="0" summary="Record">\
+      <caption>\
+        <h3>Record</h3>\
+      </caption>\
+      <tbody>\
+        <tr>\
+          <th scope="col"></th>\
+          <th scope="col">Wins</th>\
+          <th scope="col">Loses</th>\
+          <th scope="col">Ties</th>\
+        </tr>\
+        <tr>\
+          <td>Overall</td>\
+          <td id="oWins">0</td>\
+          <td id="oLoses">0</td>\
+          <td id="oTies">0</td>\
+        </tr>\
+        <tr>\
+          <td>League</td>\
+          <td id="lWins">0</td>\
+          <td id="lLoses">0</td>\
+          <td id="lTies">0</td>\
+        </tr>\
+      </tbody>\
+    </table>\
+    <br>\
+    <br>\
+    <table id="schdres" class="centered-table" summary="Scores and Results" cellspacing="5" cellpadding="5" border="0">\
+      <caption>\
+        <h3>Schedule and Results</h3>\
+      </caption>\
+      <tbody>\
+        <tr>\
+          <th scope="col" class="gameDate">Date</th>\
+          <th scope="col" class="location">Location</th>\
+          <th scope="col" class="league"></th>\
+          <th scope="col" class="opponent">Opponent</th>\
+          <th scope="col" class="matchScore">Score</th>\
+          <th scope="col" class="result">Result</th>\
+          <th scope="col" class="modify"></th>\
+        </tr>\
+      </tbody>\
+    </table>\
+    <h4>* League game</h4>\
+  </div>';
+  
+  $("#main").append(athleticPage);
+  $("#sportYear").text(year+" "+varsity+" "+sport);
+
+  $('#p1').attr('src', randomPicture(student, sport));
+  $('#p2').attr('src', randomPicture(student, sport));
+    /*
+   *  Filter the transacriptList to retrieve the semester
+   *  record for the student, season, year provided.
+   *  Then build the table based on the returned records.
+   */
+  let athleticList = database_data.getAthletics();
+  let scheduleList = athleticList.filter(function (obj) {
+    return (obj.year===year && obj.studentName===student && obj.sport===sport);
+  });
+
+  if (scheduleList.length !==0) {
+    for (x in scheduleList) {
+      addAthleticRow(scheduleList[x], "schdres");
+      switch (scheduleList[x].result) {
+        case 'W':
+          oWins++;
+          if (scheduleList[x].league === '*') {
+            lWins++;
+          }
+          break;
+        case 'L':
+          oLoses++;
+          if (scheduleList[x].league === '*') {
+            lLoses++;
+          }
+          break;
+        case 'T':
+          oTies++;
+          if (scheduleList[x].league === '*') {
+            lTies++;
+          }
+          break;
+      }
+    }
+  }
+  $('#oWins').text(oWins);
+  $('#oLoses').text(oLoses);
+  $('#oTies').text(oTies);
+  $('#lWins').text(lWins);
+  $('#lLoses').text(lLoses);
+  $('#lTies').text(lTies);
+  addHiddenAthleticInsertRow("schdres");
+}
+
+function build_pictures(picList) {
+  for (x in picList) {
+    $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .addClass('tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Download Picture')
+        )
+        .append($('<a>')
+          .attr('href', picList[x].fileName)
+          .attr('download', '')
+          .attr('target','_blank')
+          .append($('<img>')
+            .addClass('thumbnail')
+            .attr('src', picList[x].thumbName)
+          )
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Delete Picture')
+        )
+        .append($('<button>')
+          .addClass('dBtn material-icons')
+          .text('delete')
+          .click(function() {
+            error_not_implemented()
+          })
+        )
+      )
+    );
+  }
+  $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .append($('<img>')
+          .attr('src', "https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none")
+          .addClass('thumbnail')
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Add Picture')
+        )
+        .append($('<button>')
+          .addClass('iBtn material-icons')
+          .text('add')
+          .click(function(){
+            error_not_implemented();
+          })
+        )
+      )
+  );
+}
+
+function build_videos(vidList) {
+  for (x in vidList) {
+    $("#floatPics").append($('<div>')
+      .addClass('aVid')
+      .append($('<div>')
+        .addClass('tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Play Video')
+        )
+        .append($('<video>')
+          .addClass("thumbnail")
+          .attr('preload', 'none')
+          .attr('controls','')
+          .attr('poster', vidList[x].thumbName)
+          .append($('<source>')
+            .attr('src', vidList[x].fileName)
+          )
+        )
+        .append($('<span>')
+          .append($('<b>')
+            .addClass('vidTitle')
+            .text(vidList[x].title)
+          )
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Delete Video')
+        )
+        .append($('<button>')
+          .addClass('dBtn material-icons')
+          .text('delete')
+          .click(function() {
+            error_not_implemented()
+          })
+        )
+      )
+    );
+  }
+  $("#floatPics").append($('<div>')
+      .addClass('aPic')
+      .append($('<div>')
+        .append($('<img>')
+          .attr('src', "https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none")
+          .addClass('thumbnail')
+        )
+      )
+      .append($('<div>')
+        .addClass('button-container tooltip')
+        .append($('<span>')
+          .addClass('tooltiptext')
+          .text('Add Video')
+        )
+        .append($('<button>')
+          .addClass('iBtn material-icons')
+          .text('add')
+          .click(function(){
+            error_not_implemented();
+          })
+        )
+      )
+  );
+}
+
+function buildThumbnailTable(student, sport, year, video) {
+  let thumbNailPage = '\
+  <div class="athleticPics">\
+    <img id="p1" class="sportLeft" src="">\
+    <img id="p2" class="sportRight" src="">\
+  </div>\
+  <div id="athTable">\
+    <h1 id="athPicYear" class="athTabMainHead"></h1>\
+    <h3 id="athAVType" class="athTabSubHead"></h2>\
+    <br>\
+    <br>\
+    <div id="floatPics">\
+    </div>\
+  </div>'
+
+  $("#main").append(thumbNailPage);
+  $("#athPicYear").text(year);
+  if (video === "No") {
+    $("#athAVType").text("Thumbnails");
+  } else {
+    $("#athAVType").text("Videos")
+  }
+  $("#p1").attr("src", randomPicture(student, sport));
+  $("#p2").attr("src", randomPicture(student, sport));
+  let pictureList = database_data.getAvod();
+  let sportAv = pictureList.filter(function (obj){
+    return (obj.studentName === student && obj.activity === sport && obj.year === year && obj.video === video)
+  });
+  if (sportAv.length !== 0) {
+    if (video === "No") {
+      build_pictures(sportAv);
+    } else {
+      build_videos(sportAv);
+    }
+  }
+}
+
+function addDynRow(tableId, prefix) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('opponent')
+      .html(prefix)
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Assists')
+      .addClass('assists')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Blocks')
+      .addClass('blocks')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Kills')
+      .addClass('kills')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Digs')
+      .addClass('digs')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Serves')
+      .addClass('serves')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Aces')
+      .addClass('aces')
+      .html("")
+    )
+    .append($('<td>')
+      .attr('id', prefix+'Sideouts')
+      .addClass('sideOut')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html("")
+      .hide()
+    )
+  );
+}
+
+function addHiddenInsertStatRow(tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('opponent')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('assists')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('blocks')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('kills')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('digs')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('serves')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('aces')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('sideOut')
+      .html("")
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getInsertButton())
+    )
+  );
+
+  $('.iBtn').on("click", error_not_implemented);
+}
+
+function addStatRow(row, tableId) {
+  $('#'+tableId).append($('<tr>')
+    .append($('<td>')
+      .addClass('opponent')
+      .html(row.opponent)
+    )
+    .append($('<td>')
+      .addClass('assists')
+      .html(row.assists)
+    )
+    .append($('<td>')
+      .addClass('blocks')
+      .html(row.blocks)
+    )
+    .append($('<td>')
+      .addClass('kills')
+      .html(row.kills)
+    )
+    .append($('<td>')
+      .addClass('digs')
+      .html(row.digs)
+    )
+    .append($('<td>')
+      .addClass('serves')
+      .html(row.serves)
+    )
+    .append($('<td>')
+      .addClass('aces')
+      .html(row.aces)
+    )
+    .append($('<td>')
+      .addClass('sideOut')
+      .html(row.sideouts)
+    )
+    .append($('<td>')
+      .addClass('modify')
+      .html(getEditDeleteButtons())
+    )
+  );
+
+  $('.eBtn').on("click", error_not_implemented);
+  $('.dBtn').on("click", error_not_implemented);
+}
+
+function get_property_sum_avg(arr, property) {
+  let tot = 0;
+  let avg = 0;
+  tot = arr.reduce(function(a,b) {
+    return a+parseInt(b[property])
+  }, 0);
+  avg = (tot/arr.length).toFixed(2);
+  return {total: tot, average: avg};
+}
+
+function getYearStats(year) {
+  let result = 0;
+  let statList = database_data.getStats();
+  let yearStats = statList.filter(function (obj){
+    return (obj.year === year)
+  });
+  
+  for (let x in yearStats) {
+    addStatRow(yearStats[x], "statTab");
+  }
+  addHiddenInsertStatRow('statTab');
+  addDynRow('statTab', 'Totals');
+  addDynRow('statTab', 'Averages');
+
+  result = get_property_sum_avg(yearStats, 'assists');
+  $('#TotalsAssists').text(result.total);
+  $('#AveragesAssists').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'blocks');
+  $('#TotalsBlocks').text(result.total);
+  $('#AveragesBlocks').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'kills');
+  $('#TotalsKills').text(result.total);
+  $('#AveragesKills').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'digs');
+  $('#TotalsDigs').text(result.total);
+  $('#AveragesDigs').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'serves');
+  $('#TotalsServes').text(result.total);
+  $('#AveragesServes').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'aces');
+  $('#TotalsAces').text(result.total);
+  $('#AveragesAces').text(result.average);
+
+  result = get_property_sum_avg(yearStats, 'sideouts');
+  $('#TotalsSideouts').text(result.total);
+  $('#AveragesSideouts').text(result.average);
+}
+
+function buildStatsTable(student, sport, year) {
+  let statsPage = '\
+  <div class="athleticPics">\
+    <img id="p1" src="" class="sportLeft">\
+    <img id="p2" src="" class="sportRight">\
+  </div>\
+  <div id="vbStatsTab">\
+    <h1 id="statsSportYear"></h1>\
+    <br>\
+    <table id="statTab" class="centered-table" cellspacing="5" cellpadding="5" border="1" summary="Stats">\
+      <caption>\
+        <h3>Statistics</h3>\
+      </caption>\
+      <tbody>\
+        <tr>\
+          <th scope="col" class="opponent">Opponent</th>\
+          <th scope="col" class="assits">Assists</th>\
+          <th scope="col" class="blocks">Blocks</th>\
+          <th scope="col" class="kills">Kills</th>\
+          <th scope="col" class="digs">Digs</th>\
+          <th scope="col" class="serves">Serves</th>\
+          <th scope="col" class="aces">Aces</th>\
+          <th scope="col" class="sideOut">Side Out</th>\
+          <th scope="col" class="modify"></th>\
+        </tr>\
+      </tbody>\
+    </table>\
+  </div>'
+
+  $("#main").append(statsPage);
+  $("#statsSportYear").text(year + " " + sport + " Stats");
+  $("#p1").attr("src", randomPicture(student, sport));
+  $("#p2").attr("src", randomPicture(student, sport));
+  getYearStats(year);
+}
+
+function build_athletic_aside_nav(student, sport, years) {
+  /*
+   *  Build the selection_menu article
+   */
+  let athleticList = '\
+  <article id="select_menu">\
+    <div id="topbar">\
+      <div id="seasonSelect">\
+        <div class="add-button-container">\
+          <h2 class="highlight">Season </h2>\
+          <div class="button-container tooltip">\
+            <span class="tooltiptext">Add New Year</span>\
+            <button id="addASeason" class="iBtn material-icons">add</button>\
+          </div>\
+        </div>\
+        <nav id="selectSeason">\
+        </nav>\
+      </div>\
+      <div id="picturesSelect">\
+        <div class="add-button-container">\
+          <h2 class="highlight">Pictures </h2>\
+          <div class="button-container tooltip">\
+            <span class="tooltiptext">Add New Year</span>\
+            <button id="addAPicture" class="iBtn material-icons">add</button>\
+          </div>\
+        </div>\
+        <nav id="selectPictures">\
+        </nav>\
+      </div>\
+      <div id="videosSelect">\
+        <div class="add-button-container">\
+          <h2 class="highlight">Videos </h2>\
+          <div class="button-container tooltip">\
+            <span class="tooltiptext">Add New Year</span>\
+            <button id="addAVideo" class="iBtn material-icons">add</button>\
+          </div>\
+        </div>\
+        <nav id="selectVideos">\
+        </nav>\
+      </div>\
+      <div id="statsSelect">\
+        <div class="add-button-container">\
+          <h2 class="highlight">Stats </h2>\
+          <div class="button-container tooltip">\
+            <span class="tooltiptext">Add New Year</span>\
+            <button id="addAStat" class="iBtn material-icons">add</button>\
+          </div>\
+        </div>\
+        <nav id="selectStats">\
+        </nav>\
+      </div>\
+    </div>\
+  </article>';
+  $("#sidebar").append(athleticList);
+  if (!(student === "Theodore" && sport === "Volleyball")) {
+    $('#statsSelect').hide();
+  }
+  //$('#selectVideos').hide();
+  //$('#selectPictures').hide();
+  $("#addASeason").click(function() {
+    error_not_implemented();
+  });
+  $("#addAPicture").click(function() {
+    error_not_implemented();
+  });
+  $("#addAVideo").click(function() {
+    error_not_implemented();
+  });
+  $("#addAStat").click(function() {
+    error_not_implemented();
+  });
+
+  let getAVList = database_data.getAvod();
+  let getStatList = database_data.getStats();
+  for (x in years) {
+    let thisYear = years[x].year;
+    let varsity = strVJV(student, sport, years, thisYear);
+    $("#selectSeason").append($('<button>')
+      .addClass('asideButton')
+      .html(thisYear)
+      .click(function() {
+        cleanMain();
+        resetErrorMsgElement();
+        build_athletic_table(student, sport, thisYear, varsity);
+      })
+    );
+    let thisYearsPictures = getAVList.filter(function(obj) {
+      return (obj.studentName === student && obj.activity === sport && obj.year == thisYear && obj.video === "No")
+    });
+    if (thisYearsPictures.length !== 0) {
+      $("#selectPictures").append($('<button>')
+        .addClass('asideButton')
+        .html(thisYear)
+        .click(function() {
+          cleanMain();
+          resetErrorMsgElement();
+          buildThumbnailTable(student, sport, thisYear, "No");
+        })
+      );
+    };
+    let thisYearsVideos = getAVList.filter(function(obj) {
+      return (obj.studentName === student && obj.activity === sport && obj.year == thisYear && obj.video === "Yes")
+    });
+    if (thisYearsVideos.length !== 0) {
+      $("#selectVideos").append($('<button>')
+        .addClass('asideButton')
+        .html(thisYear)
+        .click(function() {
+          cleanMain();
+          resetErrorMsgElement();
+          buildThumbnailTable(student, sport, thisYear, "Yes");
+        })
+      );
+    };
+    if (student === "Theodore" && sport === "Volleyball") {
+      let thisYearsStats = getStatList.filter(function(obj) {
+        return (obj.year === thisYear)
+      });
+      if (thisYearsStats.length !== 0) {
+        $("#selectStats").append($('<button>')
+          .addClass('asideButton')
+          .html(thisYear)
+          .click(function() {
+            cleanMain();
+            resetErrorMsgElement();
+            buildStatsTable(student, sport, thisYear);
+          })
+        )
+      }
+    }
+  }
+
+  /*
+   *  Build the awards article
+   */
+  let awardsList = '\
+  <article id="awards">\
+    <div id="awardsDiv">\
+      <div class="add-button-container">\
+        <h2>Awards</h2>\
+        <div id="awardsTooltip" class="button-container tooltip">\
+          <span class="tooltiptext">Add an Award</span>\
+          <button id="addAAward" class="iBtn material-icons">add</button>\
+        </div>\
+      </div>\
+    </div>\
+    <ul id="awardsList">\
+    </ul>\
+  </article>';
+  $("#sidebar").append(awardsList);
+
+  /*
+   *  Add athletic awards
+   */
+  let awardList = database_data.getAwards();
+  let award = awardList.filter(function (obj) {
+    return (obj.studentName === student && obj.catagory === sport);
+  }).sort((a,b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
+  if (award.length !== 0) {
+    for (x in award) {
+      let innerStr = award[x].year + " " + award[x].title
+      $("#awardsList").append($("<li>").html(innerStr));
+    }
+  }
+
+  $("#addAAward").click(function(){
     error_not_implemented();
   });
 }
@@ -757,6 +1787,8 @@ function error_still_loading() {
  */
 
 getAcademicInfo(performSomeAction);
+build_home_main();
+build_home_aside();
 
 $("#homeBtn").click(function(){
   cleanMainAside();
@@ -764,51 +1796,6 @@ $("#homeBtn").click(function(){
   build_home_aside();
 });
 
-$("#rABtn").click(function(){
-  if (database_data.getTranscripts() === undefined) {
-    error_still_loading();
-  } else {
-    cleanMainAside();
-    build_academic_table("Rachel", "SPRING", "2013");
-    build_academic_aside_nav("Rachel");
-  }
-});
-
-$("#tABtn").click(function(){
-  if (database_data.getTranscripts() === undefined) {
-    error_still_loading();
-  } else {
-    cleanMainAside();
-    build_academic_table("Theodore", "SPRING", "2018");
-    build_academic_aside_nav("Theodore");
-  }
-});
-
-/*
- * MHM 2019-03-21
- * Comment:
- *  Think about creating an Athletic pulldown
- */
-$("#tSocBtn").click(function(){
-  error_not_implemented();
-});
-
-$("#rSbBtn").click(function(){
-  error_not_implemented();
-});
-
-$("#rTenBtn").click(function(){
-  error_not_implemented();
-});
-
 $("#tTravBtn").click(function(){
   error_not_implemented();
 })
-
-$("#rVbBtn").click(function(){
-  error_not_implemented();
-});
-
-$("#tVbBtn").click(function(){
-  error_not_implemented();
-});

@@ -161,6 +161,9 @@ td.period, th.period {
 td.teacher, th.teacher {
     width: 150px;
 }
+td.noborder {
+    border-style: none;
+}
 th.modify {
     border-style: none;
 }
@@ -171,6 +174,12 @@ ul {
 /* classes */
 .add-button-container div {
     display: inline;
+}
+.aPic {
+    width: 150px;
+    height: 150px;
+    float: left;
+    padding: 5px 15px;
 }
 .asideAddButton, .mainAddButton {
     background-color: inherit;
@@ -197,7 +206,34 @@ ul {
     border-radius: 45%;
     border: 2px solid white;
 }
-.cBtn, .dBtn, .eBtn, .sBtn {
+.assists, .blocks, .kills, .digs, .serves, .aces {
+    width: 60px;
+    text-align: right;
+}
+.athleticPics {
+    width: 100%;
+    padding: 3px 0px;
+    margin: 1px 0px 250px 0px;
+}
+.athTabMainHead {
+    font-size: 2.7em;
+    align-content: center;
+    text-align: center;
+    color: white;
+}
+.athTabSubHead {
+    font-size: 1.2em;
+    align-content: center;
+    text-align: center;
+    color: white;
+}
+.aVid {
+    width: 175px;
+    height: 200px;
+    float: left;
+    padding: 5px 15px;
+}
+.cBtn, .dBtn, .eBtn, .iBtn, .sBtn {
     box-shadow: 0px 1px 0px 0px #fff6af;
     background:linear-gradient(to bottom, rgb(23,130,207) 5%, rgb(14,65,130) 100%);
     background-color:rgb(23,130,207);
@@ -212,9 +248,14 @@ ul {
     display: inline;
     font-family: 'Material Icons';
 }
-.cBtn:hover, .sBtn:hover, .eBtn:hover, .dBtn:hover {
+.cBtn:hover, .sBtn:hover, .eBtn:hover, .dBtn:hover, .iBtn:hover {
     background:linear-gradient(to bottom, rgb(14,65,130) 5%, rgb(23,130,207) 100%);
     background-color:#ffab23;
+}
+.centered-table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
 }
 .clearfix:after {
 	content: "\0020";
@@ -236,17 +277,17 @@ ul {
 .dbradio input {
     width: 1em;
 }
-.dropdown, .dropdownSoccer, .dropdownSoftBall, .dropdownTennis, .dropdownTravel, .dropdownVolleyBall {
+.dropdown, .dropdownSoccer, .dropdownSoftball, .dropdownTennis, .dropdownTravel, .dropdownVolleyball {
     float: left;
     overflow: hidden;
 }
-.dropdown:hover .dropbtn, .dropdownSoccer:hover .dropbtnSoccer, .dropdownSoftBall:hover .dropbtnSoftBall, .dropdownTennis:hover .dropbtnTennis, .dropdownTravel:hover .dropbtnTravel, .dropdownVolleyBall:hover .dropbtnVolleyBall {
+.dropdown:hover .dropbtn, .dropdownSoccer:hover .dropbtnSoccer, .dropdownSoftball:hover .dropbtnSoftball, .dropdownTennis:hover .dropbtnTennis, .dropdownTravel:hover .dropbtnTravel, .dropdownVolleyball:hover .dropbtnVolleyball {
     background-color: red;
 }
-.dropdown:hover .dropdown-content, .dropdownSoccer:hover .dropdownSoccer-content, .dropdownSoftBall:hover .dropdownSoftBall-content, .dropdownTennis:hover .dropdownTennis-content, .dropdownTravel:hover .dropdownTravel-content, .dropdownVolleyBall:hover .dropdownVolleyBall-content {
+.dropdown:hover .dropdown-content, .dropdownSoccer:hover .dropdownSoccer-content, .dropdownSoftball:hover .dropdownSoftball-content, .dropdownTennis:hover .dropdownTennis-content, .dropdownTravel:hover .dropdownTravel-content, .dropdownVolleyball:hover .dropdownVolleyball-content {
     display: block;
 }
-.dropdown .dropbtn, .dropdownSoccer .dropbtnSoccer, .dropdownSoftBall .dropbtnSoftBall, .dropdownTennis .dropbtnTennis, .dropdownTravel .dropbtnTravel, .dropdownVolleyBall .dropbtnVolleyBall {
+.dropdown .dropbtn, .dropdownSoccer .dropbtnSoccer, .dropdownSoftball .dropbtnSoftball, .dropdownTennis .dropbtnTennis, .dropdownTravel .dropbtnTravel, .dropdownVolleyball .dropbtnVolleyball {
     font-size: 16px;
     border: none;
     outline: none;
@@ -256,7 +297,7 @@ ul {
     font-family: inherit;
     margin: 0;
 }
-.dropdown-content, .dropdownSoccer-content, .dropdownSoftBall-content, .dropdownTennis-content, .dropdownTravel-content, .dropdownVolleyBall-content {
+.dropdown-content, .dropdownSoccer-content, .dropdownSoftball-content, .dropdownTennis-content, .dropdownTravel-content, .dropdownVolleyball-content {
     display: none;
     position: absolute;
     background-color: blue;
@@ -264,10 +305,10 @@ ul {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-.dropdown-content button:hover, .dropdownSoccer-content button:hover, .dropdownSoftBall-content button:hover, .dropdownTennis-content button:hover, .dropdownTravel-content button:hover, .dropdownVolleyBall-content button:hover {
+.dropdown-content button:hover, .dropdownSoccer-content button:hover, .dropdownSoftball-content button:hover, .dropdownTennis-content button:hover, .dropdownTravel-content button:hover, .dropdownVolleyball-content button:hover {
     background-color: green;
 }
-.dropdown-content button, .dropdownSoccer-content button, .dropdownSoftBall-content button, .dropdownTennis-content button, .dropdownTravel-content button, .dropdownVolleyBall-content button {
+.dropdown-content button, .dropdownSoccer-content button, .dropdownSofbBall-content button, .dropdownTennis-content button, .dropdownTravel-content button, .dropdownVolleyball-content button {
     float: none;
     width: 100%;
     color: white;
@@ -284,11 +325,32 @@ ul {
 .error ul { 
     padding-left: 2em;
 }
+.floatLeft {
+    width: 50%;
+    float: left;
+}
+.floatRight {
+    width: 50%;
+    float: right;
+}
+.gameDate {
+    width: 65px;
+}
 .highlight {
 	color: whitesmoke;
 }
+.league p {
+    width: 2px;
+}
+.location {
+    width: 125px;
+}
 .mainAddButton {
     margin-left: 100px;
+}
+.matchScore {
+    font-weight: bold;
+    width: 150px;
 }
 .navButton {
     float: left;
@@ -305,12 +367,30 @@ ul {
 .navButton:hover {
     background-color: green;
 }
+.opponent {
+    font-style: italic;
+    width: 125px;
+}
+.result {
+    width: 2px;
+}
 .seasonTable {
     margin: 0;
 }
 .semesterTable {
     margin-left: auto;
     margin-right: auto;
+}
+.sideOut {
+    width: 70px;
+    text-align: right;
+}
+.thumbnail {
+    width: 125px;
+    height: 125px;
+    border-color: aqua;
+    border-style: groove;
+    float: left;
 }
 .tooltip {
     position: relative;
@@ -349,6 +429,13 @@ ul {
     visibility: visible;
     opacity: 1;
 }
+.vidTitle {
+    color: white;
+    text-align: left;
+    width: 100px;
+    font-size: 12px;
+    display: block;
+}
 .wrapper {
 	width: 1000px;
 	background: #0E4182;
@@ -357,6 +444,17 @@ ul {
 	margin-bottom: 0;
 }
 /* ids */
+#athleticTab h1 {
+    text-align: center;
+}
+#athleticTab h4 {
+    color: white;
+    font-style: italic;
+}
+#athleticTab table, #vbStatsTab table {
+    border-collapse: collapse;
+    color: white;
+}
 #awards h2 {
     font-size: 1.4em;
 	margin-bottom: 10px;
@@ -365,6 +463,10 @@ ul {
 }
 #awards li {
     color: white;
+}
+#awardsDiv {
+    padding-top: 20px;
+    clear: both;
 }
 #gradyr h1 {
     font-size: 3.0em;
@@ -388,15 +490,16 @@ ul {
 #main article:nth-of-type(1) h2 {
 	padding-top: 0;
 }
-#main div.vbpics {
+#main div.athleticPics {
     width: 100%;
-    height: 210px;
+    height: 175px;
     padding: 3px 0px;
     margin: 1px 0px 5px 0px; 
 }
 #main h1 {
     font-size: 2.7em;
     align-content: center;
+    text-align: center;
     color: white;
 }
 #main h1, #main h2, #main h3, #main h4, #main h5, #main h6, #main p {
@@ -408,12 +511,16 @@ ul {
 	padding-top: 20px;
 }
 #main img.sportLeft {
+    width: 150px;
+    height: 150px;
     float: left;
-}
-#main img.sportLeft, #main img.sportRight {
-    width: 200px;
-    height: 200px;
     padding: 2px 25px;
+}
+#main img.sportRight {
+    width: 150px;
+    height: 150px;
+    padding: 2px 25px;
+    float: right;
 }
 #main img.sportRight {
     float: right;
@@ -427,12 +534,20 @@ ul {
     border-collapse: collapse;
     color: white;
 }
+#record td {
+    text-align: right;
+    font-weight: bold;
+}
 #seasonTab {
     color: white;
 }
 #semestertab {
     border-collapse: collapse;
     color: white;
+}
+#seasonSelect, #statsSelect, #videosSelect, #picturesSelect {
+    float: left;
+    padding: 5px 5px;
 }
 #seasonTab tr td {
     width: 70px;
@@ -500,6 +615,9 @@ ul {
     color: white;
 }
 
+#videosSelect {
+    clear: both;
+}
 /* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
 ::-moz-selection {
 background: #fcd700;
