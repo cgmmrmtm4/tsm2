@@ -1,0 +1,98 @@
+<!--
+    MHM 2019-02-20
+    Comment:
+     Production file. This is the home page. Javascript
+     will be used to remove/add elements based on the buttons
+     selected. Buttons we'll be brought on line as the logic
+     is completed.
+
+     MHM 2019-02-25
+     Comment:
+      Change class error panel to errorPanel
+
+     MHM 2019-03-12
+     Comment:
+      Add jQuery support
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Rachel and Theodore's High School Site</title>
+  <link rel="stylesheet" type="text/css" href="../_css/play.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body id="main_body">
+  <div class="wrapper">
+    <header>
+      <div class="branding">
+        <img id="hdrImg"
+          src="https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none"
+          width="90" height="75" alt="Logo">
+        <p>Morro Bay High School<br>
+          Academics • Athletics</p>
+      </div>
+      <div class="description">
+        <h1>Rachel and Theo's High School Site</h1>
+        <p>Highlights of their High School career</p>
+      </div>
+      <nav>
+        <div id="topnav">
+          <button id="homeBtn" class="navButton">HOME</button>
+          <div class="dropdown">
+            <button class="dropbtn">ACADEMICS
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div id="studentName" class="dropdown-content">
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn">ATHLETICS
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div id="sportName" class="dropdown-content">
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn">EXTRA CIRRECULAR
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div id="ecName" class="dropdown-content">
+            </div>
+          </div>
+          <a class="navButton" href="http://mbhs.slcusd.org" title="MBHS Homepage" target="_blank"
+            class="btn btn-primary">MBHS
+            HOME</a>
+        </div>
+      </nav>
+    </header>
+    <div id="rotator">
+      <img
+        src="https://icqp9q.dm.files.1drv.com/y4mPlkRe7IND5abwHq1TM2Hi6g2DYC_t1DhOHO_sBAb0-sI_cfJ2h-cpB5VlqDwi3uxIRailvnRuEAm7GY04yzDtvK0zV8Aoal6f6cOz5szWFA9gOWVT3EfhABYY7JHK0BrwmaX1RVIlY2XHrE2wEZIBEXgP2AT-VDZKyze_EQGpDU_UYDtcyPnQEpwPMj8-M22XwcIW4cxPipmIOHOYgUZ_Q?width=267&height=189&cropmode=none"
+        width=100% height="120" alt="Morro Rock">
+    </div>
+    <div id="errorPanel">
+      <p id=messages>
+
+      </p>
+    </div>
+    <section id="main">
+    </section>
+    <aside id="sidebar" class="clearfix">
+    </aside>
+    <footer>
+      <div class="branding">
+        <img
+          src="https://icqq9q.dm.files.1drv.com/y4mcbbkojMCLPcCjaTjITnanqctCz_XnQAN98IWmybVq9ANDyOlnTu_YZRZ8AZo2ozbUBZVNlZvZLal6d0ynJdAtm3IMZIAWsvLoOgT9FqmULG2mUfNSr4iKmeRaZ89aKaFxfSbJepUxo9AWVsLm2zcZM27AaqhIslNJsXQQpEY5H4G5ie4-D6eV5vgyjAC4EDtbxkUKGVdp2uf7BnfSDuJrg?width=139&height=134&cropmode=none"
+          alt="Logo">
+      </div>
+      <div class="description">&copy; 2015&ndash;2019 Mark Mackey</div>
+    </footer>
+  </div>
+</body>
+<script src="../_scripts/jquery-3.3.1.js"></script>
+<script type="module" src="../_scripts/hsmain.js"></script>
+</html>
