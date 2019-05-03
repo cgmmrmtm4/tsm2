@@ -277,17 +277,17 @@ ul {
 .dbradio input {
     width: 1em;
 }
-.dropdown, .dropdownSoccer, .dropdownSoftball, .dropdownTennis, .dropdownTravel, .dropdownVolleyball {
+.dropdown, .dropdownNav {
     float: left;
     overflow: hidden;
 }
-.dropdown:hover .dropbtn, .dropdownSoccer:hover .dropbtnSoccer, .dropdownSoftball:hover .dropbtnSoftball, .dropdownTennis:hover .dropbtnTennis, .dropdownTravel:hover .dropbtnTravel, .dropdownVolleyball:hover .dropbtnVolleyball {
+.dropdown:hover .dropbtn, .dropdownNav:hover .dropbtnNav {
     background-color: red;
 }
-.dropdown:hover .dropdown-content, .dropdownSoccer:hover .dropdownSoccer-content, .dropdownSoftball:hover .dropdownSoftball-content, .dropdownTennis:hover .dropdownTennis-content, .dropdownTravel:hover .dropdownTravel-content, .dropdownVolleyball:hover .dropdownVolleyball-content {
+.dropdown:hover .dropdown-content, .dropdownNav:hover .dropdownNav-content {
     display: block;
 }
-.dropdown .dropbtn, .dropdownSoccer .dropbtnSoccer, .dropdownSoftball .dropbtnSoftball, .dropdownTennis .dropbtnTennis, .dropdownTravel .dropbtnTravel, .dropdownVolleyball .dropbtnVolleyball {
+.dropdown .dropbtn, .dropdownNav .dropbtnNav {
     font-size: 16px;
     border: none;
     outline: none;
@@ -297,7 +297,7 @@ ul {
     font-family: inherit;
     margin: 0;
 }
-.dropdown-content, .dropdownSoccer-content, .dropdownSoftball-content, .dropdownTennis-content, .dropdownTravel-content, .dropdownVolleyball-content {
+.dropdown-content, .dropdownNav-content {
     display: none;
     position: absolute;
     background-color: blue;
@@ -305,10 +305,10 @@ ul {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-.dropdown-content button:hover, .dropdownSoccer-content button:hover, .dropdownSoftball-content button:hover, .dropdownTennis-content button:hover, .dropdownTravel-content button:hover, .dropdownVolleyball-content button:hover {
+.dropdown-content button:hover, .dropdownNav-content button:hover {
     background-color: green;
 }
-.dropdown-content button, .dropdownSoccer-content button, .dropdownSofbBall-content button, .dropdownTennis-content button, .dropdownTravel-content button, .dropdownVolleyball-content button {
+.dropdown-content button, .dropdownNav-content button {
     float: none;
     width: 100%;
     color: white;
