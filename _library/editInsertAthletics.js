@@ -1,5 +1,6 @@
 import { getEditDeleteButtons, getInsertButton } from "./buttonsCRUD.js";
 import { error_not_implemented } from "./errorHandler.js";
+import { isAuthorized } from "./auth.js";
 
 /*
  * MHM 20190502
@@ -48,11 +49,15 @@ export function addAthleticRow(row, tableId) {
         .append($('<td>')
             .addClass('modify')
             .html(getEditDeleteButtons())
+            .hide()
         )
     );
 
-    $('.eBtn').on("click", error_not_implemented);
-    $('.dBtn').on("click", error_not_implemented);
+    if (isAuthorized.getAuth()) {
+        $('.eBtn').on("click", error_not_implemented);
+        $('.dBtn').on("click", error_not_implemented);
+        $('.modify').show();
+    }
 }
 
 export function addHiddenAthleticInsertRow(tableId) {

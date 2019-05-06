@@ -66,6 +66,10 @@
           <a class="navButton" href="http://mbhs.slcusd.org" title="MBHS Homepage" target="_blank"
             class="btn btn-primary">MBHS
             HOME</a>
+          <div class="actionButtons">
+            <button id="login" class="navButton material-icons">perm_identity</button>
+            <span id="authUser">Guest</span>
+          </div>
         </div>
       </nav>
     </header>
@@ -75,9 +79,10 @@
         width=100% height="120" alt="Morro Rock">
     </div>
     <div id="errorPanel">
-      <p id=messages>
+      <button id="clearErrorMsg" class="navButton material-icons">clear</button>
+      <ul id=messages>
 
-      </p>
+      </ul>
     </div>
     <section id="main">
     </section>
@@ -95,4 +100,5 @@
 </body>
 <script src="../_scripts/jquery-3.3.1.js"></script>
 <script type="module" src="../_scripts/hsmain.js"></script>
+
 </html>

@@ -9,12 +9,21 @@ import { resetErrorMsgElement } from "./cleanElements.js";
  *  This file contains the error handling logic.
  */
 
+function insertErrorMsg(message) {
+    $("#messages").append($('<li>')
+        .attr("class", "error")
+        .text(message)
+    );
+    if ($("#clearErrorMsg").is(":hidden")) {
+        $("#clearErrorMsg").show();
+    }
+}
 /*
  *  Message for buttons that have not been implemented yet.
  */
 export function error_not_implemented() {
     resetErrorMsgElement();
-    $("#messages").attr("class", "error").text("Feature not implemented yet!");
+    insertErrorMsg("Feature not implemented yet!");
 };
 
 /*
@@ -23,5 +32,6 @@ export function error_not_implemented() {
  *  again.
  */
 export function error_still_loading() {
-    $("#messages").attr("class", "error").text("Data Still Loading, Try Again");
+    resetErrorMsgElement();
+    insertErrorMsg("Data Still Loading, Try Again");
 }

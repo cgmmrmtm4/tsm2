@@ -2,6 +2,7 @@ import { getInsertButton, getEditDeleteButtons } from "./buttonsCRUD.js";
 import { databaseData } from "./dataBaseData.js";
 import { error_not_implemented } from "./errorHandler.js";
 import { randomPicture } from "./picsVids.js";
+import { isAuthorized } from "./auth.js";
 
 /*
  * MHM 20190502
@@ -142,11 +143,15 @@ function addStatRow(row, tableId) {
         .append($('<td>')
             .addClass('modify')
             .html(getEditDeleteButtons())
+            .hide()
         )
     );
 
-    $('.eBtn').on("click", error_not_implemented);
-    $('.dBtn').on("click", error_not_implemented);
+    if (isAuthorized.getAuth()) {
+        $('.modify').show();
+        $('.eBtn').on("click", error_not_implemented);
+        $('.dBtn').on("click", error_not_implemented);
+    }
 }
 
 function getPropertySumAvg(arr, property) {
@@ -169,7 +174,9 @@ function getYearStats(year) {
     for (let x in yearStats) {
         addStatRow(yearStats[x], "statTab");
     }
-    addHiddenInsertStatRow('statTab');
+    if (isAuthorized.getAuth()) {
+        addHiddenInsertStatRow('statTab');
+    }
     addDynRow('statTab', 'Totals');
     addDynRow('statTab', 'Averages');
 

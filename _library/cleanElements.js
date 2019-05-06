@@ -27,6 +27,7 @@ function cleanAside() {
  */
 export function resetErrorMsgElement() {
     $("#messages").removeAttr("class").empty();
+    $("#clearErrorMsg").hide();
 }
 
 /*

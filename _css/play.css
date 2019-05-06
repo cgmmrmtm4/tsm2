@@ -172,6 +172,9 @@ ul {
 }
 
 /* classes */
+.actionButtons {
+    float: right;
+}
 .add-button-container div {
     display: inline;
 }
@@ -228,7 +231,7 @@ ul {
     color: white;
 }
 .aVid {
-    width: 175px;
+    width: 150px;
     height: 200px;
     float: left;
     padding: 5px 15px;
@@ -432,7 +435,7 @@ ul {
 .vidTitle {
     color: white;
     text-align: left;
-    width: 100px;
+    width: 140px;
     font-size: 12px;
     display: block;
 }
@@ -455,6 +458,18 @@ ul {
     border-collapse: collapse;
     color: white;
 }
+#authUser {
+    float: left;
+    overflow: hidden;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px 14px 1px;
+    background-color: inherit;
+    font-family: inherit;
+    color: white;
+    margin: 0;
+}
 #awards h2 {
     font-size: 1.4em;
 	margin-bottom: 10px;
@@ -467,6 +482,13 @@ ul {
 #awardsDiv {
     padding-top: 20px;
     clear: both;
+}
+#clearErrorMsg {
+    color: black;
+    display: none;
+}
+#clearErrorMsg:hover {
+    background-color: transparent;
 }
 #gradyr h1 {
     font-size: 3.0em;

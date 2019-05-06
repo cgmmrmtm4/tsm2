@@ -1,7 +1,8 @@
 import { getAcademicInfo, performSomeAction } from "../_library/network.js";
 import { buildHomeMain, buildHomeAside } from "../_library/homePage.js";
-import { cleanMainAside } from "../_library/cleanElements.js";
+import { cleanMainAside, resetErrorMsgElement } from "../_library/cleanElements.js";
 import { error_not_implemented } from "../_library/errorHandler.js";
+import { authenticateUser } from "../_library/auth.js";
 
 /*
  * MHM 20190502
@@ -16,6 +17,10 @@ import { error_not_implemented } from "../_library/errorHandler.js";
  *  Main logic
  */
 
+$("#clearErrorMsg").click(function () {
+  resetErrorMsgElement();
+});
+
 getAcademicInfo(performSomeAction);
 buildHomeMain();
 buildHomeAside();
@@ -26,6 +31,10 @@ $("#homeBtn").click(function () {
   buildHomeAside();
 });
 
-$("#tTravBtn").click(function () {
-  error_not_implemented();
+$("#login").click(function () {
+  resetErrorMsgElement();
+  authenticateUser();
+  cleanMainAside();
+  buildHomeMain();
+  buildHomeAside();
 })

@@ -2,6 +2,7 @@ import { databaseData } from "./dataBaseData.js";
 import { getEditDeleteButtons, getSaveCancelButtons, getInsertButton } from "./buttonsCRUD.js";
 import { resetErrorMsgElement } from "./cleanElements.js";
 import { error_not_implemented } from "./errorHandler.js";
+import { isAuthorized } from "./auth.js";
 
 /*
  * MHM 20190502
@@ -231,11 +232,15 @@ export function addAcademicRow(row, tableId) {
         .append($('<td>')
             .addClass('modify')
             .html(getEditDeleteButtons())
+            .hide()
         )
     );
 
-    $('.eBtn').on("click", editAcademicRow);
-    $('.dBtn').on("click", error_not_implemented);
+    if (isAuthorized.getAuth()) {
+        $('.modify').show();
+        $('.eBtn').on("click", editAcademicRow);
+        $('.dBtn').on("click", error_not_implemented);
+    }
 }
 
 export function addHiddenInsertRow(tableId) {
