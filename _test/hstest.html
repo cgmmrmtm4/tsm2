@@ -1,0 +1,55 @@
+<!--
+    MHM 2019-95-10
+    Comment:
+     Execute and show test results
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Unit Testing</title>
+  <link rel="stylesheet" type="text/css" href="../_css/play.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body id="main_body">
+  <div class="wrapper">
+    <header>
+      <div class="description">
+        <h1>UNIT Test Suites - Execution and Results</h1>
+      </div>
+      <nav>
+        <div id="topnav">
+          <button id="homeBtn" class="navButton">HOME</button>
+          <div class="dropdown">
+            <button class="dropbtn">UNIT TESTS
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div id="TestName" class="dropdown-content">
+              <button id='transcriptUT' class="navButton">Transcript Unit Tests</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    
+    <section id="main">
+      <div id="resultPanel">
+        <button id="clearPanelMsg" class="navButton material-icons">clear</button>
+        <ul id=messages>
+  
+        </ul>
+      </div>
+    </section>
+    
+    <footer>
+      <div class="description">&copy; 2015&ndash;2019 Mark Mackey</div>
+    </footer>
+  </div>
+</body>
+<script src="../_scripts/jquery-3.3.1.js"></script>
+<script type="module" src="./hstest.js"></script>
+
+</html>

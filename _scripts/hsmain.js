@@ -37,4 +37,11 @@ $("#login").click(function () {
   cleanMainAside();
   buildHomeMain();
   buildHomeAside();
+  $("#id01").show()
+})
+$(".loginclose").click(function () {
+  $("#id01").hide();
+});
+$(".logincancelbtn").click(function () {
+  $("#id01").hide();
 })

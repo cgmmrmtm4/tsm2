@@ -1,6 +1,7 @@
 import { databaseData } from "./dataBaseData.js";
 import { buildAcademicPullDown, buildAthleticPullDown, buildECPullDown } from "./navHeader.js";
 import { buildClassList, buildTeacherList, buildStudentList, buildSportsList } from "./lists.js";
+import { validateTranscripts, validateRankings, validateAwards, validateAthletics, validateAvod, validateStats } from "./validateData.js";
 
 /*
  * MHM 20190502
@@ -17,17 +18,28 @@ import { buildClassList, buildTeacherList, buildStudentList, buildSportsList } f
  */
 
 export let performSomeAction = function (returned_data) {
-    databaseData.setTranscripts(returned_data.transcriptList);
+    if (Array.isArray(returned_data.transcriptList)) {
+        databaseData.setTranscripts(returned_data.transcriptList.filter(obj => validateTranscripts(obj)));
+    }
     databaseData.setClasses(buildClassList());
     databaseData.setTeachers(buildTeacherList());
-    databaseData.setRankings(returned_data.rankingsList);
-    databaseData.setAwards(returned_data.awardsList);
+    if (Array.isArray(returned_data.rankingsList)) {
+        databaseData.setRankings(returned_data.rankingsList.filter(obj => validateRankings(obj)));
+    }
+    if (Array.isArray(returned_data.awardsList)) {
+        databaseData.setAwards(returned_data.awardsList.filter(obj => validateAwards(obj)));
+    }
     databaseData.setStudents(buildStudentList());
-    databaseData.setAthletics(returned_data.athleticList);
+    if (Array.isArray(returned_data.athleticList)) {
+    databaseData.setAthletics(returned_data.athleticList.filter(obj => validateAthletics(obj)));
+    }
     databaseData.setSports(buildSportsList());
-    databaseData.setAvod(returned_data.avodList);
-    databaseData.setStats(returned_data.statList);
-
+    if (Array.isArray(returned_data.avodList)) {
+        databaseData.setAvod(returned_data.avodList.filter(obj => validateAvod(obj)));
+    }
+    if (Array.isArray(returned_data.statList)) {
+        databaseData.setStats(returned_data.statList.filter(obj => validateStats(obj)));
+    }
     /*
      * Build Navigation Buttons
      */

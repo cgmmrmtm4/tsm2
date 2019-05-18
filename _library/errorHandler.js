@@ -9,7 +9,7 @@ import { resetErrorMsgElement } from "./cleanElements.js";
  *  This file contains the error handling logic.
  */
 
-function insertErrorMsg(message) {
+export function insertErrorMsg(message) {
     $("#messages").append($('<li>')
         .attr("class", "error")
         .text(message)
